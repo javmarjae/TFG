@@ -1,0 +1,2 @@
+https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website
+https://medium.com/@a01207543/django-conecta-tu-proyecto-con-la-base-de-datos-mysql-2d329c73192a
