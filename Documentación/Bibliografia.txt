@@ -3,6 +3,9 @@ https://medium.com/@a01207543/django-conecta-tu-proyecto-con-la-base-de-datos-my
 https://www.delftstack.com/es/howto/django/django-setup-one-to-many-relationship/
 https://runebook.dev/es/docs/django/topics/db/models
 
+Usuario root: javmarjae
+Contraseña: gamerstfg
+
 Rangos League of Legends:
 Hierro
 Bronce
