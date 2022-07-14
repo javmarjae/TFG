@@ -1,20 +1,12 @@
-from tkinter import CASCADE
 import uuid
-from xmlrpc.client import TRANSPORT_ERROR
 from django.db import models
-from django.dispatch import receiver
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 
-
-class User(models.Model):
+class User(AbstractUser):
     """
     Modelo que representa cada usuario.
     """
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=20, help_text="Name")
-    last_name = models.CharField(max_length=40, help_text="Last name")
-    user_name = models.CharField(max_length=20, help_text="User name", unique=True)
-    email = models.EmailField(max_length=30 ,help_text="Email", unique=True)
-    password = models.CharField(max_length=30, help_text="Password")
 
     LANGUAGES = (
         ('EN','English'),
@@ -25,21 +17,8 @@ class User(models.Model):
     )
 
     language = models.CharField(max_length=2, choices=LANGUAGES, default='SP', help_text="Language")
-    profile_pic = models.ImageField(upload_to='img/profile', help_text="Profile pic")
-    birth_date = models.DateField(help_text="Birth date")
-
-    ROLES = (
-        ('ad','Admin'),
-        ('us','User')
-    )
-
-    role = models.CharField(max_length=2, choices=ROLES, default='us', help_text="Role privileges")
-
-    def __str__(self) -> str:
-        """
-        String para representar el objeto del modelo
-        """
-        return '%s' % self.user_name
+    profile_pic = models.ImageField(upload_to='img/profile', default = 'img/profile/default.png', null=True, blank=True, help_text="Profile pic")
+    birth_date = models.DateField(null=True, blank=True, help_text="Birth date")
 
 class Clan(models.Model):
     """
@@ -48,7 +27,7 @@ class Clan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=30, help_text="Clan name", unique=True)
     description = models.TextField(max_length=300, help_text="Clan description")
-    num_members = models.IntegerField(help_text="Number of members")
+    leader = models.CharField(max_length=20, help_text="Clan leader", null=True, blank=True)
 
     def __str__(self) -> str:
         return '%s' % self.name
@@ -58,7 +37,7 @@ class Gamer(models.Model):
     Modelo que representa cada Gamer asociado a un User.
     """
     user = models.OneToOneField(
-        User,
+        get_user_model(),
         on_delete=models.CASCADE,
         primary_key=True
     )
@@ -98,6 +77,12 @@ class Friendship(models.Model):
     )
 
     status = models.CharField(max_length=2, choices=FRIENSHIP_STATUS, default='pe', help_text="Friendship request status")
+
+    def __str__(self) -> str:
+        return '%s-%s' % (self.sender,self.receiver)
+
+    class Meta:
+        unique_together = ('sender','receiver')
 
 class Game(models.Model):
     """
@@ -155,38 +140,92 @@ class Gameship(models.Model):
             )
         ),
         ('League of Legends', (
-        ('ir','Iron'),
-        ('br','Bronze'),
-        ('si','Silver'),
-        ('go','Gold'),
-        ('pl','Platinum'),
-        ('di','Diamond'),
-        ('ma','Master'),
-        ('gm','Grand Master'),
+        ('i4','Iron IV'),
+        ('i3','Iron III'),
+        ('i2','Iron II'),
+        ('i1','Iron I'),
+        ('b4','Bronze IV'),
+        ('b3','Bronze III'),
+        ('b2','Bronze II'),
+        ('b1','Bronze I'),
+        ('s4','Silver IV'),
+        ('s3','Silver III'),
+        ('s2','Silver II'),
+        ('s1','Silver I'),
+        ('g4','Gold IV'),
+        ('g3','Gold III'),
+        ('g2','Gold II'),
+        ('g1','Gold I'),
+        ('p4','Platinum IV'),
+        ('p3','Platinum III'),
+        ('p2','Platinum II'),
+        ('p1','Platinum I'),
+        ('d4','Diamond IV'),
+        ('d3','Diamond III'),
+        ('d2','Diamond II'),
+        ('d1','Diamond I'),
+        ('m4','Master IV'),
+        ('m3','Master III'),
+        ('m2','Master II'),
+        ('m1','Master I'),
+        ('h4','Grand Master IV'),
+        ('h3','Grand Master III'),
+        ('h2','Grand Master II'),
+        ('h1','Grand Master I'),
         ('ch','Challenger'),
             )
         ),
         ('Rocket League', (
-        ('br','Bronze'),
-        ('si','Silver'),
-        ('go','Gold'),
-        ('pl','Platinum'),
-        ('di','Diamond'),
-        ('ch','Champion'),
-        ('gc','Grand Champion'),
-        ('le','Supersonic Legend'),
+        ('b1','Bronze I'),
+        ('b2','Bronze II'),
+        ('b3','Bronze III'),
+        ('s1','Silver I'),
+        ('s2','Silver II'),
+        ('s3','Silver III'),
+        ('g1','Gold I'),
+        ('g2','Gold II'),
+        ('g3','Gold III'),
+        ('p1','Platinum I'),
+        ('p2','Platinum II'),
+        ('p3','Platinum III'),
+        ('d1','Diamond I'),
+        ('d2','Diamond II'),
+        ('d3','Diamond III'),
+        ('c1','Champion I'),
+        ('c2','Champion II'),
+        ('c3','Champion III'),
+        ('h1','Grand Champion I'),
+        ('h2','Grand Champion II'),
+        ('h3','Grand Champion III'),
+        ('sl','Supersonic Legend'),
             )
         ),
         ('Valorant', (
-        ('ir','Iron'),
-        ('br','Bronze'),
-        ('si','Silver'),
-        ('go','Gold'),
-        ('pl','Platinum'),
-        ('di','Diamond'),
-        ('as','Ascendent'),
-        ('in','Inmortal'),
-        ('ra','Radiant'),
+        ('i1','Iron I'),
+        ('i2','Iron II'),
+        ('i3','Iron III'),
+        ('b1','Bronze I'),
+        ('b2','Bronze II'),
+        ('b3','Bronze III'),
+        ('s1','Silver I'),
+        ('s2','Silver II'),
+        ('s3','Silver III'),
+        ('g1','Gold I'),
+        ('g2','Gold II'),
+        ('g3','Gold III'),
+        ('p1','Platinum I'),
+        ('p2','Platinum II'),
+        ('p3','Platinum III'),
+        ('d1','Diamond I'),
+        ('d2','Diamond II'),
+        ('d3','Diamond III'),
+        ('c1','Ascendent I'),
+        ('c2','Ascendent II'),
+        ('c3','Ascendent III'),
+        ('h1','Inmortal I'),
+        ('h2','Inmortal II'),
+        ('h3','Inmortal III'),
+        ('rl','Radiant'),
             )
         ),
     )
@@ -194,6 +233,9 @@ class Gameship(models.Model):
     rank = models.CharField(max_length=20, choices=GAMES_RANKS, default='un', help_text="Gamer rank in a Game")
     game = models.ForeignKey(Game, on_delete=models.CASCADE, help_text="Game selected")
     gamer = models.ForeignKey(Gamer, on_delete=models.CASCADE, help_text="Gamer that selects a Game")
+
+    def __str__(self) -> str:
+        return '%s-%s' % (self.gamer,self.game)
     
     class Meta:
         unique_together = ('game','gamer')

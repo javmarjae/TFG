@@ -1,0 +1,18 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Gamers</h1>
+
+  <p>Welcome to <em>Gamers</em>, a website developed in order to find people with your same ambitions in videogames.</p>
+
+<h2>Dynamic content</h2>
+
+  <p>The page has the following record counts:</p>
+  <ul>
+    <li><strong>Clans:</strong> {{ num_clans }}</li>
+    <li><strong>Gamers:</strong> {{ num_gamers }}</li>
+    <li><strong>Online gamers:</strong> {{ num_gamers_online }}</li>
+    <li><strong>Playing gamers:</strong> {{ num_gamers_playing }}</li>
+  </ul>
+
+{% endblock %}

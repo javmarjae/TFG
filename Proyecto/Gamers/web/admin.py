@@ -1,8 +1,8 @@
 from django.contrib import admin
+from .models import Game, Gamer, Gameship, Friendship, Clan, User
+from django.contrib.auth.admin import UserAdmin
 
-from .models import User, Game, Gamer, Gameship, Friendship, Clan
-
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
 admin.site.register(Game)
 admin.site.register(Gamer)
 admin.site.register(Gameship)
