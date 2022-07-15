@@ -1,5 +1,25 @@
-.sidebar-nav {
-    margin-top: 20px;
-    padding: 0;
-    list-style: none;
+:root {
+    --footercolor: #003F72;
+    --navbarcolor: #003F72;
+    --btncolor: #003F72;
+    --socialcolor: #003F72;
+    --brightText: #ffffff;
+}
+
+.navbar-color {
+    background-color: var(--navbarcolor);
+}
+
+.site-header .navbar-nav .nav-link {
+    color: var(--brightText);
+}
+  
+.site-header .navbar-nav .nav-link:hover {
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10%;
+}
+  
+.site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
 }

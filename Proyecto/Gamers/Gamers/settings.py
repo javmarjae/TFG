@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'web',
+    'fontawesomefree',
+    'crispy_forms',
 ]
 
 AUTH_USER_MODEL = 'web.User'
@@ -133,4 +135,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 LOGIN_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = ['web.backends.EmailBackend']
