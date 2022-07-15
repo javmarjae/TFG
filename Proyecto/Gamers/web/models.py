@@ -1,12 +1,18 @@
-import uuid
+import uuid, os
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
+
 
 class User(AbstractUser):
     """
     Modelo que representa cada usuario.
     """
+
+    def image_upload_to(self, instance=None):
+        if instance:
+            return os.path.join("Users", self.username, instance)
+        return None
 
     LANGUAGES = (
         ('EN','English'),
@@ -17,7 +23,7 @@ class User(AbstractUser):
     )
 
     language = models.CharField(max_length=2, choices=LANGUAGES, default='SP', help_text="Language")
-    profile_pic = models.ImageField(upload_to='img/profile', default = 'img/profile/default.png', null=True, blank=True, help_text="Profile pic")
+    profile_pic = models.ImageField(upload_to=image_upload_to, default = 'profile/default.png', null=True, blank=True, help_text="Profile pic")
     birth_date = models.DateField(null=True, blank=True, help_text="Birth date")
 
 class Clan(models.Model):

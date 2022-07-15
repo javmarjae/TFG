@@ -1,10 +1,9 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordResetForm
 from django.contrib.auth import get_user_model
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(help_text='A valid email address, please.', required=True)
-    profile_pic = forms.ImageField(help_text='Upload your profile pic.', required=False)
 
     LANGUAGES = (
         ('EN','English'),
@@ -19,12 +18,11 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2','language','birth_date','profile_pic']
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2','language','birth_date']
 
     def save(self, commit=True):
         user = super(UserRegisterForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
-        user.profile_pic = self.cleaned_data['profile_pic']
         user.language = self.cleaned_data['language']
         user.birth_date = self.cleaned_data['birth_date']
         if commit:
@@ -41,3 +39,19 @@ class UserLoginForm(AuthenticationForm):
 
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Password'}))
+
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = get_user_model()
+        fields = ['first_name', 'last_name', 'email','profile_pic']
+
+class SetPasswordForm(SetPasswordForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['new_password1', 'new_password2']
+
+class PasswordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super(PasswordResetForm, self).__init__(*args, **kwargs)

@@ -17,8 +17,8 @@
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
-                    <a class="nav-item nav-link" href="/">
-                        {{ user.get_username }}
+                    <a class="nav-item nav-link" href="{% url 'profile' user.username %}">
+                        {{ user.get_username }} <i class="fas fa-user"></i>
                     </a>
                     <a class="nav-item nav-link" href="{% url 'logout' %}">
                         Logout <i class="fas fa-sign-out-alt"></i>

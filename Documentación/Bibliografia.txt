@@ -2,61 +2,12 @@ https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Tutorial_local
 https://medium.com/@a01207543/django-conecta-tu-proyecto-con-la-base-de-datos-mysql-2d329c73192a
 https://www.delftstack.com/es/howto/django/django-setup-one-to-many-relationship/
 https://runebook.dev/es/docs/django/topics/db/models
+https://pylessons.com/django-homepage
 
 Usuario root: javmarjae
 Contraseña: gamerstfg
 
-Rangos League of Legends:
-Hierro
-Bronce
-Plata
-Oro
-Platino
-Diamante
-Maestro
-Gran Maestro
-Challenger
-- Del 4 al 1 excepto challenger
-
-Rangos Valorant:
-Hierro
-Bronce
-Plata
-Oro
-Platino
-Diamante
-Ascendente
-Inmortal
-Radiante
-- Del 1 al 3 excepto radiante 
-
-Rangos Rocket League:
-Bronce
-Plata
-Oro
-Platino
-Diamante
-Campeón
-Gran Campeón
-Leyenda supersónica
-- Del 1 al 3 excepto Leyenda supersónica
-
-Rangos CS:GO:
-Silver I (S1)
-Silver II (S2)
-Silver III (S3)
-Silver IV (S4)
-Silver Elite (SE)
-Silver Elite Master (SEM)
-Gold Nova I (GN1)
-Gold Nova II (GN2)
-Gold Nova III (GN3)
-Gold Nova Master (GNM/GN4)
-Master Guardian I (MG/MG1)
-Master Guardian II (MG2)
-Master Guardian Elite (MGE)
-Dinstinguished Master Guardian (DMG)
-Legendary Eagle (LE)
-Legendary Eagle Master (LEM)
-Supreme Master First Class (Supreme)
-The Global Elite (Global)
+Requeriments:
+fontawesomefree
+crispy-forms
+six
