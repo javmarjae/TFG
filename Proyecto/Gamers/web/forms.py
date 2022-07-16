@@ -1,6 +1,10 @@
+from urllib import request
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordResetForm
 from django.contrib.auth import get_user_model
+from pkg_resources import require
+
+from web.models import Gamer
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(help_text='A valid email address, please.', required=True)
@@ -29,13 +33,25 @@ class UserRegisterForm(UserCreationForm):
             user.save()
         return user
 
+class GamerRegisterForm(forms.ModelForm):
+    class Meta:
+        model = Gamer
+        fields = ['user']
+
+    def save(self, commit=True):
+        gamer = super(forms.ModelForm, self).save(commit=False)
+        gamer.user_id = self.data['user']
+        if commit:
+            gamer.save()
+        return gamer
+
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(UserLoginForm, self).__init__(*args, **kwargs)
 
     username = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Username or Email'}),
-        label="Username or Email*")
+        label="Username or Email")
 
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Password'}))
@@ -46,6 +62,11 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'last_name', 'email','profile_pic']
+
+class GamerUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Gamer
+        fields = ['user','discord', 'steam', 'epic_games','riot_games']
 
 class SetPasswordForm(SetPasswordForm):
     class Meta:

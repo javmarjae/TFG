@@ -3,6 +3,8 @@ https://medium.com/@a01207543/django-conecta-tu-proyecto-con-la-base-de-datos-my
 https://www.delftstack.com/es/howto/django/django-setup-one-to-many-relationship/
 https://runebook.dev/es/docs/django/topics/db/models
 https://pylessons.com/django-homepage
+https://stackoverflow.com/questions/51931038/django-how-to-track-if-a-user-is-online-offline-in-realtime
+https://w3schools.com/
 
 Usuario root: javmarjae
 Contraseña: gamerstfg

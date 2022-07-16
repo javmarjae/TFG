@@ -10,14 +10,15 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
+from pymysql import NULL
 
-from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm
+from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm, GamerRegisterForm
 from .models import Game, Gamer, Gameship, User, Friendship, Clan
 from .decorators import user_not_authenticated
 from .tokens import account_activation_token
 
 def activate(request, uidb64, token):
-    User = get_user_model()
+    user = get_user_model()
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -27,7 +28,6 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-
         messages.success(request, "Thank you for your email confirmation. Now you can login your account.")
         return redirect('login')
     else:
@@ -125,8 +125,11 @@ def custom_login(request):
 def profile(request, username):
     if request.method == "POST":
         user = request.user
+        gamer = Gamer.objects.filter(user=user).first()
         form = UserUpdateForm(request.POST, request.FILES, instance=user)
-        if form.is_valid():
+        form2 = GamerUpdateForm(request.POST, request.FILES, instance=gamer)
+        if form.is_valid() and form2.is_valid():
+            form2.save()
             user_form = form.save()
             messages.success(request, f'{user_form.username}, Your profile has been updated!')
             return redirect("profile", user_form.username)
@@ -135,12 +138,17 @@ def profile(request, username):
             messages.error(request, error)
 
     user = get_user_model().objects.filter(username=username).first()
+    gamer = Gamer.objects.filter(user=user).first()
     if user:
         form = UserUpdateForm(instance=user)
+        form2 = GamerUpdateForm(instance=gamer)
         return render(
             request = request, 
             template_name='profile.html', 
-            context={'form': form}
+            context={
+                'form': form,
+                'form2': form2
+            }
             )
 
     return redirect("index")

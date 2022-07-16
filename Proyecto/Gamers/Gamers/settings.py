@@ -147,7 +147,7 @@ AUTHENTICATION_BACKENDS = ['web.backends.EmailBackend']
 # Emailing settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = '4gamerstfg@gmail.com'
+EMAIL_FROM = '4Gamers'
 EMAIL_HOST_USER = '4gamerstfg@gmail.com'
 EMAIL_HOST_PASSWORD = 'rjipblztxkbiqsqd'
 EMAIL_PORT = 587
