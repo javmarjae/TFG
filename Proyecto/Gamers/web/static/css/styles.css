@@ -260,10 +260,10 @@ a {
   border-radius: 4px;
   margin: 5px 0;
   opacity: 0.85;
-  display: inline-block;
   font-size: 17px;
   line-height: 20px;
-  text-decoration: none;
+  float: right;
+  margin-right: 8%;
 }
 
 .editprofilebtn:hover {
@@ -364,4 +364,78 @@ span.psw {
 @keyframes animatezoom {
   from {transform: scale(0)}
   to {transform: scale(1)}
+}
+
+/* Profile game */
+
+.gameimages{
+  display: flex; 
+  justify-content: center; 
+  position: relative;
+  margin-top: 1%;
+  margin-bottom: 2%;
+  border-radius: 5px;
+}
+
+.addgamebtn {
+  width: auto;
+  border: none;
+  padding: 10px 18px;
+  background-color: #04aa44;
+  color: white;
+  padding: 12px;
+  border-radius: 4px;
+  margin: 5px 0;
+  opacity: 0.85;
+  font-size: 17px;
+  line-height: 20px;
+  float: right;
+  margin-right: 8%;
+}
+
+.imgbackgame {
+  width: 80%;
+  height: 10%;
+  border-radius: 10px;
+}
+
+.imgbackgame__overlay {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-family: 'Quicksand', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s;
+  border-radius: 10px;
+}
+
+.imgbackgame__overlay--blur {
+  backdrop-filter: blur(5px);
+}
+
+
+.imgbackgame__overlay > * {
+  transform: translateY(20px);
+  transition: transform 0.25s;
+}
+
+.imgbackgame__overlay:hover {
+  opacity: 1;
+}
+
+.imgbackgame__overlay:hover > * {
+  transform: translateY(0);
+}
+
+.imgtitlegame {
+  font-size: 2em;
+  font-weight: bold;
 }

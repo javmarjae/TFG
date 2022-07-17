@@ -147,6 +147,8 @@ def profile(request, username):
     
     user = get_user_model().objects.filter(username=username).first()
     gamer = Gamer.objects.filter(user=user).first()
+    gameships = Gameship.objects.filter(gamer=gamer).select_related('game')
+    games = Game.objects.all()
     if user:
         form = UserUpdateForm(instance=user)
         form2 = GamerUpdateForm(instance=gamer)
@@ -156,6 +158,8 @@ def profile(request, username):
             context={
                 'form': form,
                 'form2': form2,
+                'gameships': gameships,
+                'games': games
             }
             )
 

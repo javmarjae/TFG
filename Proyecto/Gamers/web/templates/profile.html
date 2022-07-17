@@ -3,7 +3,14 @@
 {% block content %}
 {% load static %}
 <div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style" style="min-height:65vh;">
-    <h2>Profile Information</h2>
+    <div class="form-group">
+        <h2 style="display: inline-block;">Profile Information</h2>
+        {% if user.username == form.instance.username %}
+        <button class="editprofilebtn" type="button"
+            onclick="document.getElementById('id01').style.display='block'">Edit <i
+                class="fa fa-cog fa-spin rueda"></i></button>
+        {% endif %}
+    </div>
     <hr>
     <div class="backgroundweb">
         <div class="media">
@@ -15,7 +22,7 @@
             {% endif %}
             <div class="media-body">
                 <h2 class="account-heading" style="display: inline-block;">{{ form.instance.username }}
-                    {% if form.instance.is_online  %}
+                    {% if form.instance.is_online %}
                     <small class="text-success parpadea">(Online)</small>
                     {% else %}
                     <small class="text-danger parpadea">(Offline)</small>
@@ -38,10 +45,6 @@
         </div>
 
         {% if user.username == form.instance.username %}
-        <div class="form-group">
-            <button class="editprofilebtn" type="button" onclick="document.getElementById('id01').style.display='block'">Edit  <i class="fa fa-cog fa-spin rueda"></i></button>
-        </div>
-        
 
         <div id="id01" class="modal">
             <form method="POST" enctype="multipart/form-data" class="modal-content animate">
@@ -59,38 +62,44 @@
                         <div class="form-row">
                             <div class="form-group col-md-6 mb-0">
                                 <label for="first_name"><b>First Name</b></label>
-                                <input type="text" placeholder="Enter first name" name="first_name" id="first_name" value="{{form.instance.first_name}}">
+                                <input type="text" placeholder="Enter first name" name="first_name" id="first_name"
+                                    value="{{form.instance.first_name}}">
                             </div>
                             <div class="form-group col-md-6 mb-0">
                                 <label for="last_name"><b>Last Name</b></label>
-                                <input type="text" placeholder="Enter last name" name="last_name" id="last_name" value="{{form.instance.last_name}}">
+                                <input type="text" placeholder="Enter last name" name="last_name" id="last_name"
+                                    value="{{form.instance.last_name}}">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6 mb-0">
                                 <label for="username"><b>Username</b></label>
-                                <input type="text" placeholder="Enter user name" name="username" id="username" value="{{form.instance.username}}">
+                                <input type="text" placeholder="Enter user name" name="username" id="username"
+                                    value="{{form.instance.username}}">
                             </div>
                             <div class="form-group col-md-6 mb-0">
                                 <label for="email"><b>Email</b></label>
-                                <input type="text" placeholder="Enter Email" name="email" id="email" value="{{form.instance.email}}">
+                                <input type="text" placeholder="Enter Email" name="email" id="email"
+                                    value="{{form.instance.email}}">
                             </div>
                         </div>
                     </div>
 
                     <input type="hidden" id="user" name="user" value=" {{ user.id }} ">
+                    <input type="hidden" id="is_online" name="is_online" value=" True ">
 
                     <button type="button" class="accordion">Edit Gamer Information</button>
                     <div class="panel">
                         <div class="form-row">
                             <div class="form-group col-md-6 mb-0">
                                 <label for="discord"><b>Discord</b></label>
-                                <input type="text" placeholder="Enter discord username#0000" name="discord"
-                                    id="discord" value="{{form2.instance.discord}}">
+                                <input type="text" placeholder="Enter discord username#0000" name="discord" id="discord"
+                                    value="{{form2.instance.discord}}">
                             </div>
                             <div class="form-group col-md-6 mb-0">
                                 <label for="steam"><b>Steam</b></label>
-                                <input type="text" placeholder="Enter steam username" name="steam" id="steam" value="{{form2.instance.steam}}">
+                                <input type="text" placeholder="Enter steam username" name="steam" id="steam"
+                                    value="{{form2.instance.steam}}">
                             </div>
                         </div>
                         <div class="form-row">
@@ -117,6 +126,32 @@
             </form>
         </div>
         {% endif %}
+    </div>
+    <div class="form-group">
+        <h2 style="display: inline-block">Games Information</h2>
+        {% if user.username == form.instance.username %}
+        <button class="addgamebtn" type="button">Add Game   <i class="fa fa-circle-plus"></i></button>
+        {% endif %}
+    </div>
+    <hr>
+    <div>
+        {% for gameship in gameships %}
+        <div class="gameimages">
+            <img src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.game.game_name}}_bck.jpg"
+                alt="{{gameship.game.get_game_name_display}}" class="imgbackgame">
+            <div class="imgbackgame__overlay imgbackgame__overlay--blur">
+                <div class="imgtitlegame">
+                    <img src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.game.game_name}}.png" 
+                    alt="{{gameship.game.get_game_name_display}}" class="gameimages" width="180px">
+                    {% if gameship.game.competitive %}
+                    <h4 style="display: inline-block;"><img
+                        src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.rank}}.png"
+                        alt="{{ gameship.get_rank_display }}" width="100px" height="100px"/>{{ gameship.get_rank_display }}</h4>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 

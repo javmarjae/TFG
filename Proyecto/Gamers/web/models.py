@@ -124,7 +124,7 @@ class Gameship(models.Model):
 
     GAMES_RANKS = (
         ('un','Unranked'),
-        ('CS:GO', (
+        ('CSG', (
         ('s1','Silver I'),
         ('s2','Silver II'),
         ('s3','Silver III'),
@@ -145,43 +145,19 @@ class Gameship(models.Model):
         ('ge','The Global Elite'),
             )
         ),
-        ('League of Legends', (
-        ('i4','Iron IV'),
-        ('i3','Iron III'),
-        ('i2','Iron II'),
-        ('i1','Iron I'),
-        ('b4','Bronze IV'),
-        ('b3','Bronze III'),
-        ('b2','Bronze II'),
-        ('b1','Bronze I'),
-        ('s4','Silver IV'),
-        ('s3','Silver III'),
-        ('s2','Silver II'),
-        ('s1','Silver I'),
-        ('g4','Gold IV'),
-        ('g3','Gold III'),
-        ('g2','Gold II'),
-        ('g1','Gold I'),
-        ('p4','Platinum IV'),
-        ('p3','Platinum III'),
-        ('p2','Platinum II'),
-        ('p1','Platinum I'),
-        ('d4','Diamond IV'),
-        ('d3','Diamond III'),
-        ('d2','Diamond II'),
-        ('d1','Diamond I'),
-        ('m4','Master IV'),
-        ('m3','Master III'),
-        ('m2','Master II'),
-        ('m1','Master I'),
-        ('h4','Grand Master IV'),
-        ('h3','Grand Master III'),
-        ('h2','Grand Master II'),
-        ('h1','Grand Master I'),
+        ('LOL', (
+        ('ir','Iron'),
+        ('br','Bronze'),
+        ('si','Silver'),
+        ('go','Gold'),
+        ('pl','Platinum'),
+        ('di','Diamond IV'),
+        ('ma','Master IV'),
+        ('gm','Grand Master'),
         ('ch','Challenger'),
             )
         ),
-        ('Rocket League', (
+        ('RLE', (
         ('b1','Bronze I'),
         ('b2','Bronze II'),
         ('b3','Bronze III'),
@@ -206,7 +182,7 @@ class Gameship(models.Model):
         ('sl','Supersonic Legend'),
             )
         ),
-        ('Valorant', (
+        ('VAL', (
         ('i1','Iron I'),
         ('i2','Iron II'),
         ('i3','Iron III'),
@@ -225,9 +201,9 @@ class Gameship(models.Model):
         ('d1','Diamond I'),
         ('d2','Diamond II'),
         ('d3','Diamond III'),
-        ('c1','Ascendent I'),
-        ('c2','Ascendent II'),
-        ('c3','Ascendent III'),
+        ('a1','Ascendent I'),
+        ('a2','Ascendent II'),
+        ('a3','Ascendent III'),
         ('h1','Inmortal I'),
         ('h2','Inmortal II'),
         ('h3','Inmortal III'),
