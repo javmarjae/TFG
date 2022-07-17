@@ -49,7 +49,7 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'email','profile_pic','username']
+        fields = ['first_name', 'last_name', 'email','profile_pic','username','is_online']
 
 class GamerUpdateForm(forms.ModelForm):
     class Meta:

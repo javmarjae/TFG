@@ -1,21 +1,19 @@
-from typing import Protocol
-from itertools import count
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login, logout, authenticate
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils import timezone
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 from django.db.models import Q
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm
-from .models import ConnectionHistory, Game, Gamer, Gameship, User, Friendship, Clan
+from .models import Game, Gamer, Gameship, User, Friendship, Clan
 from .decorators import user_not_authenticated
 from .tokens import account_activation_token
 
@@ -91,6 +89,10 @@ def register(request):
 
 @login_required
 def custom_logout(request):
+    useri = request.user
+    useri.last_online = timezone.now()
+    useri.is_online = False
+    useri.save(update_fields=['last_online','is_online'])
     logout(request)
     messages.info(request, "Logged out successfully!")
     return redirect("index")
@@ -109,10 +111,11 @@ def custom_login(request):
                 useri = request.user
                 messages.success(request, f"Hello <b>{user.username}</b>! You have been logged in")
                 if Gamer.objects.filter(user=useri).exists() == False:
-                     dct = {
+                    dct = {
                         'user':useri
                     }
-                Gamer.objects.create(**dct)
+                    Gamer.objects.create(**dct)
+
                 return redirect("index")
 
         else:
@@ -141,10 +144,9 @@ def profile(request, username):
 
         for error in list(form.errors.values()):
             messages.error(request, error)
-
+    
     user = get_user_model().objects.filter(username=username).first()
     gamer = Gamer.objects.filter(user=user).first()
-    onlineStatus = ConnectionHistory.objects.filter(user=user)
     if user:
         form = UserUpdateForm(instance=user)
         form2 = GamerUpdateForm(instance=gamer)
@@ -154,7 +156,6 @@ def profile(request, username):
             context={
                 'form': form,
                 'form2': form2,
-                'onlineStatus': onlineStatus
             }
             )
 

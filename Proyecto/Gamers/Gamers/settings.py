@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,7 +41,10 @@ INSTALLED_APPS = [
     'web',
     'fontawesomefree',
     'crispy_forms',
+    'channels',
 ]
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 AUTH_USER_MODEL = 'web.User'
 
@@ -148,7 +150,9 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = '/'
 
-AUTHENTICATION_BACKENDS = ['web.backends.EmailBackend']
+AUTHENTICATION_BACKENDS = (
+    'web.backends.LoginBackend',
+    )
 
 # Emailing settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -1,9 +1,11 @@
-import imp
 import uuid, os
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.utils import timezone
+from django.contrib.humanize.templatetags.humanize import naturaltime
+
 
 class User(AbstractUser):
     """
@@ -26,22 +28,9 @@ class User(AbstractUser):
     language = models.CharField(max_length=2, choices=LANGUAGES, default='SP', help_text="Language")
     profile_pic = models.ImageField(upload_to=image_upload_to, default = 'profile/default.png', null=True, blank=True, help_text="Profile pic")
     birth_date = models.DateField(null=True, blank=True, help_text="Birth date")
+    last_online = models.DateTimeField(blank=True, null=True)
+    is_online = models.BooleanField(default=False)
 
-
-class ConnectionHistory(models.Model):
-    ONLINE = 'on'
-    OFFLINE = 'of'
-    STATUS = (
-        (ONLINE, 'On-line'),
-        (OFFLINE, 'Off-line'),
-    )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    status = models.CharField(max_length=2, choices=STATUS, default=ONLINE)
-    first_login = models.DateTimeField(auto_now_add=True)
-    last_echo = models.DateTimeField(auto_now=True)
-
-    def __str__(self) -> str:
-        return '%s' % self.user
 
 class Clan(models.Model):
     """

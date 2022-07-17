@@ -7,15 +7,15 @@
     <hr>
     <div class="backgroundweb">
         <div class="media">
-            {% if onlineStatus.status == 'on' %}
+            {% if form.instance.is_online %}
             <img class="rounded-circle account-img profile-image" src="{{ form.instance.profile_pic.url }}">
             {% else %}
             <img class="rounded-circle account-img profile-image" id="disconnected"
                 src="{{ form.instance.profile_pic.url }}">
             {% endif %}
             <div class="media-body">
-                <h2 class="account-heading">{{ form.instance.username }}
-                    {% if onlineStatus.status == 'on' %}
+                <h2 class="account-heading" style="display: inline-block;">{{ form.instance.username }}
+                    {% if form.instance.is_online  %}
                     <small class="text-success parpadea">(Online)</small>
                     {% else %}
                     <small class="text-danger parpadea">(Offline)</small>
