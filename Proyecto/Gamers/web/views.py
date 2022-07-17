@@ -10,10 +10,12 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
-from pymysql import NULL
+from django.db.models import Q
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
-from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm, GamerRegisterForm
-from .models import Game, Gamer, Gameship, User, Friendship, Clan
+from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm
+from .models import ConnectionHistory, Game, Gamer, Gameship, User, Friendship, Clan
 from .decorators import user_not_authenticated
 from .tokens import account_activation_token
 
@@ -57,14 +59,11 @@ def index(request):
     """
     num_gamers = Gamer.objects.all().count()
     num_clans = Clan.objects.all().count()
-    
-    num_gamers_online = Gamer.objects.filter(status__exact = 'on').count()
-    num_gamers_playing = Gamer.objects.filter(status__exact = 'pl').count()
 
     return render(
         request,
         'index.html',
-        context= {'num_gamers': num_gamers, 'num_clans':num_clans, 'num_gamers_online':num_gamers_online, 'num_gamers_playing':num_gamers_playing},
+        context= {'num_gamers': num_gamers, 'num_clans':num_clans},
     )
 
 @user_not_authenticated
@@ -107,7 +106,13 @@ def custom_login(request):
             )
             if user is not None:
                 login(request, user)
+                useri = request.user
                 messages.success(request, f"Hello <b>{user.username}</b>! You have been logged in")
+                if Gamer.objects.filter(user=useri).exists() == False:
+                     dct = {
+                        'user':useri
+                    }
+                Gamer.objects.create(**dct)
                 return redirect("index")
 
         else:
@@ -139,6 +144,7 @@ def profile(request, username):
 
     user = get_user_model().objects.filter(username=username).first()
     gamer = Gamer.objects.filter(user=user).first()
+    onlineStatus = ConnectionHistory.objects.filter(user=user)
     if user:
         form = UserUpdateForm(instance=user)
         form2 = GamerUpdateForm(instance=gamer)
@@ -147,7 +153,8 @@ def profile(request, username):
             template_name='profile.html', 
             context={
                 'form': form,
-                'form2': form2
+                'form2': form2,
+                'onlineStatus': onlineStatus
             }
             )
 
@@ -201,11 +208,6 @@ def password_reset_request(request):
                     messages.error(request, "Problem sending reset password email, <b>SERVER PROBLEM</b>")
 
             return redirect('index')
-
-        for key, error in list(form.errors.items()):
-            if key == 'captcha' and error[0] == 'This field is required.':
-                messages.error(request, "You must pass the reCAPTCHA test")
-                continue
 
     form = PasswordResetForm()
     return render(

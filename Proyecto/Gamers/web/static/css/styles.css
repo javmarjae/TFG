@@ -49,6 +49,111 @@
   padding: 5px;
 }
 
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+* {box-sizing: border-box}
+
+.container {
+  padding: 16px;
+}
+
+.signin {
+  background-color: #f1f1f1;
+  text-align: center;
+}
+
+.backgroundweb {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border-radius: 6px;
+  background: #e9e9e9;
+}
+
+/* Login */
+
+.loginbtn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  margin: 5px 0;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 17px;
+  line-height: 20px;
+  text-decoration: none; /* remove underline from anchors */
+}
+
+.loginbtn:hover {
+  opacity: 1;
+}
+
+.col {
+  float: left;
+  width: 50%;
+  margin: auto;
+  padding: 0 50px;
+  margin-top: 6px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.bottom-container {
+  text-align: center;
+  background-color: #666;
+  border-radius: 0px 0px 4px 4px;
+}
+
+/* Botón de registro */
+
+.registerbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.registerbtn:hover {
+  opacity:1;
+}
+
+/* Campos de entrada de formularios */
+
+input[type=text], input[type=file], input[type=password], input[type=date], select, form{
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text], input[type=file], input[type=password], input[type=date], select, form:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Links azules */
+
+a {
+  color: dodgerblue;
+}
+
+/* Imagen en blanco y negro */
+
 #disconnected {
   -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
   filter: grayscale(100%);
@@ -56,19 +161,19 @@
  
 /* Colores letras de logos */
 
-#discord {
+#discords {
   color: #5865F2;
 }
 
-#riot {
+#riots {
   color: #d22a36;
 }
 
-#steam {
+#steams {
   color: #144B7E;
 }
 
-#epic {
+#epics {
   color: #2f2d2e;
 }
 
@@ -141,4 +246,122 @@
   0% { opacity: 1.0; }
   50% { opacity: 0.1; }
   100% { opacity: 1.0; }
+}
+
+/* Editar perfil */
+
+.editprofilebtn {
+  width: auto;
+  border: none;
+  padding: 10px 18px;
+  background-color: rgb(58, 58, 58);
+  color: white;
+  padding: 12px;
+  border-radius: 4px;
+  margin: 5px 0;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 17px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.editprofilebtn:hover {
+  opacity: 1;
+}
+
+.rueda {
+  animation-play-state: paused;
+}
+
+.rueda:hover {
+  animation-play-state: running;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+.cancelbtn {
+  width: auto;
+  border: none;
+  padding: 10px 18px;
+  background-color: #f44336;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  margin: 5px 0;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 17px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.cancelbtn:hover {
+  opacity: 1;
+}
+
+.updatebtn {
+  width: auto;
+  border: none;
+  padding: 10px 18px;
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  margin: 5px 0;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 17px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.updatebtn:hover {
+  opacity: 1;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5px auto; /* 15% from the top and centered */
+  border: 1px solid #888;
+  width: 60%; /* Could be more or less, depending on screen size */
+}
+
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+  from {-webkit-transform: scale(0)}
+  to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom {
+  from {transform: scale(0)}
+  to {transform: scale(1)}
 }

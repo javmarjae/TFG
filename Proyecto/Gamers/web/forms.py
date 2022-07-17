@@ -33,18 +33,6 @@ class UserRegisterForm(UserCreationForm):
             user.save()
         return user
 
-class GamerRegisterForm(forms.ModelForm):
-    class Meta:
-        model = Gamer
-        fields = ['user']
-
-    def save(self, commit=True):
-        gamer = super(forms.ModelForm, self).save(commit=False)
-        gamer.user_id = self.data['user']
-        if commit:
-            gamer.save()
-        return gamer
-
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(UserLoginForm, self).__init__(*args, **kwargs)
@@ -61,7 +49,7 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'email','profile_pic']
+        fields = ['first_name', 'last_name', 'email','profile_pic','username']
 
 class GamerUpdateForm(forms.ModelForm):
     class Meta:

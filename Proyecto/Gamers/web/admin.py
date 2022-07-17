@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Game, Gamer, Gameship, Friendship, Clan, User
+from .models import ConnectionHistory, Game, Gamer, Gameship, Friendship, Clan, User
 from django.contrib.auth.admin import UserAdmin
 
 class UserAdmin(admin.ModelAdmin):
@@ -15,9 +15,10 @@ class UserAdmin(admin.ModelAdmin):
         'last_login',
         'birth_date',
         'language',
-        'profile_pic'
+        'profile_pic',
     ]
 
+admin.site.register(ConnectionHistory)
 admin.site.register(User, UserAdmin)
 admin.site.register(Game)
 admin.site.register(Gamer)

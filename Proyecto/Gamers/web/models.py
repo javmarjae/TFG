@@ -1,8 +1,9 @@
+import imp
 import uuid, os
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
-
+from django.conf import settings
 
 class User(AbstractUser):
     """
@@ -25,6 +26,22 @@ class User(AbstractUser):
     language = models.CharField(max_length=2, choices=LANGUAGES, default='SP', help_text="Language")
     profile_pic = models.ImageField(upload_to=image_upload_to, default = 'profile/default.png', null=True, blank=True, help_text="Profile pic")
     birth_date = models.DateField(null=True, blank=True, help_text="Birth date")
+
+
+class ConnectionHistory(models.Model):
+    ONLINE = 'on'
+    OFFLINE = 'of'
+    STATUS = (
+        (ONLINE, 'On-line'),
+        (OFFLINE, 'Off-line'),
+    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    status = models.CharField(max_length=2, choices=STATUS, default=ONLINE)
+    first_login = models.DateTimeField(auto_now_add=True)
+    last_echo = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return '%s' % self.user
 
 class Clan(models.Model):
     """
@@ -54,13 +71,6 @@ class Gamer(models.Model):
     epic_games = models.CharField(max_length=30, help_text="EpicGames user name", blank=True)
     riot_games = models.CharField(max_length=30, help_text="Riot Games user name", blank=True)
 
-    GAMER_STATUS = (
-        ('on','Online'),
-        ('of','Offline'),
-        ('pl','Playing')
-    )
-
-    status = models.CharField(max_length=2, choices=GAMER_STATUS, default='of', help_text="Gamer status")
     clan = models.ForeignKey(Clan, on_delete=models.CASCADE, related_name="Clan", blank=True, null=True)
 
     def __str__(self):
