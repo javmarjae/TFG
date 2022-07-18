@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from django.utils import timezone
+from model_utils import Choices
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
 
@@ -106,8 +106,26 @@ class Game(models.Model):
         ('WOW','World of Warcraft')
     )
 
+    GAMES_RANKS = Choices(
+        ('un',['Unranked']),
+        ('CSG', ['Silver I', 'Silver II', 'Silver III', 'Silver IV', 'Silver Elite', 'Silver Elite Master', 'Gold Nova I', 'Gold Nova II','Gold Nova III',
+            'Gold Nova Master', 'Master Guardian I', 'Master Guardian II', 'Master Guardian Elite', 'Distinguished Master Guardian', 'Legendary Eagle',
+            'Legendary Eagle Master', 'Supreme Master First Class', 'The Global Elite']),
+        ('LOL', ['Iron IV','Iron III','Iron II','Iron I','Bronze IV','Bronze III','Bronze II','Bronze I','Silver IV','Silver III','Silver II',
+            'Silver I','Gold IV','Gold III','Gold II','Gold I','Platinum IV','Platinum III','Platinum II','Platinum I','Diamond IV','Diamond III',
+            'Diamond II','Diamond I','Master IV','Master III','Master II','Master I','Grand Master IV','Grand Master III','Grand Master II',
+            'Grand Master I','Challenger']),
+        ('RLE', ['Bronze I','Bronze II','Bronze III','Silver I','Silver II','Silver III','Gold I','Gold II','Gold III','Platinum I','Platinum II',
+            'Platinum III','Diamond I','Diamond II','Diamond III','Champion I','Champion II','Champion III','Grand Champion I','Grand Champion II',
+            'Grand Champion III','Supersonic Legend']),
+        ('VAL', ['Iron I','Iron II','Iron III','Bronze I','Bronze II','Bronze III','Silver I','Silver II','Silver III','Gold I','Gold II','Gold III',
+            'Platinum I','Platinum II','Platinum III','Diamon I','Diamond II','Diamond III','Ascendent I','Ascendent II','Ascendent III','Inmortal I',
+            'Inmortal II','Inmortal III','Radiant']),
+    )
+
     game_name = models.CharField(max_length=3, choices=GAMES, help_text="Games to choose")
     competitive = models.BooleanField(default=True, help_text="A game has competitive ranking or not")
+    game_ranks = models.CharField(max_length=30, choices=GAMES_RANKS, default='un')
 
     def __str__(self) -> str:
         """
@@ -122,97 +140,7 @@ class Gameship(models.Model):
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    GAMES_RANKS = [
-        ('un','Unranked'),
-        ('CSG', (
-        ('s1','Silver I'),
-        ('s2','Silver II'),
-        ('s3','Silver III'),
-        ('s4','Silver IV'),
-        ('se','Silver Elite'),
-        ('sm','Silver Elite Master'),
-        ('g1','Gold Nova I'),
-        ('g2','Gold Nova II'),
-        ('g3','Gold Nova III'),
-        ('gm','Gold Nova Master'),
-        ('m1','Master Guardian I'),
-        ('m2','Master Guardian II'),
-        ('me','Master Guardian Elite'),
-        ('dm','Distinguished Master Guardian'),
-        ('le','Legendary Eagle'),
-        ('lm','Legendary Eagle Master'),
-        ('sf','Supreme Master First Class'),
-        ('ge','The Global Elite'),
-            )
-        ),
-        ('LOL', (
-        ('ir','Iron'),
-        ('br','Bronze'),
-        ('si','Silver'),
-        ('go','Gold'),
-        ('pl','Platinum'),
-        ('di','Diamond IV'),
-        ('ma','Master IV'),
-        ('gm','Grand Master'),
-        ('ch','Challenger'),
-            )
-        ),
-        ('RLE', (
-        ('b1','Bronze I'),
-        ('b2','Bronze II'),
-        ('b3','Bronze III'),
-        ('s1','Silver I'),
-        ('s2','Silver II'),
-        ('s3','Silver III'),
-        ('g1','Gold I'),
-        ('g2','Gold II'),
-        ('g3','Gold III'),
-        ('p1','Platinum I'),
-        ('p2','Platinum II'),
-        ('p3','Platinum III'),
-        ('d1','Diamond I'),
-        ('d2','Diamond II'),
-        ('d3','Diamond III'),
-        ('c1','Champion I'),
-        ('c2','Champion II'),
-        ('c3','Champion III'),
-        ('h1','Grand Champion I'),
-        ('h2','Grand Champion II'),
-        ('h3','Grand Champion III'),
-        ('sl','Supersonic Legend'),
-            )
-        ),
-        ('VAL', (
-        ('i1','Iron I'),
-        ('i2','Iron II'),
-        ('i3','Iron III'),
-        ('b1','Bronze I'),
-        ('b2','Bronze II'),
-        ('b3','Bronze III'),
-        ('s1','Silver I'),
-        ('s2','Silver II'),
-        ('s3','Silver III'),
-        ('g1','Gold I'),
-        ('g2','Gold II'),
-        ('g3','Gold III'),
-        ('p1','Platinum I'),
-        ('p2','Platinum II'),
-        ('p3','Platinum III'),
-        ('d1','Diamond I'),
-        ('d2','Diamond II'),
-        ('d3','Diamond III'),
-        ('a1','Ascendent I'),
-        ('a2','Ascendent II'),
-        ('a3','Ascendent III'),
-        ('h1','Inmortal I'),
-        ('h2','Inmortal II'),
-        ('h3','Inmortal III'),
-        ('ra','Radiant'),
-            )
-        ),
-    ]
-
-    rank = models.CharField(max_length=20, choices=GAMES_RANKS, default='un', help_text="Gamer rank in a Game")
+    rank = models.CharField(max_length=20, blank=True, null=True, help_text="Gamer rank in a Game")
     game = models.ForeignKey(Game, on_delete=models.CASCADE, help_text="Game selected")
     gamer = models.ForeignKey(Gamer, on_delete=models.CASCADE, help_text="Gamer that selects a Game")
 

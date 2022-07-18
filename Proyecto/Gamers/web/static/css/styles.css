@@ -439,3 +439,8 @@ span.psw {
   font-size: 2em;
   font-weight: bold;
 }
+
+.image_button {
+  font-size: 1.25em;
+  margin-top: 0.25em;
+}

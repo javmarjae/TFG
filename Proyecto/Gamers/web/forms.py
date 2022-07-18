@@ -60,17 +60,9 @@ class GamerUpdateForm(forms.ModelForm):
         fields = ['user','discord', 'steam', 'epic_games','riot_games']
 
 class GameshipUpdateForm(forms.ModelForm):
-    game = forms.ModelChoiceField(queryset=Game.objects.all(), widget=forms.Select(attrs={
-        'class': 'form-control select2'
-    }))
-
-    rank = forms.ChoiceField(choices=Gameship.GAMES_RANKS, widget=forms.Select(attrs={
-        'class': 'form-control select2'
-    }))
-
     class Meta:
         model = Gameship
-        fields = ['rank','game','gamer']
+        fields = ['rank','gamer','game']
 
 class SetPasswordForm(SetPasswordForm):
     class Meta:

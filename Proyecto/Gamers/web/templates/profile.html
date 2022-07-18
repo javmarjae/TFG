@@ -134,18 +134,19 @@
             {% endif %}
     </div>
     <div id="id02" class="modal">
-        <form method="POST" enctype="multipart/form-data" class="modal-content animate select2 form-group">
+        <form method="POST" enctype="multipart/form-data" class="modal-content animate form-group">
+            {% csrf_token %}
             <input type="hidden" id="form3.gamer" name="gamer" value=" {{ user.id }} ">
             <div class="form-group container">
                 <label for="game"><b>Game</b></label>
-                <select placeholder="Choose game" name="choosengame" id="form3.game">
+                <select placeholder="Choose game" name="game" id="form3.game">
                     <option value="Null" selected>Choose...</option>
                     {% for game in games %}
-                    <option value="{{ game }}" >{{ game.get_game_name_display }}</option>
+                    <option value="{{ game.id }}">{{ game.get_game_name_display }}</option>
                     {% endfor %}
                 </select>
                 <label for="rank"><b>Rank</b></label>
-                <select placeholder="Choose rank" name="choosenrank" id="rank">
+                <select placeholder="Choose rank" name="rank" id="form3.rank">
                 </select>
                 <div class="container" style="background-color: #f1f1f1;">
                     <button class="updatebtn" type="submit" name="btnform2">Update</button>
@@ -168,8 +169,16 @@
                     {% if gameship.game.competitive %}
                     <h4 style="display: inline-block;"><img
                             src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.rank}}.png"
-                            alt="{{ gameship.get_rank_display }}" width="100px" height="100px" />
-                        {{ gameship.get_rank_display }} </h4>
+                            width="100px" height="100px" /> {{ gameship.rank }} </h4>
+                    {% endif %}
+                </div>
+                <div class="image_button">
+                    {% if user.username == form.instance.username %}
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" id="delete_gameship_gamer" name="game" value=" {{ gameship.game.game_name }} ">
+                        <button style="float: left;" type="submit" name="btndelete">Delete</button>
+                    </form>
                     {% endif %}
                 </div>
             </div>
@@ -182,8 +191,14 @@
 
 <script>
     $(function () {
-        $('select[name="choosengame"]').on('change', function () {
+        $('select[name="game"]').on('change', function () {
             var name = $(this).val();
+            var select_ranks = $('select[name="rank"]');
+            var options = '<option value="">Choose...</option>'
+            if (name == '') {
+                select_ranks.html(options);
+                return false;
+            }
             $.ajax({
                 url: window.location.pathname,
                 type: 'POST',
@@ -192,18 +207,18 @@
                     'action': 'search_ranks',
                     'game': name
                 },
-                dataType: 'json',
             }).done(function (data) {
-                console.log(data);
-                if(!data.hasOwnProperty('error')) {
-                    console.log(data);
+                if (!data.hasOwnProperty('error')) {
+                    $.each(data, function (key, value) {
+                        options += '<option value="' + value[0] + '">' + value[1] + '</option>'
+                    });
                     return false;
                 }
                 message_error(data.error);
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                alert(textStatus+': '+errorThrown);
+                alert(textStatus + ': ' + errorThrown);
             }).always(function (data) {
-
+                select_ranks.html(options);
             });
         });
     });

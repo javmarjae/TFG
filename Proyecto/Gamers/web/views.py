@@ -144,13 +144,43 @@ def profile(request, username):
 
         for error in list(form.errors.values()):
             messages.error(request, error)
+            return redirect("profile", user.username)
 
-    if request.method == 'POST' and 'btnform2' in request.POST:
-        data = ()
+    if request.method == "POST" and 'btnform2' in request.POST:
+        user = request.user
+        form3 = GameshipUpdateForm(request.POST, request.FILES)
+        if form3.is_valid():
+            form3.save()
+            messages.success(request, f'{user.username}, Your games has been updated!')
+            return redirect("profile", user.username)
+
+        for error in list(form3.errors.values()):
+            messages.error(request, error)
+            return redirect("profile", user.username)
+
+    if request.method == 'POST' and 'btndelete' in request.POST:
+        user = get_user_model().objects.filter(username=username).first()
+        gamer = Gamer.objects.filter(user=user).first()
+        game = Game.objects.filter(game_name = request.POST['game']).first()
+        print(request.POST)
+        print(gamer)
+        print(game)
+        gameship = Gameship.objects.filter(game=game,gamer=gamer).first()
+        print(gameship)
+        return redirect("profile", request.user.username)
+
+    if request.method == 'POST' and request.POST['action']:
+        data = {}
         try:
             action = request.POST['action']
             if action == 'search_ranks':
-                data == dict(Gameship.GAMES_RANKS)[request.POST['game']]
+                game = Game.objects.filter(id=request.POST['game']).first()
+                print(game.game_name)
+                if game.competitive == True:
+                    data = dict(Game.GAMES_RANKS)[game.game_name]
+                    print(data)
+                else:
+                    data = ''
             else:
                 data['error'] = 'Error'
         except Exception as e:
