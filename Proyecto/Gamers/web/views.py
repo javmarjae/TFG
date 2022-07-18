@@ -131,7 +131,7 @@ def custom_login(request):
         )
 
 def profile(request, username):
-    if request.method == "POST":
+    if request.method == "POST" and 'btnform1' in request.POST:
         user = request.user
         gamer = Gamer.objects.filter(user=user).first()
         form = UserUpdateForm(request.POST, request.FILES, instance=user)
@@ -144,7 +144,19 @@ def profile(request, username):
 
         for error in list(form.errors.values()):
             messages.error(request, error)
-    
+
+    if request.method == 'POST' and 'btnform2' in request.POST:
+        data = ()
+        try:
+            action = request.POST['action']
+            if action == 'search_ranks':
+                data == dict(Gameship.GAMES_RANKS)[request.POST['game']]
+            else:
+                data['error'] = 'Error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+        
     user = get_user_model().objects.filter(username=username).first()
     gamer = Gamer.objects.filter(user=user).first()
     gameships = Gameship.objects.filter(gamer=gamer).select_related('game')
@@ -152,7 +164,7 @@ def profile(request, username):
     if user:
         form = UserUpdateForm(instance=user)
         form2 = GamerUpdateForm(instance=gamer)
-        form3 = GameshipUpdateForm(instance=Gameship)
+        form3 = GameshipUpdateForm()
         return render(
             request = request, 
             template_name='profile.html', 
@@ -163,7 +175,7 @@ def profile(request, username):
                 'gameships': gameships,
                 'games': games
             }
-            )
+            )      
 
     return redirect("index")
 

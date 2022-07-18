@@ -122,7 +122,7 @@ class Gameship(models.Model):
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    GAMES_RANKS = (
+    GAMES_RANKS = [
         ('un','Unranked'),
         ('CSG', (
         ('s1','Silver I'),
@@ -210,7 +210,7 @@ class Gameship(models.Model):
         ('ra','Radiant'),
             )
         ),
-    )
+    ]
 
     rank = models.CharField(max_length=20, choices=GAMES_RANKS, default='un', help_text="Gamer rank in a Game")
     game = models.ForeignKey(Game, on_delete=models.CASCADE, help_text="Game selected")

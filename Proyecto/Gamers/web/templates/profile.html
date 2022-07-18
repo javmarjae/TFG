@@ -115,7 +115,7 @@
                         </div>
                     </div>
                     <div class="container" style="background-color: #f1f1f1;">
-                        <button class="updatebtn" type="submit">Update</button>
+                        <button class="updatebtn" name="btnform1" type="submit">Update</button>
                         <button type="button" onclick="document.getElementById('id01').style.display='none'"
                             class="cancelbtn">Cancel</button>
                         <span class="psw"><a class="loginbtn" style="color: blue;"
@@ -128,31 +128,27 @@
     </div>
     <div class="form-group">
         <h2 style="display: inline-block">Games Information</h2>
-        {% if user.username == form.instance.username and gameships.count < 7 %} 
-            <button class="addgamebtn"
+        {% if user.username == form.instance.username and gameships.count < 7 %} <button class="addgamebtn"
             type="button" onclick="document.getElementById('id02').style.display='block'"><i
                 class="fa fa-circle-plus"></i></button>
-        {% endif %}
+            {% endif %}
     </div>
     <div id="id02" class="modal">
-        <form method="POST" enctype="multipart/form-data" class="modal-content animate">
-            {% csrf_token %}
+        <form method="POST" enctype="multipart/form-data" class="modal-content animate select2 form-group">
+            <input type="hidden" id="form3.gamer" name="gamer" value=" {{ user.id }} ">
             <div class="form-group container">
                 <label for="game"><b>Game</b></label>
-                <select placeholder="Choose game" name="game" id="game">
+                <select placeholder="Choose game" name="choosengame" id="form3.game">
                     <option value="Null" selected>Choose...</option>
                     {% for game in games %}
-                    <option value="{{ game }}">{{ game.get_game_name_display }}</option>
+                    <option value="{{ game }}" >{{ game.get_game_name_display }}</option>
                     {% endfor %}
                 </select>
                 <label for="rank"><b>Rank</b></label>
-                <select placeholder="Choose rank" name="rank" id="rank">
-                    {% for game in games %}
-                    <option value="{{ game }}">{{ game.get_game_name_display }}</option>
-                    {% endfor %}
+                <select placeholder="Choose rank" name="choosenrank" id="rank">
                 </select>
                 <div class="container" style="background-color: #f1f1f1;">
-                    <button class="updatebtn" type="submit">Update</button>
+                    <button class="updatebtn" type="submit" name="btnform2">Update</button>
                     <button type="button" onclick="document.getElementById('id02').style.display='none'"
                         class="cancelbtn">Cancel</button>
                 </div>
@@ -172,8 +168,8 @@
                     {% if gameship.game.competitive %}
                     <h4 style="display: inline-block;"><img
                             src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.rank}}.png"
-                            alt="{{ gameship.get_rank_display }}" width="100px" height="100px" />{{
-                        gameship.get_rank_display }}</h4>
+                            alt="{{ gameship.get_rank_display }}" width="100px" height="100px" />
+                        {{ gameship.get_rank_display }} </h4>
                     {% endif %}
                 </div>
             </div>
@@ -184,4 +180,32 @@
 
 <script type="text/javascript" src="{% static 'js/accordion.js' %}"></script>
 
+<script>
+    $(function () {
+        $('select[name="choosengame"]').on('change', function () {
+            var name = $(this).val();
+            $.ajax({
+                url: window.location.pathname,
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    'action': 'search_ranks',
+                    'game': name
+                },
+                dataType: 'json',
+            }).done(function (data) {
+                console.log(data);
+                if(!data.hasOwnProperty('error')) {
+                    console.log(data);
+                    return false;
+                }
+                message_error(data.error);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus+': '+errorThrown);
+            }).always(function (data) {
+
+            });
+        });
+    });
+</script>
 {% endblock content %}
