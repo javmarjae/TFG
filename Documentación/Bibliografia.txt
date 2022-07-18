@@ -5,8 +5,10 @@ https://runebook.dev/es/docs/django/topics/db/models
 https://pylessons.com/django-homepage
 https://stackoverflow.com/questions/51931038/django-how-to-track-if-a-user-is-online-offline-in-realtime
 https://w3schools.com/
+https://www.w3schools.com/howto/default.asp
 https://coffeebytes.dev/django-channels-consumers-scope-y-eventos/
 https://stackoverflow.com/questions/64227425/connectionrefusederror-errno-10061-connect-call-failed-127-0-0-1-6379-we
+https://codepen.io/dcode-software/pen/XWXVYgR
 
 Usuario root: javmarjae
 Contraseña: gamerstfg

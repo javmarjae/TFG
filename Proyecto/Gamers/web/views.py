@@ -12,7 +12,7 @@ from django.core.mail import EmailMessage
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm
+from .forms import GameshipUpdateForm, UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm
 from .models import Game, Gamer, Gameship, User, Friendship, Clan
 from .decorators import user_not_authenticated
 from .tokens import account_activation_token
@@ -152,12 +152,14 @@ def profile(request, username):
     if user:
         form = UserUpdateForm(instance=user)
         form2 = GamerUpdateForm(instance=gamer)
+        form3 = GameshipUpdateForm(instance=Gameship)
         return render(
             request = request, 
             template_name='profile.html', 
             context={
                 'form': form,
                 'form2': form2,
+                'form3': form3,
                 'gameships': gameships,
                 'games': games
             }

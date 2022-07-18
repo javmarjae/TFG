@@ -6,8 +6,7 @@
     <div class="form-group">
         <h2 style="display: inline-block;">Profile Information</h2>
         {% if user.username == form.instance.username %}
-        <button class="editprofilebtn" type="button"
-            onclick="document.getElementById('id01').style.display='block'">Edit <i
+        <button class="editprofilebtn" type="button" onclick="document.getElementById('id01').style.display='block'"><i
                 class="fa fa-cog fa-spin rueda"></i></button>
         {% endif %}
     </div>
@@ -129,9 +128,36 @@
     </div>
     <div class="form-group">
         <h2 style="display: inline-block">Games Information</h2>
-        {% if user.username == form.instance.username %}
-        <button class="addgamebtn" type="button">Add Game   <i class="fa fa-circle-plus"></i></button>
+        {% if user.username == form.instance.username and gameships.count < 7 %} 
+            <button class="addgamebtn"
+            type="button" onclick="document.getElementById('id02').style.display='block'"><i
+                class="fa fa-circle-plus"></i></button>
         {% endif %}
+    </div>
+    <div id="id02" class="modal">
+        <form method="POST" enctype="multipart/form-data" class="modal-content animate">
+            {% csrf_token %}
+            <div class="form-group container">
+                <label for="game"><b>Game</b></label>
+                <select placeholder="Choose game" name="game" id="game">
+                    <option value="Null" selected>Choose...</option>
+                    {% for game in games %}
+                    <option value="{{ game }}">{{ game.get_game_name_display }}</option>
+                    {% endfor %}
+                </select>
+                <label for="rank"><b>Rank</b></label>
+                <select placeholder="Choose rank" name="rank" id="rank">
+                    {% for game in games %}
+                    <option value="{{ game }}">{{ game.get_game_name_display }}</option>
+                    {% endfor %}
+                </select>
+                <div class="container" style="background-color: #f1f1f1;">
+                    <button class="updatebtn" type="submit">Update</button>
+                    <button type="button" onclick="document.getElementById('id02').style.display='none'"
+                        class="cancelbtn">Cancel</button>
+                </div>
+            </div>
+        </form>
     </div>
     <hr>
     <div>
@@ -141,12 +167,13 @@
                 alt="{{gameship.game.get_game_name_display}}" class="imgbackgame">
             <div class="imgbackgame__overlay imgbackgame__overlay--blur">
                 <div class="imgtitlegame">
-                    <img src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.game.game_name}}.png" 
-                    alt="{{gameship.game.get_game_name_display}}" class="gameimages" width="180px">
+                    <img src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.game.game_name}}.png"
+                        alt="{{gameship.game.get_game_name_display}}" class="gameimages" width="180px">
                     {% if gameship.game.competitive %}
                     <h4 style="display: inline-block;"><img
-                        src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.rank}}.png"
-                        alt="{{ gameship.get_rank_display }}" width="100px" height="100px"/>{{ gameship.get_rank_display }}</h4>
+                            src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.rank}}.png"
+                            alt="{{ gameship.get_rank_display }}" width="100px" height="100px" />{{
+                        gameship.get_rank_display }}</h4>
                     {% endif %}
                 </div>
             </div>
@@ -156,5 +183,5 @@
 </div>
 
 <script type="text/javascript" src="{% static 'js/accordion.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/editprofile.js' %}"></script>
+
 {% endblock content %}

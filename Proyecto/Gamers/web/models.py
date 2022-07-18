@@ -141,7 +141,7 @@ class Gameship(models.Model):
         ('dm','Distinguished Master Guardian'),
         ('le','Legendary Eagle'),
         ('lm','Legendary Eagle Master'),
-        ('sm','Supreme Master First Class'),
+        ('sf','Supreme Master First Class'),
         ('ge','The Global Elite'),
             )
         ),
@@ -207,7 +207,7 @@ class Gameship(models.Model):
         ('h1','Inmortal I'),
         ('h2','Inmortal II'),
         ('h3','Inmortal III'),
-        ('rl','Radiant'),
+        ('ra','Radiant'),
             )
         ),
     )

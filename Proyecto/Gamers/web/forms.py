@@ -1,10 +1,12 @@
+from pyexpat import model
+from statistics import mode
 from urllib import request
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordResetForm
 from django.contrib.auth import get_user_model
 from pkg_resources import require
 
-from web.models import Gamer
+from web.models import Gamer, Gameship
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(help_text='A valid email address, please.', required=True)
@@ -55,6 +57,11 @@ class GamerUpdateForm(forms.ModelForm):
     class Meta:
         model = Gamer
         fields = ['user','discord', 'steam', 'epic_games','riot_games']
+
+class GameshipUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Gameship
+        fields = ['rank','game','gamer']
 
 class SetPasswordForm(SetPasswordForm):
     class Meta:
