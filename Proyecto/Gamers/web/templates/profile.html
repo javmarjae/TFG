@@ -149,7 +149,7 @@
                 <select placeholder="Choose rank" name="rank" id="form3.rank">
                 </select>
                 <div class="container" style="background-color: #f1f1f1;">
-                    <button class="updatebtn" type="submit" name="btnform2">Update</button>
+                    <button class="updatebtn" type="submit" name="btnform2">Add</button>
                     <button type="button" onclick="document.getElementById('id02').style.display='none'"
                         class="cancelbtn">Cancel</button>
                 </div>
@@ -157,7 +157,7 @@
         </form>
     </div>
     <hr>
-    <div>
+    <div style="display: inline-block;">
         {% for gameship in gameships %}
         <div class="gameimages">
             <img src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.game.game_name}}_bck.jpg"
@@ -165,21 +165,21 @@
             <div class="imgbackgame__overlay imgbackgame__overlay--blur">
                 <div class="imgtitlegame">
                     <img src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.game.game_name}}.png"
-                        alt="{{gameship.game.get_game_name_display}}" class="gameimages" width="180px">
-                    {% if gameship.game.competitive %}
-                    <h4 style="display: inline-block;"><img
-                            src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.rank}}.png"
-                            width="100px" height="100px" /> {{ gameship.rank }} </h4>
-                    {% endif %}
-                </div>
-                <div class="image_button">
-                    {% if user.username == form.instance.username %}
-                    <form method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <input type="hidden" id="delete_gameship_gamer" name="game" value=" {{ gameship.game.game_name }} ">
-                        <button style="float: left;" type="submit" name="btndelete">Delete</button>
-                    </form>
-                    {% endif %}
+                        alt="{{gameship.game.get_game_name_display}}" width="180px">
+                    <hr>
+                    <div>
+                        {% if gameship.game.competitive %}
+                        <h4 style="display: inline-block;"><img src="{% get_static_prefix %}img/{{gameship.game.game_name}}/{{gameship.rank}}.png"
+                                width="100px" height="100px" /> {{ gameship.rank }} </h4>
+                        {% endif %}
+                        {% if user.username == form.instance.username %}
+                        <form method="POST" style="background: none; display: inline;" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" id="delete_game" name="gamename" value="{{gameship.game.game_name}}">
+                            <button class="cancelbtn" type="submit" name="btndelete">Delete</button>
+                        </form>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

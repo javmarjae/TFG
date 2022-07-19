@@ -161,12 +161,8 @@ def profile(request, username):
     if request.method == 'POST' and 'btndelete' in request.POST:
         user = get_user_model().objects.filter(username=username).first()
         gamer = Gamer.objects.filter(user=user).first()
-        game = Game.objects.filter(game_name = request.POST['game']).first()
-        print(request.POST)
-        print(gamer)
-        print(game)
-        gameship = Gameship.objects.filter(game=game,gamer=gamer).first()
-        print(gameship)
+        game = Game.objects.filter(game_name=request.POST['gamename']).first()
+        Gameship.objects.filter(game=game,gamer=gamer).delete()
         return redirect("profile", request.user.username)
 
     if request.method == 'POST' and request.POST['action']:
@@ -175,10 +171,8 @@ def profile(request, username):
             action = request.POST['action']
             if action == 'search_ranks':
                 game = Game.objects.filter(id=request.POST['game']).first()
-                print(game.game_name)
                 if game.competitive == True:
                     data = dict(Game.GAMES_RANKS)[game.game_name]
-                    print(data)
                 else:
                     data = ''
             else:
