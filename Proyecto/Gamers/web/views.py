@@ -55,13 +55,14 @@ def index(request):
     """
     Función vista para la página de inicio del sitio.
     """
-    num_gamers = Gamer.objects.all().count()
-    num_clans = Clan.objects.all().count()
+    user = request.user
+    users = User.objects.exclude(username = user)
+    clans = Clan.objects.all()
 
     return render(
         request,
         'index.html',
-        context= {'num_gamers': num_gamers, 'num_clans':num_clans},
+        context= {'users': users, 'clans':clans},
     )
 
 @user_not_authenticated

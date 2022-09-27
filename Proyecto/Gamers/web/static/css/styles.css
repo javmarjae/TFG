@@ -1,9 +1,18 @@
 :root {
-    --footercolor: #003F72;
-    --navbarcolor: #003F72;
-    --btncolor: #003F72;
-    --socialcolor: #003F72;
+    --footercolor: #333;
+    --navbarcolor: #333;
+    --btncolor: #333;
+    --socialcolor: #333;
     --brightText: #ffffff;
+}
+
+/* Navigation Bar */
+#navbar {
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  left: 0;
+  z-index: 100;
 }
 
 .navbar-color {
@@ -15,14 +24,23 @@
 }
   
 .site-header .navbar-nav .nav-link:hover {
-    color: #ffffff;
-    background-color: rgba(0, 0, 0, 0.1);
+    color: black;
+    background-color: #ddd;
     border-radius: 10%;
 }
   
 .site-header .navbar-nav .nav-link.active {
     font-weight: 500;
 }
+
+@media
+(prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Profile Images */
 
 .aspect-ratio-box {
   position: relative;
@@ -333,7 +351,7 @@ span.psw {
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 101; /* Sit on top */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
