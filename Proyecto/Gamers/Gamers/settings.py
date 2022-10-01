@@ -39,10 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'web',
+    'authentication',
     'fontawesomefree',
     'crispy_forms',
     'channels',
 ]
+
+MODULES = {
+    'authentication'
+}
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -57,6 +62,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+APIS = {
+    'authentication':'http://localhost:8000'
+}
 
 ROOT_URLCONF = 'Gamers.urls'
 
@@ -151,7 +160,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
-    'web.backends.LoginBackend',
+    'authentication.backends.LoginBackend',
     )
 
 # Emailing settings
@@ -159,7 +168,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_FROM = '4Gamers'
 EMAIL_HOST_USER = '4gamerstfg@gmail.com'
-EMAIL_HOST_PASSWORD = 'rjipblztxkbiqsqd'
+EMAIL_HOST_PASSWORD = 'dmuruvlusvmzwjkv'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
