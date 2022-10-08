@@ -101,3 +101,11 @@ def profile(request, username):
             )      
 
     return redirect("index")
+
+def clans(request):
+    clans = Clan.objects.all()
+    return render(request,'clans.html',context={'clans':clans})
+
+def clanprofile(request, clanname):
+
+    return redirect("index")

@@ -1,3 +1,6 @@
+from datetime import datetime
+from time import timezone
+from tokenize import blank_re
 import uuid, os
 from django.db import models
 from django.contrib.auth import get_user_model
@@ -36,10 +39,17 @@ class Clan(models.Model):
     """
     Modelo que representa cada Clan.
     """
+    def image_upload_to(self, instance=None):
+        if instance:
+            return os.path.join("Clans", self.username, instance)
+        return None
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=30, help_text="Clan name", unique=True)
     description = models.TextField(max_length=300, help_text="Clan description")
     leader = models.CharField(max_length=20, help_text="Clan leader", null=True, blank=True)
+    profile_pic = models.ImageField(upload_to=image_upload_to, default = 'profile/default.png', null=True, blank=True, help_text="Profile pic")
+    join_date = models.DateField(default=datetime.now, blank=False, null=False)
 
     def __str__(self) -> str:
         return '%s' % self.name

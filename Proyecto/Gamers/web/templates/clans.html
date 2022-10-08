@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+
+<div class="col-md-10 tutorial-style backgroundweb">
+    {% for clan in clans %}
+        <h4>{{ clan.name }}</h4>
+    {% endfor %}
+</div>
+
+{% endblock content %}
