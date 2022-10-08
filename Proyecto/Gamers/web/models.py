@@ -41,7 +41,7 @@ class Clan(models.Model):
     """
     def image_upload_to(self, instance=None):
         if instance:
-            return os.path.join("Clans", self.username, instance)
+            return os.path.join("Clans", self.name, instance)
         return None
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

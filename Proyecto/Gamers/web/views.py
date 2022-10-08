@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
@@ -106,6 +107,6 @@ def clans(request):
     clans = Clan.objects.all()
     return render(request,'clans.html',context={'clans':clans})
 
-def clanprofile(request, clanname):
-
-    return redirect("index")
+def clanprofile(request, name):
+    clan = Clan.objects.filter(name=name).first()
+    return render(request,'clanprofile.html',context={'clan':clan})

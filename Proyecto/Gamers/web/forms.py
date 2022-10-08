@@ -1,13 +1,8 @@
-from pyexpat import model
-from statistics import mode
-from urllib import request
-from attr import attrs
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordResetForm
 from django.contrib.auth import get_user_model
-from pkg_resources import require
 
-from web.models import Gamer, Gameship, Game
+from web.models import Gamer, Gameship
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(help_text='A valid email address, please.', required=True)

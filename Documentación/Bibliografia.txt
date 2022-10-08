@@ -9,13 +9,8 @@ https://www.w3schools.com/howto/default.asp
 https://coffeebytes.dev/django-channels-consumers-scope-y-eventos/
 https://stackoverflow.com/questions/64227425/connectionrefusederror-errno-10061-connect-call-failed-127-0-0-1-6379-we
 https://codepen.io/dcode-software/pen/XWXVYgR
+https://stackoverflow.com/questions/62399533/display-uploaded-items-to-a-grid-on-djangohtml-and-css
+https://dev.to/thomaslombart/how-to-make-a-responsive-grid-with-only-three-lines-of-css-16ol
 
 Usuario root: javmarjae
 Contraseña: gamerstfg
-
-Requeriments:
-fontawesomefree
-crispy-forms
-six
-channels
-Pillow

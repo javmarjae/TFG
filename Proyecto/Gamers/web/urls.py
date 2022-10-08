@@ -10,7 +10,7 @@ urlpatterns = [
 urlpatterns += [
     path('profile/<username>', views.profile, name='profile'),
     path('clans', views.clans, name='clans'),
-    path('clans/<name>', views.clanprofile, name='clanprofile'),
+    path('clan/<name>', views.clanprofile, name='clan'),
 ]
 
 for module in settings.MODULES:
