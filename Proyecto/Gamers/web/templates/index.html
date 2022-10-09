@@ -4,27 +4,31 @@
 
 <div class="container">
 
-  <div class="col" style="width: 50%; right: 2px;">
+  <div style="right: 2px; float: left; width: 50%;">
     <p>Recommended players</p>
     <hr>
-    <div class="backgroundweb">
+    <div class="grid-wrapper">
       {% for user in users %}
-      <p>{{ user }}</p>
-      <hr>
+      <div class="card">
+        <img style="width: 100%; max-height: 100%;" src="{{ user.profile_pic.url }}">
+        <h1><a href="{% url 'profile' user %}" style="color: black; text-decoration: none;">{{ user.username }}</a></h1>
+      </div>
       {% endfor %}
-    </div>
+  </div>
 
   </div>
 
-  <div class="col" style="width: 50%; left: 2px;">
+  <div style="left: 2px; float: right; width: 50%;">
     <p>Clans</p>
     <hr>
-    <div class="backgroundweb">
+    <div class="grid-wrapper">
       {% for clan in clans %}
-      <p>{{ clan }}</p>
-      <hr>
+      <div class="card">
+        <img style="width: 100%; max-height: 100%;" src="{{ clan.profile_pic.url }}">
+        <h1><a href="{% url 'clan' clan.name %}" style="color: black; text-decoration: none;">{{ clan.name }}</a></h1>
+      </div>
       {% endfor %}
-    </div>
+  </div>
   </div>
 
 </div>

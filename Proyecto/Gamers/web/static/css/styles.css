@@ -76,6 +76,9 @@ hr {
 
 .container {
   padding: 16px;
+  text-align: left;
+  margin: auto;
+  width: 100%;
 }
 
 .signin {

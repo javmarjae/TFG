@@ -54,6 +54,11 @@ class GamerUpdateForm(forms.ModelForm):
         model = Gamer
         fields = ['user','discord', 'steam', 'epic_games','riot_games']
 
+class GamerClanUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Gamer
+        fields = ['clan']
+
 class GameshipUpdateForm(forms.ModelForm):
     class Meta:
         model = Gameship

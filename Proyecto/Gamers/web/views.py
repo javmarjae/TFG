@@ -13,7 +13,7 @@ from django.core.mail import EmailMessage
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import GameshipUpdateForm, UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm
+from .forms import GamerClanUpdateForm, GameshipUpdateForm, UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm
 from .models import Game, Gamer, Gameship, User, Friendship, Clan
 
 def index(request):
@@ -85,6 +85,7 @@ def profile(request, username):
     gamer = Gamer.objects.filter(user=user).first()
     gameships = Gameship.objects.filter(gamer=gamer).select_related('game')
     games = Game.objects.all()
+    clan = Clan.objects.filter(name=gamer.clan).first()
     if user:
         form = UserUpdateForm(instance=user)
         form2 = GamerUpdateForm(instance=gamer)
@@ -97,7 +98,8 @@ def profile(request, username):
                 'form2': form2,
                 'form3': form3,
                 'gameships': gameships,
-                'games': games
+                'games': games,
+                'gamerclan':clan
             }
             )      
 
@@ -108,5 +110,41 @@ def clans(request):
     return render(request,'clans.html',context={'clans':clans})
 
 def clanprofile(request, name):
+    gamer = Gamer.objects.filter(user=request.user).first()
+    if request.method == 'POST' and 'joinclan' in request.POST:
+        form1 = GamerClanUpdateForm(request.POST, request.FILES, instance=gamer)
+        if form1.is_valid():
+            form1.save()
+            messages.success(request, f'You have joined this clan!')
+            return redirect("clan", name)
+
+        for error in list(form1.errors.values()):
+            messages.error(request, error)
+            return redirect("clan", name)
+    
+    if request.method == 'POST' and 'exitclan' in request.POST:
+        form1 = GamerClanUpdateForm(request.POST, request.FILES, instance=gamer)
+        if form1.is_valid():
+            form1.save()
+            messages.success(request, f'You have abandoned this clan!')
+            return redirect("clan", name)
+
+        for error in list(form1.errors.values()):
+            messages.error(request, error)
+            return redirect("clan", name)
+
     clan = Clan.objects.filter(name=name).first()
-    return render(request,'clanprofile.html',context={'clan':clan})
+    members = Gamer.objects.filter(clan=clan).select_related('user')
+
+    if clan:
+        form1 = GamerClanUpdateForm(instance=gamer)
+        return render(
+            request,
+            'clanprofile.html',
+            context={
+                'clan':clan, 
+                'members':members, 
+                'gamer':gamer,
+                'form1':form1
+            }
+            )

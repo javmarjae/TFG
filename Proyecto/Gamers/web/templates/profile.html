@@ -131,7 +131,7 @@
         {% if user.username == form.instance.username and gameships.count < 7 %} <button class="addgamebtn"
             type="button" onclick="document.getElementById('id02').style.display='block'"><i
                 class="fa fa-circle-plus"></i></button>
-            {% endif %}
+        {% endif %}
     </div>
     <div id="id02" class="modal">
         <form method="POST" enctype="multipart/form-data" class="modal-content animate form-group">
