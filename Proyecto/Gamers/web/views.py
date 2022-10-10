@@ -1,3 +1,4 @@
+from datetime import datetime
 from unicodedata import name
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -13,7 +14,7 @@ from django.core.mail import EmailMessage
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import GamerClanUpdateForm, GameshipUpdateForm, UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm
+from .forms import ClanCreateForm, ClanUpdateForm, GamerClanUpdateForm, GameshipUpdateForm, UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm
 from .models import Game, Gamer, Gameship, User, Friendship, Clan
 
 def index(request):
@@ -27,7 +28,8 @@ def index(request):
     return render(
         request,
         'index.html',
-        context= {'users': users, 'clans':clans},
+        context= {'users': users, 'clans':clans
+        },
     )
 
 def profile(request, username):
@@ -106,11 +108,36 @@ def profile(request, username):
     return redirect("index")
 
 def clans(request):
+    gamer = Gamer.objects.filter(user=request.user).first()
     clans = Clan.objects.all()
-    return render(request,'clans.html',context={'clans':clans})
+    if request.method == 'POST' and 'btnform2' in request.POST:
+        form1 = ClanUpdateForm(request.POST, request.FILES)
+        if form1.is_valid():
+            clan_form = form1.save()
+            gamer.clan = Clan.objects.filter(name=clan_form.name).first()
+            gamer.save()
+            messages.success(request, f'You have created this clan!')
+            return redirect("clan", clan_form.name)
+
+        for error in list(form1.errors.values()):
+            messages.error(request, error)
+            return redirect("clans")
+
+    form1 = ClanUpdateForm()
+    return render(
+        request,
+        'clans.html',
+        context={
+            'clans':clans,
+            'gamer':gamer,
+            'form1':form1,
+        }
+    )
 
 def clanprofile(request, name):
     gamer = Gamer.objects.filter(user=request.user).first()
+    clan = Clan.objects.filter(name=name).first()
+    members = Gamer.objects.filter(clan=clan).select_related('user')
     if request.method == 'POST' and 'joinclan' in request.POST:
         form1 = GamerClanUpdateForm(request.POST, request.FILES, instance=gamer)
         if form1.is_valid():
@@ -127,17 +154,32 @@ def clanprofile(request, name):
         if form1.is_valid():
             form1.save()
             messages.success(request, f'You have abandoned this clan!')
-            return redirect("clan", name)
+            members = Gamer.objects.filter(clan=clan).select_related('user')
+            if members.count() <= 0:
+                clan.delete()
+            else:
+                if clan.leader == request.user.username:
+                    clan.leader = members[1].user.username
+            return redirect("clans")
 
         for error in list(form1.errors.values()):
             messages.error(request, error)
             return redirect("clan", name)
 
-    clan = Clan.objects.filter(name=name).first()
-    members = Gamer.objects.filter(clan=clan).select_related('user')
+    if request.method == 'POST' and 'btnform2' in request.POST:
+        form2 = ClanUpdateForm(request.POST, request.FILES, instance=clan)
+        if form2.is_valid():
+            clan_form = form2.save()
+            messages.success(request, f'You have edited this clan!')
+            return redirect("clan", clan_form.name)
+
+        for error in list(form2.errors.values()):
+            messages.error(request, error)
+            return redirect("clan", name)
 
     if clan:
         form1 = GamerClanUpdateForm(instance=gamer)
+        form2 = ClanUpdateForm(instance=clan)
         return render(
             request,
             'clanprofile.html',
@@ -145,6 +187,9 @@ def clanprofile(request, name):
                 'clan':clan, 
                 'members':members, 
                 'gamer':gamer,
-                'form1':form1
+                'form1':form1,
+                'form2':form2
             }
             )
+
+    return redirect("index")

@@ -3,15 +3,50 @@
 {% block content %}
 {% load static %}
 
-    <div class="grid-wrapper container" style="width: 100%;">
-        {% for clan in clans %}
-        <div class="card">
-            <img style="width: 100%; max-height: 100%;" src="{{ clan.profile_pic.url }}">
-            <h1><a href="{% url 'clan' clan.name %}" style="color: black; text-decoration: none;">{{ clan.name }}</a></h1>
-            <p>Leader: <a href="{% url 'profile' clan.leader %}">{{ clan.leader }}</a></p>
-            <p>Created: {{ clan.join_date }}</p>
+<div class="form-group">
+    <h2 style="display: inline-block; margin-left: 8%;">Clans</h2>
+    {% if gamer.clan == null %}
+    <button style="float: right; margin-right: 8%;" class="updatebtn" type="button" onclick="document.getElementById('id01').style.display='block'">Create clan</button>
+    {% endif %}
+</div>
+<hr>
+<div id="id01" class="modal">
+    <form method="POST" enctype="multipart/form-data" class="modal-content animate">
+        {% csrf_token %}
+        <div class="container form-group">
+            <button type="button" class="accordion">Clan Information</button>
+            <div class="panel">
+                <div class="form-row">
+                    <label for="name"><b>Name</b></label>
+                    <input type="text" placeholder="Enter name" name="name" id="name"
+                        value="{{form2.instance.name}}">
+                </div>
+                <div class="form-row">
+                    <label for="description"><b>Description</b></label>
+                    <input type="text" placeholder="Enter description" name="description" id="description"
+                        value="{{form2.instance.description}}">
+                </div>
+            </div>
+            <input type="hidden" id="leader" name="leader" value=" {{ gamer.user.username }} ">
+            <div class="container" style="background-color: #f1f1f1;">
+                <button class="updatebtn" name="btnform2" type="submit">Update</button>
+                <button type="button" onclick="document.getElementById('id01').style.display='none'"
+                    class="cancelbtn">Cancel</button>
+            </div>
         </div>
-        {% endfor %}
+    </form>
+</div>
+<div class="grid-wrapper container" style="width: 100%;">
+    {% for clan in clans %}
+    <div class="card">
+        <img style="width: 100%; max-height: 100%;" src="{{ clan.profile_pic.url }}">
+        <h1><a href="{% url 'clan' clan.name %}" style="color: black; text-decoration: none;">{{ clan.name }}</a></h1>
+        <p>Leader: <a href="{% url 'profile' clan.leader %}">{{ clan.leader }}</a></p>
+        <p>Created: {{ clan.join_date }}</p>
     </div>
+    {% endfor %}
+</div>
     
+<script type="text/javascript" src="{% static 'js/accordion.js' %}"></script>
+
 {% endblock content %}

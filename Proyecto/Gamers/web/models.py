@@ -48,7 +48,7 @@ class Clan(models.Model):
     name = models.CharField(max_length=30, help_text="Clan name", unique=True)
     description = models.TextField(max_length=300, help_text="Clan description")
     leader = models.CharField(max_length=20, help_text="Clan leader", null=True, blank=True)
-    profile_pic = models.ImageField(upload_to=image_upload_to, default = 'profile/default.png', null=True, blank=True, help_text="Profile pic")
+    profile_pic = models.ImageField(upload_to=image_upload_to, default = 'profile/default.png', null=True, blank=True, help_text="Clan pic")
     join_date = models.DateField(default=datetime.now, blank=False, null=False)
 
     def __str__(self) -> str:
