@@ -73,9 +73,16 @@ def profile(request, username):
         user = get_user_model().objects.filter(username=username).first()
         receiver = Gamer.objects.filter(user=user).first()
 
-        friendship = Friendship.objects.filter(sender=sender,receiver=receiver)
+        friendship = Friendship.objects.filter(sender=sender,receiver=receiver).first() or Friendship.objects.filter(sender=receiver,receiver=sender).first()
         if friendship:
-            messages.error(request,'Friend request already sent!')
+            if friendship.status == 'pe':
+                messages.error(request,'Friend request already sent!')
+            elif friendship.status == 'ac':
+                messages.warning(request,'You are already friends!')
+            else:
+                friendship.status = 'pe'
+                friendship.save()
+                messages.success(request,'Friend request sent!')
         else:
             Friendship.objects.create(sender=sender,receiver=receiver)
             messages.success(request,'Friend request sent!')
@@ -96,10 +103,7 @@ def profile(request, username):
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
-    
-
-        
+   
     user = get_user_model().objects.filter(username=username).first()
     gamer = Gamer.objects.filter(user=user).first()
     gameships = Gameship.objects.filter(gamer=gamer).select_related('game')
@@ -213,9 +217,6 @@ def clanprofile(request, name):
     return redirect("index")
 
 def friends(request):
-    solicitudes = Friendship.objects.filter(receiver=Gamer.objects.filter(user=request.user).first(), status='pe')
-    amigos = Friendship.objects.filter(receiver=Gamer.objects.filter(user=request.user).first(), status='ac')
-
     if request.method == 'POST' and 'accept' in request.POST:
         friendshipid = request.POST['solicitud']
         friendship = Friendship.objects.filter(id=friendshipid).first()
@@ -226,5 +227,11 @@ def friends(request):
         friendship = Friendship.objects.filter(id=friendshipid).first()
         friendship.status = 'de'
         friendship.save()
+    if request.method == 'POST' and 'remove' in request.POST:
+        friendshipid = request.POST['solicitud']
+        friendship = Friendship.objects.filter(id=friendshipid).first().delete()
+
+    solicitudes = Friendship.objects.filter(receiver=Gamer.objects.filter(user=request.user).first(), status='pe') or None
+    amigos = Friendship.objects.filter(receiver=Gamer.objects.filter(user=request.user).first(), status='ac') or Friendship.objects.filter(sender=Gamer.objects.filter(user=request.user).first(), status='ac')
 
     return render(request,'friends.html',context={'solicitudes':solicitudes,'amigos':amigos})

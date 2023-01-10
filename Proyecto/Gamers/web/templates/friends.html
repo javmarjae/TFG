@@ -3,25 +3,27 @@
 {% block content %}
 {% load static %}
 
+{% if solicitudes != None %}
+    <div class="form-group">
+        <h2 style="display: inline-block; margin-left: 8%;">Solicitudes de amistad recibidas</h2>
+        <hr>
+    </div>
+    <div class="container" style="width: 100%;">
+        {% for solicitud in solicitudes %}
+            <div style="display: inline;">
+                <p>Solicitud de <a href="{% url 'profile' solicitud.sender %}" style="text-decoration:underline;">{{solicitud.sender}}</a></p>
+                <button type="submit" class="addgamebtn" name="accept" form="friendrequest"><i class="fa fa-check"></i></button>
+                <button type="submit" class="cancelbtn" name="decline" form="friendrequest"><i class="fa fa-xmark"></i></button>
+                <form method="POST" id="friendrequest" style="display: none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="solicitud" id="solicitud" value="{{solicitud.id}}">
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
 <div class="form-group">
-    <h2 style="display: inline-block; margin-left: 8%;">Solicitudes de amistad recibidas</h2>
-    <hr>
-</div>
-<div class="container" style="width: 100%;">
-    {% for solicitud in solicitudes %}
-        <div style="display: inline;">
-            <p>Solicitud de <a href="{% url 'profile' solicitud.sender %}" style="text-decoration:underline;">{{solicitud.sender}}</a></p>
-            <button type="submit" class="addgamebtn" name="accept" form="friendrequest"><i class="fa fa-check"></i></button>
-            <button type="submit" class="cancelbtn" name="decline" form="friendrequest"><i class="fa fa-xmark"></i></button>
-            <form method="POST" id="friendrequest" style="display: none;">
-                {% csrf_token %}
-                <input type="hidden" name="solicitud" id="solicitud" value="{{solicitud.id}}">
-            </form>
-        </div>
-    {% endfor %}
-</div>
-<div class="form-group">
-    <h2 style="display: inline-block; margin-left: 8%;">Amigos</h2>
+    <h2 style="display: inline-block; margin-left: 8%;">Amigos ({{amigos|length}})</h2>
     <hr>
 </div>
 <div class="container" style="width: 100%;">
@@ -32,6 +34,11 @@
             {% else %}
             <p><a href="{% url 'profile' amigo.sender %}" style="text-decoration:underline;">{{amigo.sender}}</a></p>
             {% endif %}
+            <button type="submit" class="cancelbtn" name="remove" form="friendrequest"><i class="fa fa-xmark"></i> Eliminar amigo</button>
+            <form method="POST" id="friendrequest" style="display: none;">
+                {% csrf_token %}
+                <input type="hidden" name="solicitud" id="solicitud" value="{{amigo.id}}">
+            </form>
         </div>
     {% endfor %}
 </div>
