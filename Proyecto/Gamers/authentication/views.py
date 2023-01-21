@@ -69,7 +69,7 @@ def register(request):
 
     return render(
         request = request,
-        template_name = "registration/register.html",
+        template_name = "register.html",
         context={"form":form}
         )
 
@@ -79,6 +79,7 @@ def custom_logout(request):
     useri.last_online = timezone.now()
     useri.is_online = False
     useri.save(update_fields=['last_online','is_online'])
+    request.session['is_logout'] = True
     logout(request)
     messages.info(request, "Logged out successfully!")
     return redirect("index")
@@ -112,7 +113,7 @@ def custom_login(request):
 
     return render(
         request=request,
-        template_name="registration/login.html",
+        template_name="login.html",
         context={"form": form}
         )
 

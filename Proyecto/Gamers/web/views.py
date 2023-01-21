@@ -108,7 +108,7 @@ def profile(request, username):
     gamer = Gamer.objects.filter(user=user).first()
     gameships = Gameship.objects.filter(gamer=gamer).select_related('game')
     games = Game.objects.all()
-    clan = Clan.objects.filter(name=gamer.clan).first()
+    clan = Clan.objects.filter(name=gamer.clan).first() or None
     if user:
         form = UserUpdateForm(instance=user)
         form2 = GamerUpdateForm(instance=gamer)

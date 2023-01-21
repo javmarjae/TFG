@@ -41,14 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web',
     'authentication',
+    'chat',
+    'channels',
     'fontawesomefree',
     'crispy_forms',
-    'channels',
 ]
-
-MODULES = {
-    'authentication'
-}
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -70,11 +67,10 @@ APIS = {
 
 ROOT_URLCONF = 'Gamers.urls'
 
-WSGI_APPLICATION = 'Gamers.wsgi.application'
 ASGI_APPLICATION = "Gamers.asgi.application"
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        'BACKEND': "channels.layers.InMemoryChannelLayer",
     },
 }
 

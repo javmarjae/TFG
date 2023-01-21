@@ -11,10 +11,7 @@ urlpatterns += [
     path('profile/<username>', views.profile, name='profile'),
     path('clans', views.clans, name='clans'),
     path('clan/<name>', views.clanprofile, name='clan'),
-    path('friends',views.friends,name='friends')
+    path('friends',views.friends,name='friends'),
+    path('chat/', include('chat.urls')),
+    path('authentication', include('authentication.urls'))
 ]
-
-for module in settings.MODULES:
-    urlpatterns += [
-        path('{}/'.format(module), include('{}.urls'.format(module)))
-    ]
