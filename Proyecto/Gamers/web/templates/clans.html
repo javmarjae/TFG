@@ -38,7 +38,7 @@
 </div>
 <div class="grid-wrapper container" style="width: 100%;">
     {% for clan in clans %}
-    <div class="card">
+    <div class="clan_card">
         <img style="width: 100%; max-height: 100%;" src="{{ clan.profile_pic.url }}">
         <h1><a href="{% url 'clan' clan.name %}" style="color: black; text-decoration: none;">{{ clan.name }}</a></h1>
         <p>Leader: <a href="{% url 'profile' clan.leader %}">{{ clan.leader }}</a></p>

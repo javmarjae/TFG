@@ -80,7 +80,7 @@
     <hr>
     <div class="grid-wrapper container" style="width: 75%;">
         {% for member in members %}
-        <div class="card">
+        <div class="clan_card">
             <img style="width: 100%; max-height: 100%;" src="{{ member.user.profile_pic.url }}">
             <h1><a href="{% url 'profile' member %}" style="color: black; text-decoration: none;">{{ member.user.username }}</a></h1>
         </div>

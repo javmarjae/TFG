@@ -11,6 +11,7 @@ https://stackoverflow.com/questions/64227425/connectionrefusederror-errno-10061-
 https://codepen.io/dcode-software/pen/XWXVYgR
 https://stackoverflow.com/questions/62399533/display-uploaded-items-to-a-grid-on-djangohtml-and-css
 https://dev.to/thomaslombart/how-to-make-a-responsive-grid-with-only-three-lines-of-css-16ol
-
-Usuario root: javmarjae
-Contraseña: gamerstfg
+https://www.youtube.com/watch?v=wnJglL5CAFM
+https://github.com/Omkar0231/Chat-app-tutorial
+https://justdjango.com/blog/chat-app-django-channels
+https://www.honeybadger.io/blog/django-channels-websockets-chat/

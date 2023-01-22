@@ -5,9 +5,6 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 
 User = get_user_model()
-
-# Create your models here.
-
 class ThreadManager(models.Manager):
     def by_user(self, **kwargs):
         user = kwargs.get('user')
@@ -18,8 +15,7 @@ class ThreadManager(models.Manager):
 
 class Thread(models.Model):
     first_person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='thread_first_person')
-    second_person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True,
-                                     related_name='thread_second_person')
+    second_person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='thread_second_person')
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
