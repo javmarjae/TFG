@@ -1,39 +1,86 @@
 {% extends "base_generic.html" %}
-
 {% block content %}
+{% load static %}
 
 <div class="form-group">
-  <h2 style="display: inline-block; margin-left: 8%;">Home</h2>
+  <h1 style="display: block; text-align: center;">Home</h1>
 </div>
 <hr>
 <div class="container">
-  <div style="right: 2px; float: left; width: 50%;">
-    <p>Recommended players</p>
-    <hr>
-    <div class="grid-wrapper">
-      {% for user in users %}
-      <div class="clan_card">
-        <img style="width: 100%; max-height: 100%;" src="{{ user.profile_pic.url }}">
-        <h1><a href="{% url 'profile' user %}" style="color: black; text-decoration: none;">{{ user.username }}</a></h1>
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Recommended players</h4>
+      <hr>
+      <div class="grid-wrapper">
+        {% for user, gamer, numjuegos in users %}
+          <div class="user_card" style="margin-bottom: 8px; width: 100%;">
+            <div class="row" style="padding: 10px;">
+              <div class="col">
+                <img class="rounded-circle user_img" src="{{ user.profile_pic.url }}">
+              </div>
+              <div class="col" style="margin-top: 3%;">
+                <h2><a href="{% url 'profile' user %}" style="color: black; text-decoration: none;">{{ user.username }}</a></h2>                
+              </div>
+              <div class="col" style="margin-top: 3%;">
+                {% if gamer.discord != '' %}
+                  <img src="{% static 'img/discord.png' %}" style="width: 100%;">
+                {% endif %}
+              </div>
+              <div class="col" style="margin-top: 3%;">
+                {% if gamer.steam != '' %}
+                  <img src="{% static 'img/steam.png' %}" style="width: 100%;">
+                {% endif %}
+              </div>
+              <div class="col" style="margin-top: 3%;">
+                {% if gamer.epic_games != '' %}
+                  <img src="{% static 'img/epicgames.png' %}" style="width: 100%;">
+                {% endif %}
+              </div>
+              <div class="col" style="margin-top: 3%;">
+                {% if gamer.riot_games != '' %}
+                  <img src="{% static 'img/riotgames.png' %}" style="width: 100%;">
+                {% endif %}
+              </div>
+              <div class="col" style="margin-top: 0%;">
+                {% if numjuegos != 0 %}
+                  <h2><i class="fas fa-gamepad"></i>{{numjuegos}}</h2>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %} 
       </div>
-      {% endfor %}
-  </div>
-
-  </div>
-
-  <div style="left: 2px; float: right; width: 50%;">
-    <p>Clans</p>
-    <hr>
-    <div class="grid-wrapper">
-      {% for clan in clans %}
-      <div class="clan_card">
-        <img style="width: 100%; max-height: 100%;" src="{{ clan.profile_pic.url }}">
-        <h1><a href="{% url 'clan' clan.name %}" style="color: black; text-decoration: none;">{{ clan.name }}</a></h1>
+    </div>
+    <div class="col-md-6">
+      <h4><a href="{% url 'clans' %}" style="color: black; text-decoration: none;">Clans</a></h4>
+      <hr>
+      <div class="grid-wrapper">
+        {% for clan, members in clans %}
+          <div class="user_card" style="margin-bottom: 8px;">
+            <div class="row" style="padding: 10px;">
+              <div class="col">
+                <img class="rounded-circle user_img" src="{{ clan.profile_pic.url }}">
+              </div>
+              <div class="col" style="margin-top: 3%;">
+                <h2><a href="{% url 'clan' clan.name %}" style="color: black; text-decoration: none;">{{ clan.name }}</a></h2>
+              </div>
+              <div class="col" style="margin-top: 3%;">
+                <h2><i class="fas fa-user-group" style="margin-right: 5px;"></i>{{ members }}</h2>
+              </div>
+              <div class="col">
+                <h2 style="margin-top: -5%;">
+                  <a href="{% url 'profile' clan.leader %}" style="color: black; text-decoration: none;">
+                    <i class="fas fa-crown"></i>
+                    <span class="ml-2">{{ clan.leader }}</span>
+                  </a>
+                </h2>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
       </div>
-      {% endfor %}
+    </div>
   </div>
-  </div>
-
 </div>
 
 {% endblock %}

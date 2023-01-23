@@ -1,13 +1,9 @@
 from datetime import datetime
-from time import timezone
-from tokenize import blank_re
 import uuid, os
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
-from django.conf import settings
 from model_utils import Choices
-from django.contrib.humanize.templatetags.humanize import naturaltime
 
 
 class User(AbstractUser):
@@ -98,7 +94,7 @@ class Friendship(models.Model):
         return '%s-%s' % (self.sender,self.receiver)
 
     class Meta:
-        unique_together = ('sender','receiver')
+        unique_together = ['sender','receiver']
 
 class Game(models.Model):
     """

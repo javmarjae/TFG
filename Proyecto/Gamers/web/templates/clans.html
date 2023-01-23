@@ -4,7 +4,7 @@
 {% load static %}
 
 <div class="form-group">
-    <h2 style="display: inline-block; margin-left: 8%;">Clans</h2>
+    <h1 style="display: block; text-align: center;">Clans</h1>
     {% if gamer.clan == null %}
     <button style="float: right; margin-right: 8%;" class="updatebtn" type="button" onclick="document.getElementById('id01').style.display='block'">Create clan</button>
     {% endif %}
@@ -36,15 +36,34 @@
         </div>
     </form>
 </div>
-<div class="grid-wrapper container" style="width: 100%;">
-    {% for clan in clans %}
-    <div class="clan_card">
-        <img style="width: 100%; max-height: 100%;" src="{{ clan.profile_pic.url }}">
-        <h1><a href="{% url 'clan' clan.name %}" style="color: black; text-decoration: none;">{{ clan.name }}</a></h1>
-        <p>Leader: <a href="{% url 'profile' clan.leader %}">{{ clan.leader }}</a></p>
-        <p>Created: {{ clan.join_date }}</p>
+<div class="container">
+    <div class="col-md-6">
+        <div class="grid-wrapper">
+            {% for clan, members in clans %}
+                <div class="user_card" style="margin-bottom: 8px;">
+                    <div class="row" style="padding: 10px;">
+                        <div class="col">
+                            <img class="rounded-circle user_img" src="{{ clan.profile_pic.url }}">
+                        </div>
+                        <div class="col" style="margin-top: 3%;">
+                            <h2><a href="{% url 'clan' clan.name %}" style="color: black; text-decoration: none;">{{ clan.name }}</a></h2>
+                        </div>
+                        <div class="col" style="margin-top: 3%;">
+                            <h2><i class="fas fa-user-group" style="margin-right: 5px;"></i>{{ members }}</h2>
+                        </div>
+                        <div class="col">
+                            <h2 style="margin-top: -5%;">
+                                <a href="{% url 'profile' clan.leader %}" style="color: black; text-decoration: none;">
+                                    <i class="fas fa-crown"></i>
+                                    <span class="ml-2">{{ clan.leader }}</span>
+                                </a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
 </div>
     
 <script type="text/javascript" src="{% static 'js/accordion.js' %}"></script>

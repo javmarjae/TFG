@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .forms import ClanCreateForm, ClanUpdateForm, GamerClanUpdateForm, GameshipUpdateForm, UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm
 from .models import Game, Gamer, Gameship, User, Friendship, Clan
+from chat.models import Thread
 
 def index(request):
     """
@@ -28,10 +29,13 @@ def index(request):
     return render(
         request,
         'index.html',
-        context= {'users': users, 'clans':clans
+        context= {
+            'users': [(u,Gamer.objects.filter(user=u),Gameship.objects.filter(gamer=Gamer.objects.filter(user=u).first()).count()) for u in users], 
+            'clans':[(c,Gamer.objects.filter(clan=c).count()) for c in clans]
         },
     )
 
+@login_required(login_url='login')
 def profile(request, username):
     if request.method == "POST" and 'btnform1' in request.POST:
         user = request.user
@@ -129,6 +133,7 @@ def profile(request, username):
 
     return redirect("index")
 
+@login_required(login_url='login')
 def clans(request):
     gamer = Gamer.objects.filter(user=request.user).first()
     clans = Clan.objects.all()
@@ -150,12 +155,13 @@ def clans(request):
         request,
         'clans.html',
         context={
-            'clans':clans,
+            'clans':[(c,Gamer.objects.filter(clan=c).count()) for c in clans],
             'gamer':gamer,
             'form1':form1,
         }
     )
 
+@login_required(login_url='login')
 def clanprofile(request, name):
     gamer = Gamer.objects.filter(user=request.user).first()
     clan = Clan.objects.filter(name=name).first()
@@ -216,12 +222,14 @@ def clanprofile(request, name):
 
     return redirect("index")
 
+@login_required(login_url='login')
 def friends(request):
     if request.method == 'POST' and 'accept' in request.POST:
         friendshipid = request.POST['solicitud']
         friendship = Friendship.objects.filter(id=friendshipid).first()
         friendship.status = 'ac'
         friendship.save()
+        Thread.objects.create(first_person=friendship.sender.user,second_person=friendship.receiver.user)
     if request.method == 'POST' and 'decline' in request.POST:
         friendshipid = request.POST['solicitud']
         friendship = Friendship.objects.filter(id=friendshipid).first()
@@ -233,5 +241,5 @@ def friends(request):
 
     solicitudes = Friendship.objects.filter(receiver=Gamer.objects.filter(user=request.user).first(), status='pe') or None
     amigos = Friendship.objects.filter(receiver=Gamer.objects.filter(user=request.user).first(), status='ac') or Friendship.objects.filter(sender=Gamer.objects.filter(user=request.user).first(), status='ac')
-
+    
     return render(request,'friends.html',context={'solicitudes':solicitudes,'amigos':amigos})

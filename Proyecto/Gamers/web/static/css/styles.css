@@ -479,15 +479,30 @@ span.psw {
 }
 
 .grid-wrapper {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmaX(300px,1fr));
-  grid-auto-rows: 300px;
-  grid-gap: 1rem;
-  grid-auto-flow: row;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 a.hover {
   border-bottom: white;
+}
+
+/* Tarjetas */
+
+.user_card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-height: 100px;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  background-color: rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.user_card_item {
+  list-style: none;
+  padding: 5px;
 }
 
 /* Página de chat */
