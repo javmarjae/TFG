@@ -3,89 +3,121 @@
 {% block content %}
 {% load static %}
 
-<div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style" style="min-height:65vh;">
-    <div class="form-group">
-        <h2 style="display: inline-block;">Clan Information</h2>
+<div class="form-group col-lg-12 col-md-12 col-sm-12">
+    <h2 style="display: inline-block; text-align: center;">Clan Information</h2>
         {% if user.username == clan.leader %}
         <button class="editprofilebtn" type="button" onclick="document.getElementById('id01').style.display='block'"><i
                 class="fa fa-cog fa-spin rueda"></i></button>
         {% endif %}
+</div>
+<hr>
+<div class="backgroundweb">
+    <div class="media">
+        <img class="rounded-circle account-img profile-image" src="{{ clan.profile_pic.url }}">
+        <div class="media-body">
+            <p class="text-secondary">{{ clan.name }}</p>
+            <p class="text-secondary">{{ clan.description }}</p>
+            <p class="text-secondary">{{ clan.join_date }}</p>
+        </div>
     </div>
-    <hr>
-    <div class="backgroundweb">
-        <div class="media">
-            <img class="rounded-circle account-img profile-image" src="{{ clan.profile_pic.url }}">
-            <div class="media-body">
-                <p class="text-secondary">{{ clan.name }}</p>
-                <p class="text-secondary">{{ clan.description }}</p>
-                <p class="text-secondary">{{ clan.join_date }}</p>
+</div>
+<div class="form-group col-lg-12 col-md-12 col-sm-12">
+    <h2 style="display: inline-block; text-align: center;">Clan Members</h2>
+    {% if gamer.clan == null %}
+    <form method="POST" style="display: none;" enctype="multipart/form-data" id="joinform">
+        {% csrf_token %}
+        <input type="hidden" id="clan" name="clan" value="{{ clan.id }}">
+    </form>
+    <button style="float: right; margin-right: 8%;" class="updatebtn" form="joinform" name="joinclan" type="submit" ><iclass="fa fa-circle-plus"></i>Join</button>
+    {% endif %}
+    {% if gamer.clan == clan %} 
+        <form method="POST" style="display: none;" enctype="multipart/form-data" id="exitform">
+            {% csrf_token %}
+            <input type="hidden" id="clan" name="exitclan" value="">
+        </form>
+        <button class="cancelbtn" style="float: right; margin-right: 8%;" form="exitform" name="exitclan" type="submit" ><iclass="fa fa-circle-plus"></i>Abandone</button>
+    {% endif %}
+</div>
+
+{% if user.username == clan.leader %}
+    <div id="id01" class="modal">
+        <form method="POST" enctype="multipart/form-data" class="modal-content animate">
+            {% csrf_token %}
+            <div class="container form-group">
+                <div class="imgcontainer">
+                    <input id="id_image" type="file" name="profile_pic" hidden />
+                    <label for="id_image">
+                        <img class="rounded-circle account-img profile-image" style="cursor: pointer"
+                            src="{{ form2.instance.profile_pic.url }}" title="Upload new image">
+                    </label>
+                </div>
+                <button type="button" class="accordion">Edit Clan Information</button>
+                <div class="panel">
+                    <div class="form-row">
+                        <label for="name"><b>Name</b></label>
+                        <input type="text" placeholder="Enter name" name="name" id="name"
+                            value="{{form2.instance.name}}">
+                    </div>
+                    <div class="form-row">
+                        <label for="description"><b>Description</b></label>
+                        <input type="text" placeholder="Enter description" name="description" id="description"
+                            value="{{form2.instance.description}}">
+                    </div>
+                </div>
+                <input type="hidden" id="leader" name="leader" value=" {{ gamer.user.username }} ">
+                <div class="container" style="background-color: #f1f1f1;">
+                    <button class="updatebtn" name="btnform2" type="submit">Update</button>
+                    <button type="button" onclick="document.getElementById('id01').style.display='none'"
+                        class="cancelbtn">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endif %}
+    
+<hr>
+<div class="container" style="width: 75%;">
+    {% for member, numjuegos in members %}
+    <div class="col-md-6">
+        <div class="grid-wrapper">
+            <div class="user_card" style="margin-bottom: 8px; width: 100%;">
+                <div class="row" style="padding: 10px;">
+                    <div class="col">
+                        <img class="rounded-circle user_img" src="{{ member.user.profile_pic.url }}">
+                    </div>
+                    <div class="col" style="margin-top: 3%;">
+                        <h2><a href="{% url 'profile' member.user %}" style="color: black; text-decoration: none;">{{ member.user.username }}</a></h2>                
+                    </div>
+                    <div class="col" style="margin-top: 3%;">
+                        {% if member.discord != '' %}
+                        <img src="{% static 'img/discord.png' %}" style="width: 100%;">
+                        {% endif %}
+                    </div>
+                    <div class="col" style="margin-top: 3%;">
+                        {% if member.steam != '' %}
+                        <img src="{% static 'img/steam.png' %}" style="width: 100%;">
+                        {% endif %}
+                    </div>
+                    <div class="col" style="margin-top: 3%;">
+                        {% if member.epic_games != '' %}
+                        <img src="{% static 'img/epicgames.png' %}" style="width: 100%;">
+                        {% endif %}
+                    </div>
+                    <div class="col" style="margin-top: 3%;">
+                        {% if member.riot_games != '' %}
+                        <img src="{% static 'img/riotgames.png' %}" style="width: 100%;">
+                        {% endif %}
+                    </div>
+                    <div class="col" style="margin-top: 0%;">
+                        {% if numjuegos != 0 %}
+                        <h2><i class="fas fa-gamepad"></i>{{numjuegos}}</h2>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <h2 style="display: inline-block">Clan Members</h2>
-        {% if gamer.clan == null %}
-            <form method="POST" style="display: none;" enctype="multipart/form-data" id="joinform">
-                {% csrf_token %}
-                <input type="hidden" id="clan" name="clan" value="{{ clan.id }}">
-            </form>
-            <button style="float: right; margin-right: 8%;" class="updatebtn" form="joinform" name="joinclan" type="submit" ><iclass="fa fa-circle-plus"></i>Join</button>
-        {% endif %}
-        {% if gamer.clan == clan %} 
-            <form method="POST" style="display: none;" enctype="multipart/form-data" id="exitform">
-                {% csrf_token %}
-                <input type="hidden" id="clan" name="exitclan" value="">
-            </form>
-            <button class="cancelbtn" style="float: right; margin-right: 8%;" form="exitform" name="exitclan" type="submit" ><iclass="fa fa-circle-plus"></i>Abandone</button>
-        {% endif %}
-    </div>
-
-    {% if user.username == clan.leader %}
-
-        <div id="id01" class="modal">
-            <form method="POST" enctype="multipart/form-data" class="modal-content animate">
-                {% csrf_token %}
-                <div class="container form-group">
-                    <div class="imgcontainer">
-                        <input id="id_image" type="file" name="profile_pic" hidden />
-                        <label for="id_image">
-                            <img class="rounded-circle account-img profile-image" style="cursor: pointer"
-                                src="{{ form2.instance.profile_pic.url }}" title="Upload new image">
-                        </label>
-                    </div>
-                    <button type="button" class="accordion">Edit Clan Information</button>
-                    <div class="panel">
-                        <div class="form-row">
-                            <label for="name"><b>Name</b></label>
-                            <input type="text" placeholder="Enter name" name="name" id="name"
-                                value="{{form2.instance.name}}">
-                        </div>
-                        <div class="form-row">
-                            <label for="description"><b>Description</b></label>
-                            <input type="text" placeholder="Enter description" name="description" id="description"
-                                value="{{form2.instance.description}}">
-                        </div>
-                    </div>
-                    <input type="hidden" id="leader" name="leader" value=" {{ gamer.user.username }} ">
-                    <div class="container" style="background-color: #f1f1f1;">
-                        <button class="updatebtn" name="btnform2" type="submit">Update</button>
-                        <button type="button" onclick="document.getElementById('id01').style.display='none'"
-                            class="cancelbtn">Cancel</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        {% endif %}
-    
-    <hr>
-    <div class="grid-wrapper container" style="width: 75%;">
-        {% for member in members %}
-        <div class="clan_card">
-            <img style="width: 100%; max-height: 100%;" src="{{ member.user.profile_pic.url }}">
-            <h1><a href="{% url 'profile' member %}" style="color: black; text-decoration: none;">{{ member.user.username }}</a></h1>
-        </div>
-        {% endfor %}
-    </div>
+    {% endfor %}
 </div>
 
 <script type="text/javascript" src="{% static 'js/accordion.js' %}"></script>

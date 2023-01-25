@@ -213,7 +213,7 @@ def clanprofile(request, name):
             'clanprofile.html',
             context={
                 'clan':clan, 
-                'members':members, 
+                'members':[(m,Gameship.objects.filter(gamer=m).count()) for m in members], 
                 'gamer':gamer,
                 'form1':form1,
                 'form2':form2
@@ -229,7 +229,8 @@ def friends(request):
         friendship = Friendship.objects.filter(id=friendshipid).first()
         friendship.status = 'ac'
         friendship.save()
-        Thread.objects.create(first_person=friendship.sender.user,second_person=friendship.receiver.user)
+        if not Thread.objects.filter(Q(first_person=friendship.sender.user) & Q(second_person=friendship.receiver.user) | Q(first_person=friendship.receiver.user) & Q(second_person=friendship.sender.user)):
+            Thread.objects.create(first_person=friendship.sender.user,second_person=friendship.receiver.user)
     if request.method == 'POST' and 'decline' in request.POST:
         friendshipid = request.POST['solicitud']
         friendship = Friendship.objects.filter(id=friendshipid).first()
@@ -237,7 +238,9 @@ def friends(request):
         friendship.save()
     if request.method == 'POST' and 'remove' in request.POST:
         friendshipid = request.POST['solicitud']
-        friendship = Friendship.objects.filter(id=friendshipid).first().delete()
+        friendship = Friendship.objects.filter(id=friendshipid).first()
+        Thread.objects.filter(Q(first_person=friendship.sender.user) & Q(second_person=friendship.receiver.user) | Q(first_person=friendship.receiver.user) & Q(second_person=friendship.sender.user)).first().delete()
+        friendship.delete()
 
     solicitudes = Friendship.objects.filter(receiver=Gamer.objects.filter(user=request.user).first(), status='pe') or None
     amigos = Friendship.objects.filter(receiver=Gamer.objects.filter(user=request.user).first(), status='ac') or Friendship.objects.filter(sender=Gamer.objects.filter(user=request.user).first(), status='ac')

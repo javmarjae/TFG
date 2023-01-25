@@ -5,36 +5,80 @@
 
 {% if solicitudes != None %}
     <div class="form-group">
-        <h2 style="display: inline-block; margin-left: 8%;">Solicitudes de amistad recibidas</h2>
+        <h2 style="display: block; text-align: center;">Friend requests received ({{solicitudes|length}})</h2>
         <hr>
     </div>
     <div class="container" style="width: 100%;">
+        <div class="col-md-6">
         {% for solicitud in solicitudes %}
             <div style="display: inline;">
-                <p>Solicitud de <a href="{% url 'profile' solicitud.sender %}" style="text-decoration:underline;">{{solicitud.sender}}</a></p>
-                <button type="submit" class="addgamebtn" name="accept" form="friendrequest"><i class="fa fa-check"></i></button>
-                <button type="submit" class="cancelbtn" name="decline" form="friendrequest"><i class="fa fa-xmark"></i></button>
-                <form method="POST" id="friendrequest" style="display: none;">
-                    {% csrf_token %}
-                    <input type="hidden" name="solicitud" id="solicitud" value="{{solicitud.id}}">
-                </form>
+                <div class="grid-wrapper">
+                    <div class="user_card" style="margin-bottom: 8px; width: 100%;">
+                        <div class="row" style="padding: 10px;">
+                            <div class="col">
+                                <img class="rounded-circle user_img" src="{{ solicitud.sender.user.profile_pic.url }}">
+                            </div>
+                            <div class="col" style="margin-top: 2%;">
+                                <h2><a href="{% url 'profile' solicitud.sender.user %}" style="color: black; text-decoration: none;">{{ solicitud.sender.user.username }}</a></h2>                
+                            </div>
+                            <div class="col" style="margin-top: 1%;">
+                                <button type="submit" class="addgamebtn" name="accept" form="friendrequest"><i class="fa fa-check"></i> Accept</button>
+                            </div>
+                            <div class="col" style="margin-top: 1%;">
+                                <button type="submit" class="cancelbtn" name="decline" form="friendrequest"><i class="fa fa-xmark"></i> Decline</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <form method="POST" id="friendrequest" style="display: none;">
+                {% csrf_token %}
+                <input type="hidden" name="solicitud" id="solicitud" value="{{solicitud.id}}">
+            </form>
         {% endfor %}
+        </div>
     </div>
 {% endif %}
 <div class="form-group">
-    <h2 style="display: inline-block; margin-left: 8%;">Amigos ({{amigos|length}})</h2>
+    <h2 style="display: block; text-align: center;">Friends ({{amigos|length}})</h2>
     <hr>
 </div>
 <div class="container" style="width: 100%;">
     {% for amigo in amigos %}
         <div style="display: inline;">
-            {% if amigo.sender == user.username %}
-                <p>{{amigo.receiver}}</p>
+            {% if amigo.sender.user == user %}
+            <div class="grid-wrapper">
+                <div class="user_card" style="margin-bottom: 8px; width: 100%;">
+                    <div class="row" style="padding: 10px;">
+                        <div class="col-md-3">
+                            <img class="rounded-circle user_img" src="{{ amigo.receiver.user.profile_pic.url }}">
+                        </div>
+                        <div class="col-md-3" style="margin-top: 2%;">
+                            <h2><a href="{% url 'profile' amigo.receiver.user %}" style="color: black; text-decoration: none;">{{ amigo.receiver.user.username }}</a></h2>                
+                        </div>
+                        <div class="col-md-6" style="margin-top: 1%;">
+                            <button type="submit" class="cancelbtn" name="remove" form="friendrequest"><i class="fa fa-xmark"></i> Eliminar amigo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% else %}
-            <p><a href="{% url 'profile' amigo.sender %}" style="text-decoration:underline;">{{amigo.sender}}</a></p>
+            <div class="grid-wrapper col-md-6">
+                <div class="user_card" style="margin-bottom: 8px; width: 100%;">
+                    <div class="row" style="padding: 10px;">
+                        <div class="col-md-3">
+                            <img class="rounded-circle user_img" src="{{ amigo.sender.user.profile_pic.url }}">
+                        </div>
+                        <div class="col-md-3" style="margin-top: 2%;">
+                            <h2><a href="{% url 'profile' amigo.sender.user %}" style="color: black; text-decoration: none;">{{ amigo.sender.user.username }}</a></h2>                
+                        </div>
+                        <div class="col-md-6" style="margin-top: 1%;">
+                            <button type="submit" class="cancelbtn" name="remove" form="friendrequest"><i class="fa fa-xmark"></i> Eliminar amigo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% endif %}
-            <button type="submit" class="cancelbtn" name="remove" form="friendrequest"><i class="fa fa-xmark"></i> Eliminar amigo</button>
             <form method="POST" id="friendrequest" style="display: none;">
                 {% csrf_token %}
                 <input type="hidden" name="solicitud" id="solicitud" value="{{amigo.id}}">
