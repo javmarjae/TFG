@@ -131,7 +131,6 @@ class Game(models.Model):
 
     game_name = models.CharField(max_length=3, choices=GAMES, help_text="Games to choose")
     competitive = models.BooleanField(default=True, help_text="A game has competitive ranking or not")
-    game_ranks = models.CharField(max_length=30, choices=GAMES_RANKS, default='un')
 
     def __str__(self) -> str:
         """
@@ -143,10 +142,10 @@ class Gameship(models.Model):
     """
     Modelo que representa cada unión de un Gamer con un Game.
     """
-    
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    rank = models.CharField(max_length=20, blank=True, null=True, help_text="Gamer rank in a Game")
+    rank = models.CharField(max_length=100, blank=True, null=True, help_text="Gamer rank in a Game")
     game = models.ForeignKey(Game, on_delete=models.CASCADE, help_text="Game selected")
     gamer = models.ForeignKey(Gamer, on_delete=models.CASCADE, help_text="Gamer that selects a Game")
 
