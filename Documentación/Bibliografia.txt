@@ -17,3 +17,5 @@ https://justdjango.com/blog/chat-app-django-channels
 https://www.honeybadger.io/blog/django-channels-websockets-chat/
 https://towardsdatascience.com/generating-random-data-into-a-database-using-python-fd2f7d54024e
 https://faker.readthedocs.io/en/master/
+
+python manage.py shell < populateDB.py
