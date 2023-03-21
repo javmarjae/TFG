@@ -37,15 +37,17 @@ for name in clan_names:
 
 clans = Clan.objects.all()
 
-for i in range(20):
+for i in range(500):
     foto_nombre = random.choice(fotos)
     foto_ruta = os.path.join(fotos_path, foto_nombre)
     user = User.objects.create(
         username=fake.user_name(),
+        first_name=fake.first_name(),
+        last_name=fake.last_name(),
         email=fake.email(),
         password='password',
         language=random.choice(User.LANGUAGES)[0],
-        birth_date=fake.date_between_dates(date_start=datetime(1990,1,1), date_end=datetime(2005,12,31)),
+        birth_date=fake.date_between_dates(date_start=datetime(1980,1,1), date_end=datetime(2005,12,31)),
         is_online=random.choice([True,False])
     )
     with open(foto_ruta, 'rb') as f:
@@ -53,9 +55,9 @@ for i in range(20):
     gamer = Gamer.objects.create(
         user=user,
         discord=fake.user_name(),
-        steam=fake.user_name(),
-        epic_games=fake.user_name(),
-        riot_games=fake.user_name(),
+        steam=fake.user_name() if random.choice([True, False]) else None,
+        epic_games=fake.user_name() if random.choice([True, False]) else None,
+        riot_games=fake.user_name() if random.choice([True, False]) else None,
         clan=clans[randint(0, clans.count()-1)] if clans.exists() else None
     )
 
@@ -95,7 +97,7 @@ for gamename in Game.GAMES:
     Game.objects.create(game_name=gamename[0],competitive=is_competitive)
 
 for gamer in gamers:
-    num_games = random.randint(1, len(Game.objects.all())) # Número aleatorio de juegos a asignar
+    num_games = random.randint(1, len(Game.objects.all())-3) # Número aleatorio de juegos a asignar
     unassigned_games = list(Game.objects.exclude(gameship__gamer=gamer)) # Juegos que aún no se han asignado a este jugador
     if len(unassigned_games) < num_games:
         raise Exception('No hay suficientes juegos disponibles para asignar al jugador')

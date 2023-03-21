@@ -61,10 +61,10 @@ class Gamer(models.Model):
         related_name="Usuario"
     )
 
-    discord = models.CharField(max_length=30, help_text="Discord user name", blank=True)
-    steam = models.CharField(max_length=30, help_text="Steam user name", blank=True)
-    epic_games = models.CharField(max_length=30, help_text="EpicGames user name", blank=True)
-    riot_games = models.CharField(max_length=30, help_text="Riot Games user name", blank=True)
+    discord = models.CharField(max_length=30, help_text="Discord user name", blank=True, null=True)
+    steam = models.CharField(max_length=30, help_text="Steam user name", blank=True, null=True)
+    epic_games = models.CharField(max_length=30, help_text="EpicGames user name", blank=True, null=True)
+    riot_games = models.CharField(max_length=30, help_text="Riot Games user name", blank=True, null=True)
 
     clan = models.ForeignKey(Clan, on_delete=models.CASCADE, related_name="Clan", blank=True, null=True)
 
