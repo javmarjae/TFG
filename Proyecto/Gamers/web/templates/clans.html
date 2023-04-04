@@ -2,12 +2,21 @@
 {% load crispy_forms_tags %}
 {% block content %}
 {% load static %}
-
 <div class="form-group">
     <h1 style="display: block; text-align: center;">Clans</h1>
     {% if gamer.clan == null %}
-    <button style="float: right; margin-right: 8%;" class="updatebtn" type="button" onclick="document.getElementById('id01').style.display='block'">Create clan</button>
+    <button style="float: right; margin-right: 8%; display: block;" class="updatebtn" type="button" onclick="document.getElementById('id01').style.display='block'">Create clan</button>
     {% endif %}
+</div>
+<hr>
+<div class="container row" style="display: inline;">
+    <form method="POST" style="border-radius: 10px;" action="">
+        {% csrf_token %}
+        <input type="text" placeholder="Buscar clan..." id="busqueda" name="busqueda">
+        <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">
+            Buscar
+        </button>
+    </form>
 </div>
 <hr>
 <div id="id01" class="modal">

@@ -154,4 +154,17 @@ class Gameship(models.Model):
     
     class Meta:
         unique_together = ('game','gamer')
-        
+
+class UserMatrix(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    birth_year = models.IntegerField()
+    language = models.CharField(max_length=2)
+    games_and_ranks_count = models.IntegerField()
+    num_friends = models.IntegerField()
+    similarity_vector = models.TextField()
+
+    def __str__(self):
+        """
+        String para representar el objeto del modelo
+        """
+        return '%s' % self.user

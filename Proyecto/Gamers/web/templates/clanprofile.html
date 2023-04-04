@@ -28,6 +28,13 @@
         {% csrf_token %}
         <input type="hidden" id="clan" name="clan" value="{{ clan.id }}">
     </form>
+    <form method="POST" style="border-radius: 10px; width: 10%; float: right;" action="">
+        {% csrf_token %}
+        <input type="text" placeholder="Buscar gamer..." id="busqueda" name="busqueda">
+        <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">
+            Buscar
+        </button>
+    </form>
     <button style="float: right; margin-right: 8%;" class="updatebtn" form="joinform" name="joinclan" type="submit" ><iclass="fa fa-circle-plus"></i>Join</button>
     {% endif %}
     {% if gamer.clan == clan %} 

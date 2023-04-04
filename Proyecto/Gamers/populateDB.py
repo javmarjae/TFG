@@ -1,4 +1,5 @@
 from datetime import datetime
+from MySQLdb import IntegrityError
 from django.contrib.auth import get_user_model
 from Gamers.settings import MEDIA_ROOT
 from faker import Faker
@@ -37,19 +38,22 @@ for name in clan_names:
 
 clans = Clan.objects.all()
 
-for i in range(500):
+for i in range(1000):
     foto_nombre = random.choice(fotos)
     foto_ruta = os.path.join(fotos_path, foto_nombre)
-    user = User.objects.create(
-        username=fake.user_name(),
-        first_name=fake.first_name(),
-        last_name=fake.last_name(),
-        email=fake.email(),
-        password='password',
-        language=random.choice(User.LANGUAGES)[0],
-        birth_date=fake.date_between_dates(date_start=datetime(1980,1,1), date_end=datetime(2005,12,31)),
-        is_online=random.choice([True,False])
-    )
+    try:
+        user = User.objects.create(
+            username=fake.user_name(),
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
+            email=fake.email(),
+            password='password',
+            language=random.choice(User.LANGUAGES)[0],
+            birth_date=fake.date_between_dates(date_start=datetime(1980,1,1), date_end=datetime(2005,12,31)),
+            is_online=random.choice([True,False])
+        )
+    except IntegrityError:
+        continue
     with open(foto_ruta, 'rb') as f:
         user.profile_pic.save(foto_nombre, File(f))
     gamer = Gamer.objects.create(

@@ -13,6 +13,10 @@ from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models.functions import Lower
+from unidecode import unidecode
+
+from .recommendation import create_user_matrix, recommended_users
 
 from .forms import ClanCreateForm, ClanUpdateForm, GamerClanUpdateForm, GameshipUpdateForm, UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm
 from .models import Game, Gamer, Gameship, User, Friendship, Clan
@@ -23,7 +27,7 @@ def index(request):
     Función vista para la página de inicio del sitio.
     """
     user = request.user
-    users = User.objects.exclude(username = user)
+    users = User.objects.all()[:10]
     clans = Clan.objects.all()
 
     return render(
@@ -150,6 +154,9 @@ def clans(request):
             messages.error(request, error)
             return redirect("clans")
 
+    if request.method == 'POST' and 'search' in request.POST:
+        clans = clans.annotate(name_m=Lower('name')).filter(name_m__icontains=unidecode(request.POST.get('busqueda').lower()))
+
     form1 = ClanUpdateForm()
     return render(
         request,
@@ -204,6 +211,9 @@ def clanprofile(request, name):
         for error in list(form2.errors.values()):
             messages.error(request, error)
             return redirect("clan", name)
+        
+    if 'busqueda' in request.POST:
+        members = members.annotate(name_m=Lower('user__username')).filter(name_m__icontains=unidecode(request.POST.get('busqueda').lower()))
 
     if clan:
         form1 = GamerClanUpdateForm(instance=gamer)
