@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models.functions import Lower
 from django.core.paginator import Paginator
@@ -51,7 +51,7 @@ def users(request):
     games = Game.GAMES
     selected_games = request.GET.getlist('games')
     ranks =[
-        ('Counter Strike: Global Offensive', ['Silver I', 'Silver II', 'Silver III', 'Silver IV', 'Silver Elite', 'Silver Elite Master', 'Gold Nova I', 'Gold Nova II','Gold Nova III',
+        ('CS:GO', ['Silver I', 'Silver II', 'Silver III', 'Silver IV', 'Silver Elite', 'Silver Elite Master', 'Gold Nova I', 'Gold Nova II','Gold Nova III',
             'Gold Nova Master', 'Master Guardian I', 'Master Guardian II', 'Master Guardian Elite', 'Distinguished Master Guardian', 'Legendary Eagle',
             'Legendary Eagle Master', 'Supreme Master First Class', 'The Global Elite']),
         ('League of Legends', ['Iron IV','Iron III','Iron II','Iron I','Bronze IV','Bronze III','Bronze II','Bronze I','Silver IV','Silver III','Silver II',
@@ -209,6 +209,13 @@ def profile(request, username):
 def clans(request):
     gamer = Gamer.objects.filter(user=request.user).first()
     clans = Clan.objects.all()
+
+    campo_texto = request.GET.get('busqueda')
+    min_miembros = request.GET.get('minimo')
+    max_miembros = request.GET.get('maximo')
+    orden_fecha = request.GET.get('ordenfecha')
+    orden_miembros = request.GET.get('ordenmiembros')
+
     if request.method == 'POST' and 'btnform2' in request.POST:
         form1 = ClanUpdateForm(request.POST, request.FILES)
         if form1.is_valid():
@@ -221,9 +228,45 @@ def clans(request):
         for error in list(form1.errors.values()):
             messages.error(request, error)
             return redirect("clans")
+        
+    clans = clans.annotate(num_members=Count('Clan')) #Clan es el related_name que tiene la clase Gamer en el atributo clan
 
-    if request.method == 'POST' and 'search' in request.POST:
+    menos_miembros = clans.order_by('num_members').first()
+    mas_miembros = clans.order_by('-num_members').first()
+
+    if min_miembros:
+        clans = clans.exclude(num_members__lte=min_miembros)
+
+    if max_miembros:
+        clans = clans.exclude(num_members__gte=max_miembros)
+
+    if orden_fecha:
+        if orden_fecha=='fecharec':
+            clans = clans.order_by('-join_date') 
+        elif orden_fecha=='fechaant':
+            clans = clans.order_by('join_date')
+        else:
+            clans = clans.order_by('id')
+
+    if orden_miembros:
+        if orden_miembros=='maymiem':
+            clans = clans.order_by('-num_members') 
+        elif orden_miembros=='menmiem':
+            clans = clans.order_by('num_members') 
+        else:
+            clans = clans.order_by('id') 
+
+
+    if campo_texto:
         clans = clans.annotate(name_m=Lower('name')).filter(name_m__icontains=unidecode(request.POST.get('busqueda').lower()))
+
+    if 'restart' in request.GET:
+        campo_texto = ''
+        min_miembros = ''
+        max_miembros = ''
+        orden_fecha = ''
+        orden_miembros = ''
+        clans = clans.order_by('id')
 
     form1 = ClanUpdateForm()
     return render(
@@ -233,6 +276,13 @@ def clans(request):
             'clans':[(c,Gamer.objects.filter(clan=c).count()) for c in clans],
             'gamer':gamer,
             'form1':form1,
+            'masmiembros':mas_miembros.num_members,
+            'menosmiembros':menos_miembros.num_members,
+            'busqueda':campo_texto,
+            'min_miembros':min_miembros,
+            'max_miembros':max_miembros,
+            'orden_fecha':orden_fecha,
+            'orden_miembros':orden_miembros
         }
     )
 

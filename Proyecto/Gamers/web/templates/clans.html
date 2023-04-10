@@ -2,23 +2,39 @@
 {% load crispy_forms_tags %}
 {% block content %}
 {% load static %}
-<div class="form-group">
-    <h1 style="display: block; text-align: center;">Clans</h1>
-    {% if gamer.clan == null %}
-    <button style="float: right; margin-right: 8%; display: block;" class="updatebtn" type="button" onclick="document.getElementById('id01').style.display='block'">Create clan</button>
-    {% endif %}
-</div>
-<hr>
-<div class="container row" style="display: inline;">
-    <form method="POST" style="border-radius: 10px;" action="">
+<div class="form-group" style="display: inline;">
+    <h2 style="display: block; text-align: center;">Filter</h2>
+    <form method="GET" id="mi-formulario" class="row" style="border-radius: 10px;" action="{% url 'clans' %}">
         {% csrf_token %}
-        <input type="text" placeholder="Buscar clan..." id="busqueda" name="busqueda">
-        <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">
-            Buscar
-        </button>
+        <div class="col">
+            <p>Número de miembros:</p>
+            <input type="number" {% if min_miembros %}value="{{min_miembros}}"{% endif %} name="minimo" id="minimo" min="0" max="{{menosmiembros}}" placeholder="Mínimo...">
+            <input type="number" {% if max_miembros %}value="{{max_miembros}}"{% endif %} name="maximo" id="maximo" min="{{menosmiembros}}"max="{{masmiembros}}" placeholder="Máximo ({{masmiembros}})...">
+        </div>
+        <div class="col">
+            <p>Ordenar por:</p>
+            <select name="ordenfecha" id="ordenfecha" style="margin: 5px 0 22px 0;">
+                <option value="ning">Fecha...</option>
+                <option {% if "fecharec" in orden_fecha %}selected{% endif %} value="fecharec">Nuevos</option>
+                <option {% if "fechaant" in orden_fecha %}selected{% endif %} value="fechaant">Antiguos</option>
+            </select>
+            <select name="ordenmiembros" id="ordenmiembros">
+                <option value="ning">Miembros...</option>
+                <option {% if "maymiem" in orden_miembros %}selected{% endif %} value="maymiem">Más miembros</option>
+                <option {% if "menmiem" in orden_miembros %}selected{% endif %} value="menmiem">Menos miembros</option>
+            </select>
+        </div>
+        <div class="col">
+            <input type="text" placeholder="Buscar clan..." id="busqueda" name="busqueda" {% if busqueda %} value="{{busqueda}}" {% endif %}>
+            <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">Buscar</button>
+            <button class="btn btn-danger mb-3" type="submit" style="border-radius: 12px;" name="restart">Restablecer filtros</button>
+        </div>
     </form>
 </div>
 <hr>
+{% if gamer.clan == null %}
+    <button style="float: right; margin-right: 8%; display: block;" class="updatebtn" type="button" onclick="document.getElementById('id01').style.display='block'">Create clan</button>
+    {% endif %}
 <div id="id01" class="modal">
     <form method="POST" enctype="multipart/form-data" class="modal-content animate">
         {% csrf_token %}
@@ -76,5 +92,26 @@
 </div>
     
 <script type="text/javascript" src="{% static 'js/accordion.js' %}"></script>
+
+<script>
+    const minimo = document.getElementById('minimo');
+    const maximo = document.getElementById('maximo');
+
+    minimo.addEventListener('blur', function(){
+        if (parseInt(minimo.value) > parseInt(maximo.value)){
+            const temp = minimo.value;
+            minimo.value = maximo.value;
+            maximo.value = temp;
+        }
+    });
+
+    maximo.addEventListener('blur', function(){
+        if(parseInt(maximo.value) < parseInt(minimo.value)){
+            const temp = maximo.value;
+            maximo.value = minimo.value;
+            minimo.value = temp;
+        }
+    });
+</script>
 
 {% endblock content %}
