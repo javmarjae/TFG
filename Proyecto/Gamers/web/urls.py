@@ -13,5 +13,6 @@ urlpatterns += [
     path('clan/<name>', views.clanprofile, name='clan'),
     path('friends',views.friends,name='friends'),
     path('chat/', include('chat.urls')),
+    path('users/',views.users,name='users'),
     path('authentication', include('authentication.urls'))
 ]

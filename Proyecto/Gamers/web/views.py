@@ -14,6 +14,7 @@ from django.core.mail import EmailMessage
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models.functions import Lower
+from django.core.paginator import Paginator
 from unidecode import unidecode
 
 from .recommendation import create_user_matrix, recommended_users
@@ -28,7 +29,7 @@ def index(request):
     """
     user = request.user
     users = User.objects.all()[:10]
-    clans = Clan.objects.all()
+    clans = Clan.objects.all()[:10]
 
     return render(
         request,
@@ -36,6 +37,73 @@ def index(request):
         context= {
             'users': [(u,Gamer.objects.filter(user=u),Gameship.objects.filter(gamer=Gamer.objects.filter(user=u).first()).count()) for u in users], 
             'clans':[(c,Gamer.objects.filter(clan=c).count()) for c in clans]
+        },
+    )
+
+@login_required
+def users(request):
+    user = request.user
+    users = User.objects.all().exclude(id=user.id)
+
+    campo_texto = request.GET.get('busqueda')
+    languages = User.LANGUAGES
+    selected_languages = request.GET.getlist('languages')
+    games = Game.GAMES
+    selected_games = request.GET.getlist('games')
+    ranks =[
+        ('Counter Strike: Global Offensive', ['Silver I', 'Silver II', 'Silver III', 'Silver IV', 'Silver Elite', 'Silver Elite Master', 'Gold Nova I', 'Gold Nova II','Gold Nova III',
+            'Gold Nova Master', 'Master Guardian I', 'Master Guardian II', 'Master Guardian Elite', 'Distinguished Master Guardian', 'Legendary Eagle',
+            'Legendary Eagle Master', 'Supreme Master First Class', 'The Global Elite']),
+        ('League of Legends', ['Iron IV','Iron III','Iron II','Iron I','Bronze IV','Bronze III','Bronze II','Bronze I','Silver IV','Silver III','Silver II',
+            'Silver I','Gold IV','Gold III','Gold II','Gold I','Platinum IV','Platinum III','Platinum II','Platinum I','Diamond IV','Diamond III',
+            'Diamond II','Diamond I','Master IV','Master III','Master II','Master I','Grand Master IV','Grand Master III','Grand Master II',
+            'Grand Master I','Challenger']),
+        ('Rocket League', ['Bronze I','Bronze II','Bronze III','Silver I','Silver II','Silver III','Gold I','Gold II','Gold III','Platinum I','Platinum II',
+            'Platinum III','Diamond I','Diamond II','Diamond III','Champion I','Champion II','Champion III','Grand Champion I','Grand Champion II',
+            'Grand Champion III','Supersonic Legend']),
+        ('Valorant', ['Iron I','Iron II','Iron III','Bronze I','Bronze II','Bronze III','Silver I','Silver II','Silver III','Gold I','Gold II','Gold III',
+            'Platinum I','Platinum II','Platinum III','Diamon I','Diamond II','Diamond III','Ascendent I','Ascendent II','Ascendent III','Inmortal I',
+            'Inmortal II','Inmortal III','Radiant'])]
+    selected_ranks = request.GET.getlist('ranks')
+
+    if selected_games:
+        gamer_ids = Gameship.objects.filter(game__game_name__in=selected_games).select_related('gamer').values_list('gamer_id',flat=True).distinct()
+        users = users.filter(id__in=gamer_ids)
+
+    if selected_ranks:
+        gamer_ids = Gameship.objects.filter(rank__in=selected_ranks).select_related('gamer').values_list('gamer_id',flat=True).distinct()
+        users = users.filter(id__in=gamer_ids)
+
+    if selected_languages:
+        users = users.filter(language__in=selected_languages)
+
+    if campo_texto:
+        users = users.annotate(username_m=Lower('username')).filter(username_m__icontains=unidecode(campo_texto.lower()))
+
+    paginator = Paginator(users,20)
+    page_number = request.GET.get('page')
+    page_object = paginator.get_page(page_number)
+    users = page_object.object_list
+
+    if 'restart' in request.GET:
+        campo_texto = ''
+        selected_languages = []
+        selected_games = []
+        selected_ranks = []
+
+    return render(
+        request,
+        'users.html',
+        context= {
+            'users': [(u,Gamer.objects.filter(user=u),Gameship.objects.filter(gamer=Gamer.objects.filter(user=u).first()).count()) for u in users],
+            'page': page_object,
+            'languages':languages,
+            'selected_languages':selected_languages,
+            'busqueda':campo_texto,
+            'games':games,
+            'selected_games':selected_games,
+            'ranks':ranks,
+            'selected_ranks':selected_ranks
         },
     )
 

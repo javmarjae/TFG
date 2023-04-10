@@ -2,7 +2,7 @@
     <div class="container">
         <!-- Navbar Left Side -->
         <div class="navbar-nav">
-            <a class="nav-item nav-link" href="{% url 'index' %}">Home</a>
+            <a {% if request.resolver_match.url_name == 'index' %}style="background-color: #444;border-radius: 10%;"{% endif %} class="nav-item nav-link" href="{% url 'index' %}">Home</a>
         </div>
         <button aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation"
             class="navbar-toggler ml-auto float-right btncolor" data-target="#navbarToggle" data-toggle="collapse"
@@ -13,15 +13,16 @@
             <!-- Navbar Left Side -->
             <div class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
-                <a class="nav-item nav-link" href="{% url 'friends' %}">Friends</a>
-                <a class="nav-item nav-link" href="{% url 'clans' %}">Clans</a>
-                <a class="nav-item nav-link" href="{% url 'chat' %}">Chat</a>
+                <a {% if request.resolver_match.url_name == 'friends' %}style="background-color: #444;border-radius: 10%;"{% endif %} class="nav-item nav-link" href="{% url 'friends' %}">Friends</a>
+                <a {% if request.resolver_match.url_name == 'users' %}style="background-color: #444;border-radius: 10%;"{% endif %} class="nav-item nav-link" href="{% url 'users' %}">People</a>
+                <a {% if request.resolver_match.url_name == 'clans' %}style="background-color: #444;border-radius: 10%;"{% endif %} class="nav-item nav-link" href="{% url 'clans' %}">Clans</a>
+                <a {% if request.resolver_match.url_name == 'chat' %}style="background-color: #444;border-radius: 10%;"{% endif %} class="nav-item nav-link" href="{% url 'chat' %}">Chat</a>
                 {% endif %}
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
                 {% if user.is_authenticated %}
-                <a class="nav-item nav-link" href="{% url 'profile' user.username %}">
+                <a {% if request.resolver_match.url_name == 'profile' %}style="background-color: #444;border-radius: 10%;"{% endif %} class="nav-item nav-link" href="{% url 'profile' user.username %}">
                     {{ user.get_username }} <i class="fas fa-user"></i>
                 </a>
                 <a class="nav-item nav-link" href="{% url 'logout' %}">

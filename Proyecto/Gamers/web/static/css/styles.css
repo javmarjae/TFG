@@ -16,21 +16,26 @@
 }
 
 .navbar-color {
-    background-color: var(--navbarcolor);
+  background-color: var(--navbarcolor);
 }
 
 .site-header .navbar-nav .nav-link {
-    color: var(--brightText);
+  color: var(--brightText);
 }
   
 .site-header .navbar-nav .nav-link:hover {
-    color: black;
-    background-color: #ddd;
-    border-radius: 10%;
+  color: black;
+  background-color: #ddd;
+  border-radius: 10%;
 }
   
 .site-header .navbar-nav .nav-link.active {
-    font-weight: 500;
+  font-weight: 100;
+}
+
+#navbar a.active {
+  background-color: #5865F2;
+  border-radius: 10%;
 }
 
 @media
@@ -690,4 +695,24 @@ a.hover {
 }
 .messages-wrapper{
   height: 100%;
+}
+
+
+/* Paginacion */
+.pagination a {
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+.pagination a.activepage {
+  background-color: dodgerblue;
+  color: white;
+  text-decoration: none;
+}
+
+.pagination a:hover:not(.activepage) {
+  background-color: #ddd;
+  text-decoration: none;
 }

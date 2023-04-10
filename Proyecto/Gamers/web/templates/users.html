@@ -1,0 +1,117 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<div class="form-group" style="display: inline;">
+  <h2 style="display: block; text-align: center;">Filter</h2>
+    <form method="GET" class="row" style="border-radius: 10px;" action="{% url 'users' %}">
+        {% csrf_token %}
+        <div class="col">
+          <span>Languages</span>
+          <select name="languages" id="languages" multiple>
+            {% for val,name in languages %}
+              <option value="{{val}}" {% if val in selected_languages %} selected {% endif %}>
+                {{name}}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col">
+          <span>Games</span>
+          <select name="games" id="games" multiple>
+            {% for val,name in games %}
+              <option value="{{val}}" {% if val in selected_games %} selected {% endif %}>
+                {{name}}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col">
+          <span>Ranks</span>
+          <select name="ranks" id="ranks" multiple>
+            {% for val,ranks in ranks %}
+              <optgroup label="{{val}}">
+                {% for rank in ranks %}
+                  <option value="{{rank}}" {% if rank in selected_ranks %} selected {% endif %}>
+                    {{rank}}
+                  </option>
+                {% endfor %}
+              </optgroup>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col">
+          <input type="text" placeholder="Buscar gamer..." id="busqueda" name="busqueda" {% if busqueda %} value="{{busqueda}}" {% endif %}>
+          <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">Buscar</button>
+          <button class="btn btn-danger mb-3" type="submit" style="border-radius: 12px;" name="restart">Restablecer filtros</button>
+        </div>
+    </form>
+</div>
+<hr>
+<div class="container">
+  <div class="row">
+    {% for user, gamer, numjuegos in users %}
+      <div class="col-md-6">
+        <div class="user_card" style="margin-bottom: 8px; width: 100%;">
+          <div class="row" style="padding: 10px;">
+            <div class="col">
+              <img class="rounded-circle user_img" src="{{ user.profile_pic.url }}">
+            </div>
+            <div class="col" style="margin-top: 3%;">
+              <h2><a href="{% url 'profile' user %}" style="color: black; text-decoration: none;">{{ user.username }}</a></h2>                
+            </div>
+            <div class="col" style="margin-top: 3%;">
+              {% if gamer.discord != '' %}
+                <img src="{% static 'img/discord.png' %}" style="width: 100%;">
+              {% endif %}
+            </div>
+            <div class="col" style="margin-top: 3%;">
+              {% if gamer.steam != '' %}
+                <img src="{% static 'img/steam.png' %}" style="width: 100%;">
+              {% endif %}
+            </div>
+            <div class="col" style="margin-top: 3%;">
+              {% if gamer.epic_games != '' %}
+                <img src="{% static 'img/epicgames.png' %}" style="width: 100%;">
+              {% endif %}
+            </div>
+            <div class="col" style="margin-top: 3%;">
+              {% if gamer.riot_games != '' %}
+                <img src="{% static 'img/riotgames.png' %}" style="width: 100%;">
+              {% endif %}
+            </div>
+            <div class="col" style="margin-top: 0%;">
+              {% if numjuegos != 0 %}
+                <h2><i class="fas fa-gamepad"></i>{{numjuegos}}</h2>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %} 
+  </div>
+</div>
+
+<div class="container" style="text-align: center;">
+  <div class="pagination">
+    {% if page.has_previous %}
+      <a href="?page=1{% if selectec_languages %}{% for val in selected_languages %}&languages={{val}}{% endfor %}{% endif %}{% if selected_games %}{% for val in selected_games %}&games={{val}}{% endfor %}{% endif %}{% if selected_ranks %}{% for val in selected_ranks %}&ranks={{val}}{% endfor %}{% endif %}{% if busqueda %}&busqueda={{busqueda}}{% endif %}">&laquo; 1 </a>
+      {% if page.previous_page_number != 1 %}
+      <p>...</p>
+        <a href="?page={{ page.previous_page_number }}{% if selected_languages %}{% for val in selected_languages %}&languages={{val}}{% endfor %}{% endif %}{% if selected_games %}{% for val in selected_games %}&games={{val}}{% endfor %}{% endif %}{% if selected_ranks %}{% for val in selected_ranks %}&ranks={{val}}{% endfor %}{% endif %}{% if busqueda %}&busqueda={{busqueda}}{% endif %}"> {{ page.previous_page_number }} </a>
+      {% endif %}
+    {% endif %}
+
+    <a href="#" class="activepage"> {{ page.number }} </a>
+
+    {% if page.has_next %}
+      {% if page.next_page_number != page.paginator.num_pages %}
+        <a href="?page={{ page.next_page_number }}{% if selected_languages %}{% for val in selected_languages %}&languages={{val}}{% endfor %}{% endif %}{% if selected_games %}{% for val in selected_games %}&games={{val}}{% endfor %}{% endif %}{% if selected_ranks %}{% for val in selected_ranks %}&ranks={{val}}{% endfor %}{% endif %}{% if busqueda %}&busqueda={{busqueda}}{% endif %}"> {{ page.next_page_number }} </a>
+        <p>...</p>
+      {% endif %}
+      <a href="?page={{ page.paginator.num_pages }}{% if selected_languages %}{% for val in selected_languages %}&languages={{val}}{% endfor %}{% endif %}{% if selected_games %}{% for val in selected_games %}&games={{val}}{% endfor %}{% endif %}{% if selected_ranks %}{% for val in selected_ranks %}&ranks={{val}}{% endfor %}{% endif %}{% if busqueda %}&busqueda={{busqueda}}{% endif %}"> {{ page.paginator.num_pages }} &raquo;</a>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock content %}
