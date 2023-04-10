@@ -5,7 +5,6 @@ from Gamers.settings import MEDIA_ROOT
 from faker import Faker
 from random import randint
 from web.models import Clan, Gamer, Friendship, Game, Gameship, User
-from django.conf import settings
 from django.core.management import call_command
 from django.core.files import File
 import random, django, os

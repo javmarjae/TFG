@@ -1,8 +1,5 @@
-import numpy as np
 from django.db.models import Q
 from .models import User, Gameship, Friendship, Gamer, UserMatrix
-from sklearn.metrics.pairwise import cosine_similarity
-from numpy.linalg import norm
 
 def create_user_matrix():
     language_index = {'EN': 0, 'SP': 1, 'FR': 2, 'GE': 3, 'CH': 4}
@@ -36,6 +33,3 @@ def recommended_users(user):
     users = UserMatrix.objects.exclude(user=user)
     friends = Friendship.objects.filter(Q(sender=gamer, status='ac') | Q(receiver=gamer, status='ac')).values_list('sender__user_id', 'receiver__user_id')
     users = [idx for idx in users if users[idx].user.id not in [user_id for user_id in friends]]
-
-    for u in users:
-        top_users = dice_coefficient(u,user)

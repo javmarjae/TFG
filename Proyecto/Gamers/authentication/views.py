@@ -107,7 +107,7 @@ def custom_login(request):
 
         else:
             for error in list(form.errors.values()):
-                messages.error(request, error) 
+                messages.error(request, error)
 
     form = forms.UserLoginForm()
 
@@ -155,8 +155,8 @@ def password_reset_request(request):
                         """
                         <h2>Password reset sent</h2><hr>
                         <p>
-                            We've emailed you instructions for setting your password, if an account exists with the email you entered. 
-                            You should receive them shortly.<br>If you don't receive an email, please make sure you've entered the address 
+                            We've emailed you instructions for setting your password, if an account exists with the email you entered.
+                            You should receive them shortly.<br>If you don't receive an email, please make sure you've entered the address
                             you registered with, and check your spam folder.
                         </p>
                         """
@@ -168,8 +168,8 @@ def password_reset_request(request):
 
     form = forms.PasswordResetForm()
     return render(
-        request=request, 
-        template_name="password_reset.html", 
+        request,
+        template_name="password_reset.html",
         context={"form": form}
         )
 

@@ -1,9 +1,9 @@
 :root {
-    --footercolor: #333;
-    --navbarcolor: #333;
-    --btncolor: #333;
-    --socialcolor: #333;
-    --brightText: #ffffff;
+  --footercolor:#333;
+  --navbarcolor:#333;
+  --btncolor:#333;
+  --socialcolor:#333;
+  --brightText:#ffffff;
 }
 
 /* Navigation Bar */

@@ -1,25 +1,14 @@
-from datetime import datetime
-from unicodedata import name
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
-from django.contrib.auth import get_user_model, login, logout, authenticate
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils import timezone
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
-from django.core.mail import EmailMessage
 from django.db.models import Q, Count
-from django.views.decorators.csrf import csrf_exempt
 from django.db.models.functions import Lower
 from django.core.paginator import Paginator
 from unidecode import unidecode
 
-from .recommendation import create_user_matrix, recommended_users
-
-from .forms import ClanCreateForm, ClanUpdateForm, GamerClanUpdateForm, GameshipUpdateForm, UserRegisterForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, GamerUpdateForm
+from .forms import ClanUpdateForm, GamerClanUpdateForm, GameshipUpdateForm, UserUpdateForm, GamerUpdateForm
 from .models import Game, Gamer, Gameship, User, Friendship, Clan
 from chat.models import Thread
 
@@ -35,7 +24,7 @@ def index(request):
         request,
         'index.html',
         context= {
-            'users': [(u,Gamer.objects.filter(user=u),Gameship.objects.filter(gamer=Gamer.objects.filter(user=u).first()).count()) for u in users], 
+            'users': [(u,Gamer.objects.filter(user=u),Gameship.objects.filter(gamer=Gamer.objects.filter(user=u).first()).count()) for u in users],
             'clans':[(c,Gamer.objects.filter(clan=c).count()) for c in clans]
         },
     )
@@ -179,7 +168,7 @@ def profile(request, username):
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-   
+
     user = get_user_model().objects.filter(username=username).first()
     gamer = Gamer.objects.filter(user=user).first()
     gameships = Gameship.objects.filter(gamer=gamer).select_related('game')
@@ -190,8 +179,8 @@ def profile(request, username):
         form2 = GamerUpdateForm(instance=gamer)
         form3 = GameshipUpdateForm()
         return render(
-            request = request, 
-            template_name='profile.html', 
+            request,
+            template_name='profile.html',
             context={
                 'form': form,
                 'form2': form2,
@@ -201,7 +190,7 @@ def profile(request, username):
                 'gamer': gamer,
                 'gamerclan':clan
             }
-            )      
+            )
 
     return redirect("index")
 
@@ -242,7 +231,7 @@ def clans(request):
 
     if orden_fecha:
         if orden_fecha=='fecharec':
-            clans = clans.order_by('-join_date') 
+            clans = clans.order_by('-join_date')
         elif orden_fecha=='fechaant':
             clans = clans.order_by('join_date')
         else:
@@ -250,11 +239,11 @@ def clans(request):
 
     if orden_miembros:
         if orden_miembros=='maymiem':
-            clans = clans.order_by('-num_members') 
+            clans = clans.order_by('-num_members')
         elif orden_miembros=='menmiem':
-            clans = clans.order_by('num_members') 
+            clans = clans.order_by('num_members')
         else:
-            clans = clans.order_by('id') 
+            clans = clans.order_by('id')
 
 
     if campo_texto:
@@ -340,8 +329,8 @@ def clanprofile(request, name):
             request,
             'clanprofile.html',
             context={
-                'clan':clan, 
-                'members':[(m,Gameship.objects.filter(gamer=m).count()) for m in members], 
+                'clan':clan,
+                'members':[(m,Gameship.objects.filter(gamer=m).count()) for m in members],
                 'gamer':gamer,
                 'form1':form1,
                 'form2':form2

@@ -151,7 +151,7 @@ class Gameship(models.Model):
 
     def __str__(self) -> str:
         return '%s-%s' % (self.gamer,self.game)
-    
+
     class Meta:
         unique_together = ('game','gamer')
 

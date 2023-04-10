@@ -1,4 +1,3 @@
-from attr import fields
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordResetForm
 from django.contrib.auth import get_user_model
