@@ -4,28 +4,28 @@
 {% load static %}
 <div class="form-group" style="display: inline;">
     <h2 style="display: block; text-align: center;">Filter</h2>
-    <form method="GET" id="mi-formulario" class="row" style="border-radius: 10px;" action="{% url 'clans' %}">
+    <form method="GET" id="mi-formulario" class="row" style="border-radius: 10px; margin-left: 1px;" action="{% url 'clans' %}">
         {% csrf_token %}
         <div class="col">
             <p>Número de miembros:</p>
-            <input type="number" {% if min_miembros %}value="{{min_miembros}}"{% endif %} name="minimo" id="minimo" min="0" max="{{menosmiembros}}" placeholder="Mínimo...">
-            <input type="number" {% if max_miembros %}value="{{max_miembros}}"{% endif %} name="maximo" id="maximo" min="{{menosmiembros}}"max="{{masmiembros}}" placeholder="Máximo ({{masmiembros}})...">
+            <input type="number" style="border-radius: 10px;" {% if min_miembros %}value="{{min_miembros}}"{% endif %} name="minimo" id="minimo" min="0" max="{{menosmiembros}}" placeholder="Mínimo...">
+            <input type="number" style="border-radius: 10px;" {% if max_miembros %}value="{{max_miembros}}"{% endif %} name="maximo" id="maximo" min="{{menosmiembros}}"max="{{masmiembros}}" placeholder="Máximo ({{masmiembros}})...">
         </div>
         <div class="col">
             <p>Ordenar por:</p>
-            <select name="ordenfecha" id="ordenfecha" style="margin: 5px 0 22px 0;">
+            <select name="ordenfecha" id="ordenfecha" style="border-radius: 10px; margin: 5px 0 28px 0;">
                 <option value="ning">Fecha...</option>
                 <option {% if "fecharec" in orden_fecha %}selected{% endif %} value="fecharec">Nuevos</option>
                 <option {% if "fechaant" in orden_fecha %}selected{% endif %} value="fechaant">Antiguos</option>
             </select>
-            <select name="ordenmiembros" id="ordenmiembros">
+            <select name="ordenmiembros" id="ordenmiembros" style="border-radius: 10px;"">
                 <option value="ning">Miembros...</option>
                 <option {% if "maymiem" in orden_miembros %}selected{% endif %} value="maymiem">Más miembros</option>
                 <option {% if "menmiem" in orden_miembros %}selected{% endif %} value="menmiem">Menos miembros</option>
             </select>
         </div>
         <div class="col">
-            <input type="text" placeholder="Buscar clan..." id="busqueda" name="busqueda" {% if busqueda %} value="{{busqueda}}" {% endif %}>
+            <input type="text" style="border-radius: 10px; margin-top: 8%;" placeholder="Buscar clan..." id="busqueda" name="busqueda" {% if busqueda %} value="{{busqueda}}" {% endif %}>
             <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">Buscar</button>
             <button class="btn btn-danger mb-3" type="submit" style="border-radius: 12px;" name="restart">Restablecer filtros</button>
         </div>
@@ -80,6 +80,28 @@
                 </div>
             </div>
         {% endfor %}
+    </div>
+</div>
+
+<div class="container" style="text-align: center;">
+    <div class="pagination">
+      {% if page.has_previous %}
+        <a href="?page=1{% if min_miembros %}&minimo={{min_miembros}}{% endif %}{% if max_miembros %}&maximo={{max_miembros}}{% endif %}{% if orden_fecha %}&ordenfecha={{orden_fecha}}{% endif %}{% if orden_miembros %}&ordenmiembros={{orden_miembros}}{% endif %}{% if busqueda %}&busqueda={{busqueda}}{% endif %}">&laquo; 1 </a>
+        {% if page.previous_page_number != 1 %}
+        <p>...</p>
+          <a href="?page={{ page.previous_page_number }}{% if min_miembros %}&minimo={{min_miembros}}{% endif %}{% if max_miembros %}&maximo={{max_miembros}}{% endif %}{% if orden_fecha %}&ordenfecha={{orden_fecha}}{% endif %}{% if orden_miembros %}&ordenmiembros={{orden_miembros}}{% endif %}{% if busqueda %}&busqueda={{busqueda}}{% endif %}"> {{ page.previous_page_number }} </a>
+        {% endif %}
+      {% endif %}
+  
+      <a href="#" class="activepage"> {{ page.number }} </a>
+  
+      {% if page.has_next %}
+        {% if page.next_page_number != page.paginator.num_pages %}
+          <a href="?page={{ page.next_page_number }}{% if min_miembros %}&minimo={{min_miembros}}{% endif %}{% if max_miembros %}&maximo={{max_miembros}}{% endif %}{% if orden_fecha %}&ordenfecha={{orden_fecha}}{% endif %}{% if orden_miembros %}&ordenmiembros={{orden_miembros}}{% endif %}{% if busqueda %}&busqueda={{busqueda}}{% endif %}"> {{ page.next_page_number }} </a>
+          <p>...</p>
+        {% endif %}
+        <a href="?page={{ page.paginator.num_pages }}{% if min_miembros %}&minimo={{min_miembros}}{% endif %}{% if max_miembros %}&maximo={{max_miembros}}{% endif %}{% if orden_fecha %}&ordenfecha={{orden_fecha}}{% endif %}{% if orden_miembros %}&ordenmiembros={{orden_miembros}}{% endif %}{% if busqueda %}&busqueda={{busqueda}}{% endif %}"> {{ page.paginator.num_pages }} &raquo;</a>
+      {% endif %}
     </div>
 </div>
     

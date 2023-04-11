@@ -10,32 +10,34 @@
     </div>
     <div class="container" style="width: 100%;">
         <div class="col-md-6">
-        {% for solicitud in solicitudes %}
-            <div style="display: inline;">
-                <div class="grid-wrapper">
-                    <div class="user_card" style="margin-bottom: 8px; width: 100%;">
-                        <div class="row" style="padding: 10px;">
-                            <div class="col">
-                                <img class="rounded-circle user_img" src="{{ solicitud.sender.user.profile_pic.url }}">
-                            </div>
-                            <div class="col" style="margin-top: 2%;">
-                                <h2><a href="{% url 'profile' solicitud.sender.user %}" style="color: black; text-decoration: none;">{{ solicitud.sender.user.username }}</a></h2>                
-                            </div>
-                            <div class="col" style="margin-top: 1%;">
-                                <button type="submit" class="addgamebtn" name="accept" form="friendrequest"><i class="fa fa-check"></i> Accept</button>
-                            </div>
-                            <div class="col" style="margin-top: 1%;">
-                                <button type="submit" class="cancelbtn" name="decline" form="friendrequest"><i class="fa fa-xmark"></i> Decline</button>
+            <div class="row">
+                {% for solicitud in solicitudes %}
+                    <div style="display: inline;">
+                        <div class="grid-wrapper">
+                            <div class="user_card" style="margin-bottom: 8px; width: 100%;">
+                                <div class="row" style="padding: 10px;">
+                                    <div class="col">
+                                        <img class="rounded-circle user_img" src="{{ solicitud.sender.user.profile_pic.url }}">
+                                    </div>
+                                    <div class="col" style="margin-top: 2%;">
+                                        <h2><a href="{% url 'profile' solicitud.sender.user %}" style="color: black; text-decoration: none;">{{ solicitud.sender.user.username }}</a></h2>                
+                                    </div>
+                                    <div class="col" style="margin-top: 1%;">
+                                        <button type="submit" class="addgamebtn" name="accept" form="friendrequest"><i class="fa fa-check"></i> Accept</button>
+                                    </div>
+                                    <div class="col" style="margin-top: 1%;">
+                                        <button type="submit" class="cancelbtn" name="decline" form="friendrequest"><i class="fa fa-xmark"></i> Decline</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <form method="POST" id="friendrequest" style="display: none;">
+                        {% csrf_token %}
+                        <input type="hidden" name="solicitud" id="solicitud" value="{{solicitud.id}}">
+                    </form>
+                {% endfor %}
             </div>
-            <form method="POST" id="friendrequest" style="display: none;">
-                {% csrf_token %}
-                <input type="hidden" name="solicitud" id="solicitud" value="{{solicitud.id}}">
-            </form>
-        {% endfor %}
         </div>
     </div>
 {% endif %}

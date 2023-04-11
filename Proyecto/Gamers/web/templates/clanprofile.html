@@ -30,7 +30,7 @@
     </form>
     <form method="POST" style="border-radius: 10px; width: 10%; float: right;" action="">
         {% csrf_token %}
-        <input type="text" placeholder="Buscar gamer..." id="busqueda" name="busqueda">
+        <input style="border-radius: 10px;" type="text" {% if busqueda %} value="{{busqueda}}" {% endif %} placeholder="Buscar gamer..." id="busqueda" name="busqueda">
         <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">
             Buscar
         </button>
@@ -84,48 +84,76 @@
     
 <hr>
 <div class="container" style="width: 75%;">
-    {% for member, numjuegos in members %}
-    <div class="col-md-6">
-        <div class="grid-wrapper">
-            <div class="user_card" style="margin-bottom: 8px; width: 100%;">
-                <div class="row" style="padding: 10px;">
-                    <div class="col">
-                        <img class="rounded-circle user_img" src="{{ member.user.profile_pic.url }}">
-                    </div>
-                    <div class="col" style="margin-top: 3%;">
-                        <h2><a href="{% url 'profile' member.user %}" style="color: black; text-decoration: none;">{{ member.user.username }}</a></h2>                
-                    </div>
-                    <div class="col" style="margin-top: 3%;">
-                        {% if member.discord != '' %}
-                        <img src="{% static 'img/discord.png' %}" style="width: 100%;">
-                        {% endif %}
-                    </div>
-                    <div class="col" style="margin-top: 3%;">
-                        {% if member.steam != '' %}
-                        <img src="{% static 'img/steam.png' %}" style="width: 100%;">
-                        {% endif %}
-                    </div>
-                    <div class="col" style="margin-top: 3%;">
-                        {% if member.epic_games != '' %}
-                        <img src="{% static 'img/epicgames.png' %}" style="width: 100%;">
-                        {% endif %}
-                    </div>
-                    <div class="col" style="margin-top: 3%;">
-                        {% if member.riot_games != '' %}
-                        <img src="{% static 'img/riotgames.png' %}" style="width: 100%;">
-                        {% endif %}
-                    </div>
-                    <div class="col" style="margin-top: 0%;">
-                        {% if numjuegos != 0 %}
-                        <h2><i class="fas fa-gamepad"></i>{{numjuegos}}</h2>
-                        {% endif %}
+    <div class="row">
+        {% for member, numjuegos in members %}
+        <div class="col-md-6">
+            <div class="grid-wrapper">
+                <div class="user_card" style="margin-bottom: 8px; width: 100%;">
+                    <div class="row" style="padding: 10px;">
+                        <div class="col">
+                            <img class="rounded-circle user_img" src="{{ member.user.profile_pic.url }}">
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                              <h2><a href="{% url 'profile' user %}" style="color: black; text-decoration: none;">{{ member.user.username }}</a></h2> 
+                            </div>
+                            <div class="row">
+                              <div class="col">
+                                {% if member.discord != '' %}
+                                  <img src="{% static 'img/discord.png' %}" style="width: 100%;">
+                                {% endif %}
+                              </div>
+                              <div class="col">
+                                {% if member.steam != '' %}
+                                  <img src="{% static 'img/steam.png' %}" style="width: 100%;">
+                                {% endif %}
+                              </div>
+                              <div class="col">
+                                {% if member.epic_games != '' %}
+                                  <img src="{% static 'img/epicgames.png' %}" style="width: 100%;">
+                                {% endif %}
+                              </div>
+                              <div class="col">
+                                {% if member.riot_games != '' %}
+                                  <img src="{% static 'img/riotgames.png' %}" style="width: 100%;">
+                                {% endif %}
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col" style="margin-top: 0%;">
+                            {% if numjuegos != 0 %}
+                            <h2><i class="fas fa-gamepad"></i>{{numjuegos}}</h2>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
+
+<div class="container" style="text-align: center;">
+    <div class="pagination">
+      {% if page.has_previous %}
+        <a href="?page=1{% if busqueda %}&busqueda={{busqueda}}{% endif %}">&laquo; 1 </a>
+        {% if page.previous_page_number != 1 %}
+        <p>...</p>
+          <a href="?page={{ page.previous_page_number }}{% if busqueda %}&busqueda={{busqueda}}{% endif %}"> {{ page.previous_page_number }} </a>
+        {% endif %}
+      {% endif %}
+  
+      <a href="#" class="activepage"> {{ page.number }} </a>
+  
+      {% if page.has_next %}
+        {% if page.next_page_number != page.paginator.num_pages %}
+          <a href="?page={{ page.next_page_number }}{% if busqueda %}&busqueda={{busqueda}}{% endif %}"> {{ page.next_page_number }} </a>
+          <p>...</p>
+        {% endif %}
+        <a href="?page={{ page.paginator.num_pages }}{% if busqueda %}&busqueda={{busqueda}}{% endif %}"> {{ page.paginator.num_pages }} &raquo;</a>
+      {% endif %}
+    </div>
+  </div>
 
 <script type="text/javascript" src="{% static 'js/accordion.js' %}"></script>
 

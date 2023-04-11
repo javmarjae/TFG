@@ -257,6 +257,11 @@ def clans(request):
         orden_miembros = ''
         clans = clans.order_by('id')
 
+    paginator = Paginator(clans,20)
+    page_number = request.GET.get('page')
+    page_object = paginator.get_page(page_number)
+    clans = page_object.object_list
+
     form1 = ClanUpdateForm()
     return render(
         request,
@@ -271,7 +276,8 @@ def clans(request):
             'min_miembros':min_miembros,
             'max_miembros':max_miembros,
             'orden_fecha':orden_fecha,
-            'orden_miembros':orden_miembros
+            'orden_miembros':orden_miembros,
+            'page': page_object,
         }
     )
 
@@ -280,6 +286,8 @@ def clanprofile(request, name):
     gamer = Gamer.objects.filter(user=request.user).first()
     clan = Clan.objects.filter(name=name).first()
     members = Gamer.objects.filter(clan=clan).select_related('user')
+    campo_texto = request.POST.get('busqueda')
+
     if request.method == 'POST' and 'joinclan' in request.POST:
         form1 = GamerClanUpdateForm(request.POST, request.FILES, instance=gamer)
         if form1.is_valid():
@@ -319,8 +327,13 @@ def clanprofile(request, name):
             messages.error(request, error)
             return redirect("clan", name)
         
-    if 'busqueda' in request.POST:
+    if campo_texto:
         members = members.annotate(name_m=Lower('user__username')).filter(name_m__icontains=unidecode(request.POST.get('busqueda').lower()))
+
+    paginator = Paginator(members,20)
+    page_number = request.GET.get('page')
+    page_object = paginator.get_page(page_number)
+    members = page_object.object_list
 
     if clan:
         form1 = GamerClanUpdateForm(instance=gamer)
@@ -333,7 +346,9 @@ def clanprofile(request, name):
                 'members':[(m,Gameship.objects.filter(gamer=m).count()) for m in members],
                 'gamer':gamer,
                 'form1':form1,
-                'form2':form2
+                'form2':form2,
+                'page':page_object,
+                'busqueda':campo_texto
             }
             )
 

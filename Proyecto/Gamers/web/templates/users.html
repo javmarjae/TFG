@@ -4,11 +4,11 @@
 {% load static %}
 <div class="form-group" style="display: inline;">
   <h2 style="display: block; text-align: center;">Filter</h2>
-    <form method="GET" class="row" style="border-radius: 10px;" action="{% url 'users' %}">
+    <form method="GET" class="row" style="border-radius: 10px; margin-left: 1px;" action="{% url 'users' %}">
         {% csrf_token %}
         <div class="col">
-          <span>Languages</span>
-          <select name="languages" id="languages" multiple>
+          <h3>Languages</h3>
+          <select style="border-radius: 10px;" name="languages" id="languages" multiple>
             {% for val,name in languages %}
               <option value="{{val}}" {% if val in selected_languages %} selected {% endif %}>
                 {{name}}
@@ -17,8 +17,8 @@
           </select>
         </div>
         <div class="col">
-          <span>Games</span>
-          <select name="games" id="games" multiple>
+          <h3>Games</h3>
+          <select style="border-radius: 10px;" name="games" id="games" multiple>
             {% for val,name in games %}
               <option value="{{val}}" {% if val in selected_games %} selected {% endif %}>
                 {{name}}
@@ -27,8 +27,8 @@
           </select>
         </div>
         <div class="col">
-          <span>Ranks</span>
-          <select name="ranks" id="ranks" multiple>
+          <h3>Ranks</h3>
+          <select style="border-radius: 10px;" name="ranks" id="ranks" multiple>
             {% for val,ranks in ranks %}
               <optgroup label="{{val}}">
                 {% for rank in ranks %}
@@ -41,7 +41,7 @@
           </select>
         </div>
         <div class="col">
-          <input type="text" placeholder="Buscar gamer..." id="busqueda" name="busqueda" {% if busqueda %} value="{{busqueda}}" {% endif %}>
+          <input type="text" style="border-radius: 10px; margin-top: 8%;" placeholder="Buscar gamer..." id="busqueda" name="busqueda" {% if busqueda %} value="{{busqueda}}" {% endif %}>
           <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">Buscar</button>
           <button class="btn btn-danger mb-3" type="submit" style="border-radius: 12px;" name="restart">Restablecer filtros</button>
         </div>
