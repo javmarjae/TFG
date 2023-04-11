@@ -25,15 +25,15 @@
           </div>
         </div>
         <div class="card-body contacts_body">
-          <ui class="contacts">
+          <ul class="contacts">
             {% for thread in Threads %}
               <li class="{% if forloop.first %}active{% endif %} contact-li" chat-id="chat_{{ thread.id }}" style="cursor: pointer">
                 <div class="d-flex bd-highlight">
                   <div class="img_cont">
                     {% if thread.first_person == user %}
-                      <img src="{{ thread.second_person.profile_pic.url }}" class="rounded-circle user_img">
+                      <img src="{{ thread.second_person.profile_pic.url }}" class="rounded-circle user_img" alt="">
                     {% else %}
-                      <img src="{{ thread.first_person.profile_pic.url }}" class="rounded-circle user_img">
+                      <img src="{{ thread.first_person.profile_pic.url }}" class="rounded-circle user_img" alt="">
                     {% endif %}
                   </div>
                   <div class="user_info">
@@ -46,7 +46,7 @@
                 </div>
               </li>
             {% endfor %}
-          </ui>
+          </ul>
         </div>
         <div class="card-footer" style="width: 94%;"></div>
       </div>
@@ -64,9 +64,9 @@
                 <div class="d-flex bd-highlight">
                   <div class="img_cont">
                     {% if thread.first_person == user %}
-                      <img src="{{ thread.second_person.profile_pic.url }}" class="rounded-circle user_img">
+                      <img src="{{ thread.second_person.profile_pic.url }}" class="rounded-circle user_img" alt="">
                     {% else %}
-                      <img src="{{ thread.first_person.profile_pic.url }}" class="rounded-circle user_img">
+                      <img src="{{ thread.first_person.profile_pic.url }}" class="rounded-circle user_img" alt="">
                     {% endif %}
                   </div>
                   <div class="user_info">
@@ -89,14 +89,14 @@
                         <span class="msg_time_send">{{ chat.timestamp|date:"d D" }}, {{ chat.timestamp|time:"H:i" }}</span>
                       </div>
                       <div class="img_cont_msg">
-                        <img src="{{ user.profile_pic.url }}" class="rounded-circle user_img_msg">
+                        <img src="{{ user.profile_pic.url }}" class="rounded-circle user_img_msg" alt="">
                         <input type="hidden" id="logged-in-user-pic" value="{{ user.profile_pic.url }}">
                       </div>
                     </div>
                   {% else %}
                     <div class="d-flex mb-4 received">
                       <div class="img_cont_msg">
-                        <img src="{{ chat.user.profile_pic.url }}" class="rounded-circle user_img_msg">
+                        <img src="{{ chat.user.profile_pic.url }}" class="rounded-circle user_img_msg" alt="">
                         <input type="hidden" id="other-user-pic" value="{{ chat.user.profile_pic.url }}">
                       </div>
                       <div class="msg_cotainer">

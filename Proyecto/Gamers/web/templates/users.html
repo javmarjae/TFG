@@ -55,7 +55,7 @@
         <div class="user_card" style="margin-bottom: 8px; width: 100%;">
           <div class="row" style="padding: 10px;">
             <div class="col">
-              <img class="rounded-circle user_img" style="object-fit: cover;" src="{{ user.profile_pic.url }}">
+              <img class="rounded-circle user_img" style="object-fit: cover;" src="{{ user.profile_pic.url }}" alt="">
             </div>
             <div class="col">
               <div class="row">
@@ -64,22 +64,22 @@
               <div class="row">
                 <div class="col">
                   {% if gamer.discord != '' %}
-                    <img src="{% static 'img/discord.png' %}" style="width: 100%;">
+                    <img src="{% static 'img/discord.png' %}" style="width: 100%;" alt="">
                   {% endif %}
                 </div>
                 <div class="col">
                   {% if gamer.steam != '' %}
-                    <img src="{% static 'img/steam.png' %}" style="width: 100%;">
+                    <img src="{% static 'img/steam.png' %}" style="width: 100%;" alt="">
                   {% endif %}
                 </div>
                 <div class="col">
                   {% if gamer.epic_games != '' %}
-                    <img src="{% static 'img/epicgames.png' %}" style="width: 100%;">
+                    <img src="{% static 'img/epicgames.png' %}" style="width: 100%;" alt="">
                   {% endif %}
                 </div>
                 <div class="col">
                   {% if gamer.riot_games != '' %}
-                    <img src="{% static 'img/riotgames.png' %}" style="width: 100%;">
+                    <img src="{% static 'img/riotgames.png' %}" style="width: 100%;" alt="">
                   {% endif %}
                 </div>
               </div>
