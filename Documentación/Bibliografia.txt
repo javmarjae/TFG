@@ -18,4 +18,25 @@ https://www.honeybadger.io/blog/django-channels-websockets-chat/
 https://towardsdatascience.com/generating-random-data-into-a-database-using-python-fd2f7d54024e
 https://faker.readthedocs.io/en/master/
 
+Objetivos funcionales
+PRIORIDAD ALTA
+-Sistema de recomendación
+-Chat en tiempo real /HECHO/
+-Sistema de clanes /HECHO/ *Ampliable*
+-Sistema de amigos /HECHO/
+
+PRIORIDAD MEDIA
+-Amigos en común /Se puede hacer/
+-Verificación /Se puede hacer fácil/
+-Rating de usuarios /Difícil/
+
+PRIORIDAD BAJA
+-Reporte de usuarios /Se puede hacer fácil/
+-Vinculación de APIS:
+    Para la API de Steam tengo q registrar la web en un dominio
+    API Discord (se ve chungo): https://discord.com/developers/docs/topics/oauth2
+    API Epic Games: tiene mala pinta
+    API Riot Games (poca escalabilidad): https://developer.riotgames.com/docs/portal#_getting-started
+-Doble autenticación para log in /Difícil/
+
 python manage.py shell < populateDB.py
