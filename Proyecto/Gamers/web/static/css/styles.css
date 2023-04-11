@@ -699,19 +699,18 @@ a.hover {
 .hide{
   display: none;
 }
-/* Hide scrollbar for Chrome, Safari and Opera */
+
 .msg_card_body::-webkit-scrollbar {
   display: none;
 }
-/* Hide scrollbar for IE, Edge and Firefox */
+
 .msg_card_body {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
 }
 .messages-wrapper{
   height: 100%;
 }
-
 
 /* Paginacion */
 .pagination a {

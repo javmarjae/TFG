@@ -7,12 +7,12 @@
     <form method="GET" id="mi-formulario" class="row" style="border-radius: 10px; margin-left: 1px;" action="{% url 'clans' %}">
         {% csrf_token %}
         <div class="col">
-            <p>Número de miembros:</p>
+            <h3>Número de miembros:</h3>
             <input type="number" style="border-radius: 10px;" {% if min_miembros %}value="{{min_miembros}}"{% endif %} name="minimo" id="minimo" min="0" max="{{menosmiembros}}" placeholder="Mínimo...">
             <input type="number" style="border-radius: 10px;" {% if max_miembros %}value="{{max_miembros}}"{% endif %} name="maximo" id="maximo" min="{{menosmiembros}}"max="{{masmiembros}}" placeholder="Máximo ({{masmiembros}})...">
         </div>
         <div class="col">
-            <p>Ordenar por:</p>
+            <h3>Ordenar por:</h3>
             <select name="ordenfecha" id="ordenfecha" style="border-radius: 10px; margin: 5px 0 28px 0;">
                 <option value="ning">Fecha...</option>
                 <option {% if "fecharec" in orden_fecha %}selected{% endif %} value="fecharec">Nuevos</option>
@@ -26,8 +26,11 @@
         </div>
         <div class="col">
             <input type="text" style="border-radius: 10px; margin-top: 8%;" placeholder="Buscar clan..." id="busqueda" name="busqueda" {% if busqueda %} value="{{busqueda}}" {% endif %}>
-            <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">Buscar</button>
-            <button class="btn btn-danger mb-3" type="submit" style="border-radius: 12px;" name="restart">Restablecer filtros</button>
+            <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">Search</button>
+            <button class="btn btn-danger mb-3" type="submit" style="border-radius: 12px;" name="restart">Reset filters</button>
+            {% if gamer.clan != null %}
+                <a href="{% url 'clan' gamer.clan.name %}" class="button btn btn-success mb-3" style="border-radius: 12px;">My clan</a>
+            {% endif %}
         </div>
     </form>
 </div>
@@ -54,7 +57,7 @@
             </div>
             <input type="hidden" id="leader" name="leader" value=" {{ gamer.user.username }} ">
             <div class="container" style="background-color: #f1f1f1;">
-                <button class="updatebtn" name="btnform2" type="submit">Update</button>
+                <button class="updatebtn" name="btnform2" type="submit">Create</button>
                 <button type="button" onclick="document.getElementById('id01').style.display='none'"
                     class="cancelbtn">Cancel</button>
             </div>

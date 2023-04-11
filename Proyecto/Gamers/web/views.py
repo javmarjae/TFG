@@ -287,6 +287,13 @@ def clanprofile(request, name):
     clan = Clan.objects.filter(name=name).first()
     members = Gamer.objects.filter(clan=clan).select_related('user')
     campo_texto = request.POST.get('busqueda')
+    expels = request.POST.getlist('expelmember')
+
+    if expels:
+        for expel in expels:
+            member = Gamer.objects.filter(user__username=expel).first()
+            member.clan = None
+            member.save()
 
     if request.method == 'POST' and 'joinclan' in request.POST:
         form1 = GamerClanUpdateForm(request.POST, request.FILES, instance=gamer)
@@ -300,28 +307,26 @@ def clanprofile(request, name):
             return redirect("clan", name)
     
     if request.method == 'POST' and 'exitclan' in request.POST:
-        form1 = GamerClanUpdateForm(request.POST, request.FILES, instance=gamer)
-        if form1.is_valid():
-            form1.save()
-            messages.success(request, f'You have abandoned this clan!')
-            members = Gamer.objects.filter(clan=clan).select_related('user')
-            if members.count() <= 0:
-                clan.delete()
-            else:
-                if clan.leader == request.user.username:
-                    clan.leader = members[1].user.username
-            return redirect("clans")
-
-        for error in list(form1.errors.values()):
-            messages.error(request, error)
-            return redirect("clan", name)
+        members = Gamer.objects.filter(clan=clan).select_related('user').count()
+        if members <= 1:
+            clan.delete()
+            gamer.clan = None
+            gamer.save()
+            messages.success(request, 'You have abandoned this clan!')
+        elif clan.leader == request.user.username:
+            messages.error(request,'You have to choose another clan leader before exiting!')
+            return redirect('clan',clan.name)
+        else:
+            gamer.clan = None
+            gamer.save()
+            messages.success(request, 'You have abandoned this clan!')
+        return redirect("clans")
 
     if request.method == 'POST' and 'btnform2' in request.POST:
         form2 = ClanUpdateForm(request.POST, request.FILES, instance=clan)
         if form2.is_valid():
-            clan_form = form2.save()
+            form2.save()
             messages.success(request, f'You have edited this clan!')
-            return redirect("clan", clan_form.name)
 
         for error in list(form2.errors.values()):
             messages.error(request, error)
@@ -334,6 +339,8 @@ def clanprofile(request, name):
     page_number = request.GET.get('page')
     page_object = paginator.get_page(page_number)
     members = page_object.object_list
+
+    all_members = Gamer.objects.filter(clan=clan).select_related('user')
 
     if clan:
         form1 = GamerClanUpdateForm(instance=gamer)
@@ -348,7 +355,9 @@ def clanprofile(request, name):
                 'form1':form1,
                 'form2':form2,
                 'page':page_object,
-                'busqueda':campo_texto
+                'busqueda':campo_texto,
+                'allmembers':all_members,
+                'nummembers':all_members.count()
             }
             )
 
