@@ -3,13 +3,13 @@
   --navbarcolor:#333;
   --btncolor:#333;
   --socialcolor:#333;
-  --brightText:#ffffff;
+  --brightText:#fff;
 }
 
 /* Navigation Bar and Footer */
 #navbar {
   position: fixed;
-  top: 0px;
+  top: 0;
   width: 100%;
   left: 0;
   z-index: 100;
@@ -55,8 +55,7 @@
   border-radius: 10%;
 }
 
-@media
-(prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
   }
@@ -68,10 +67,9 @@
   position: relative;
 }
 
-.aspect-ratio-box::after{
+.aspect-ratio-box::after {
   display: block;
   content: '';
-  /* 16:9 aspect ratio, 9 / 16 * 100% = 56.25% */
   padding-bottom: 56.25%;
 }
 
@@ -95,7 +93,9 @@ hr {
   margin-bottom: 25px;
 }
 
-* {box-sizing: border-box}
+* {
+  box-sizing: border-box
+}
 
 .container {
   padding: 16px;
@@ -145,7 +145,7 @@ hr {
   margin-top: 6px;
 }
 
-.row:after {
+.row::after {
   content: "";
   display: table;
   clear: both;
@@ -160,7 +160,7 @@ hr {
 /* Botón de registro */
 
 .registerbtn {
-  background-color: #04AA6D;
+  background-color: #04aa6d;
   color: white;
   padding: 16px 20px;
   margin: 8px 0;
@@ -171,7 +171,7 @@ hr {
 }
 
 .registerbtn:hover {
-  opacity:1;
+  opacity: 1;
 }
 
 /* Campos de entrada de formularios */
@@ -206,7 +206,7 @@ a {
 /* Colores letras de logos */
 
 #discords {
-  color: #5865F2;
+  color: #5865f2;
 }
 
 #riots {
@@ -214,7 +214,7 @@ a {
 }
 
 #steams {
-  color: #144B7E;
+  color: #144b7e;
 }
 
 #epics {
@@ -247,7 +247,7 @@ a {
   transition: max-height 0.2s ease-out;
 }
 
-.accordion:after {
+.accordion::after {
   content: '\02795';
   font-size: 13px;
   color: #777;
@@ -255,41 +255,39 @@ a {
   margin-left: 5px;
 }
 
-.active:after {
+.active::after {
   content: "\2796";
 }
 
 /* Efecto parpadeo status */
 
-.parpadea {
-  
+.parpadea {  
   animation-name: parpadeo;
   animation-duration: 2.5s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-
-  -webkit-animation-name:parpadeo;
+  -webkit-animation-name: parpadeo;
   -webkit-animation-duration: 2.5s;
   -webkit-animation-timing-function: linear;
   -webkit-animation-iteration-count: infinite;
 }
 
-@-moz-keyframes parpadeo{  
-  0% { opacity: 1.0; }
+@-moz-keyframes parpadeo {
+  0% { opacity: 1; }
   50% { opacity: 0.1; }
-  100% { opacity: 1.0; }
+  100% { opacity: 1; }
 }
 
-@-webkit-keyframes parpadeo {  
-  0% { opacity: 1.0; }
+@-webkit-keyframes parpadeo {
+  0% { opacity: 1; }
   50% { opacity: 0.1; }
-  100% { opacity: 1.0; }
+  100% { opacity: 1; }
 }
 
-@keyframes parpadeo {  
-  0% { opacity: 1.0; }
+@keyframes parpadeo {
+  0% { opacity: 1; }
   50% { opacity: 0.1; }
-  100% { opacity: 1.0; }
+  100% { opacity: 1; }
 }
 
 /* Editar perfil */
@@ -370,46 +368,45 @@ span.psw {
 }
 
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 101; /* Sit on top */
+  display: none;
+  position: fixed;
+  z-index: 101;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
   padding-top: 60px;
 }
 
 .modal-content {
   background-color: #fefefe;
-  margin: 5px auto; /* 15% from the top and centered */
+  margin: 5px auto;
   border: 1px solid #888;
-  width: 60%; /* Could be more or less, depending on screen size */
+  width: 60%;
 }
 
 .animate {
   -webkit-animation: animatezoom 0.6s;
-  animation: animatezoom 0.6s
+  animation: animatezoom 0.6s;
 }
 
 @-webkit-keyframes animatezoom {
-  from {-webkit-transform: scale(0)}
-  to {-webkit-transform: scale(1)}
+  from { -webkit-transform: scale(0); }
+  to { -webkit-transform: scale(1); }
 }
 
 @keyframes animatezoom {
-  from {transform: scale(0)}
-  to {transform: scale(1)}
+  from { transform: scale(0); }
+  to { transform: scale(1); }
 }
 
 /* Profile game */
 
-.gameimages{
-  display: flex; 
-  justify-content: center; 
+.gameimages {
+  display: flex;
+  justify-content: center;
   position: relative;
   margin-top: 1%;
   margin-bottom: 2%;
@@ -444,7 +441,7 @@ span.psw {
   width: 80%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
-  color: #ffffff;
+  color: #fff;
   font-family: 'Quicksand', sans-serif;
   display: flex;
   flex-direction: column;
@@ -459,7 +456,6 @@ span.psw {
 .imgbackgame__overlay--blur {
   backdrop-filter: blur(5px);
 }
-
 
 .imgbackgame__overlay > * {
   transform: translateY(20px);
@@ -529,25 +525,30 @@ a.hover {
   margin-top: auto;
   margin-bottom: auto;
 }
+
 .chat_card {
   height: 100%;
   border-radius: 15px !important;
   background-color: rgba(0, 0, 0, 0.4) !important;
 }
+
 .contacts_body {
   padding: 0.75rem 0 !important;
   overflow-y: auto;
   white-space: nowrap;
 }
+
 .msg_card_body {
   overflow-y: auto;
   max-height: 65%;
   padding-bottom: 20px;
 }
+
 .card-header {
   border-radius: 15px 15px 0 0 !important;
   border-bottom: 0 !important;
 }
+
 .card-footer {
   border-radius: 0 0 15px 15px !important;
   border-top: 0 !important;
@@ -556,16 +557,19 @@ a.hover {
   width: 100%;
   box-sizing: border-box;
 }
+
 .search {
   border-radius: 15px 0 0 15px !important;
   background-color: rgba(0, 0, 0, 0.3) !important;
   border: 0 !important;
   color: white !important;
 }
+
 .search:focus {
   box-shadow: none !important;
-  outline: 0px !important;
+  outline: 0 !important;
 }
+
 .type_msg {
   background-color: rgba(0, 0, 0, 0.3) !important;
   border: 0 !important;
@@ -573,10 +577,12 @@ a.hover {
   height: 60px !important;
   overflow-y: auto;
 }
+
 .type_msg:focus {
   box-shadow: none !important;
   outline: 0px !important;
 }
+
 .attach_btn {
   border-radius: 15px 0 0 15px !important;
   background-color: rgba(0, 0, 0, 0.3) !important;
@@ -584,6 +590,7 @@ a.hover {
   color: white !important;
   cursor: pointer;
 }
+
 .send_btn {
   border-radius: 0 15px 15px 0 !important;
   background-color: rgba(0, 0, 0, 0.3) !important;
@@ -591,6 +598,7 @@ a.hover {
   color: white !important;
   cursor: pointer;
 }
+
 .search_btn {
   border-radius: 0 15px 15px 0 !important;
   background-color: rgba(0, 0, 0, 0.3) !important;
@@ -598,51 +606,62 @@ a.hover {
   color: white !important;
   cursor: pointer;
 }
+
 .contacts {
   list-style: none;
   padding: 0;
 }
+
 .contacts li {
   width: 100% !important;
   padding: 5px 10px;
   margin-bottom: 15px !important;
 }
+
 .active {
   background-color: rgba(0, 0, 0, 0.3);
 }
+
 .user_img {
   height: 70px;
   width: 70px;
   border: 1.5px solid #f5f6fa;
   object-fit: cover;
 }
+
 .user_img_msg {
   height: 40px;
   width: 40px;
   border: 1.5px solid #f5f6fa;
 }
+
 .img_cont {
   position: relative;
   height: 70px;
   width: 70px;
 }
+
 .img_cont_msg {
   height: 40px;
   width: 40px;
 }
+
 .user_info {
   margin-top: auto;
   margin-bottom: auto;
   margin-left: 15px;
 }
+
 .user_info span {
   font-size: 20px;
   color: white;
 }
+
 .user_info p {
   font-size: 10px;
   color: rgba(255, 255, 255, 0.6);
 }
+
 .msg_cotainer {
   margin-top: auto;
   margin-bottom: auto;
@@ -654,6 +673,7 @@ a.hover {
   min-width: 70px;
   text-align: center;
 }
+
 .msg_cotainer_send {
   min-width: 70px;
   text-align: center;
@@ -665,6 +685,7 @@ a.hover {
   padding: 10px;
   position: relative;
 }
+
 .msg_time {
   position: absolute;
   left: 0;
@@ -672,6 +693,7 @@ a.hover {
   color: rgba(255, 255, 255, 0.5);
   font-size: 10px;
 }
+
 .msg_time_send {
   position: absolute;
   right: 0;
@@ -679,24 +701,30 @@ a.hover {
   color: rgba(255, 255, 255, 0.5);
   font-size: 10px;
 }
+
 .msg_head {
   position: relative;
 }
+
 @media (max-width: 576px) {
   .contacts_card {
     margin-bottom: 15px !important;
   }
 }
+
 .received {
   justify-content: flex-start;
 }
+
 .replied {
   justify-content: flex-end;
 }
-.is_active{
+
+.is_active {
   display: block !important;
 }
-.hide{
+
+.hide {
   display: none;
 }
 
@@ -708,7 +736,8 @@ a.hover {
   -ms-overflow-style: none; 
   scrollbar-width: none;
 }
-.messages-wrapper{
+
+.messages-wrapper {
   height: 100%;
 }
 
