@@ -16,9 +16,9 @@
     <div class="backgroundweb">
         <div class="media">
             {% if form.instance.is_online %}
-            <img class="rounded-circle account-img profile-image" style="margin-top: 1%;" src="{{ form.instance.profile_pic.url }}">
+            <img class="rounded-circle account-img profile-image" style="object-fit: cover; margin-top: 1%;" src="{{ form.instance.profile_pic.url }}">
             {% else %}
-            <img class="rounded-circle account-img profile-image" style="margin-top: 1%;" id="disconnected"
+            <img class="rounded-circle account-img profile-image" style="object-fit: cover; margin-top: 1%;" id="disconnected"
                 src="{{ form.instance.profile_pic.url }}">
             {% endif %}
             <div class="media-body" style="margin-left: 2%;">
@@ -43,6 +43,12 @@
                 <h4 class="text" id="riots"> <img src="{% static 'img/riotgames.png' %}" width="3.5%" height="3.5%"
                         alt="riot_games" /> {{ form2.instance.riot_games }}</h4>
             </div>
+            {% if gamerclan %}
+                <div class="media-body">
+                    <img class="rounded-circle account-img profile-image" style="margin-top: 1%; object-fit: cover;" src="{{ gamerclan.profile_pic.url }}">
+                    <h2 class="account-heading" style="display: inline-block;"><a href="{% url 'clan' gamerclan.name %}" style="color: black; text-decoration: none;">{{ gamerclan.name }}</a></h2>
+                </div>
+            {% endif %}
         </div>
 
         {% if user.username == form.instance.username %}
@@ -52,9 +58,9 @@
                 {% csrf_token %}
                 <div class="container form-group">
                     <div class="imgcontainer">
-                        <input id="id_image" type="file" name="profile_pic" hidden />
+                        <input id="id_image" type="file" name="profile_pic" accept="image/*" onchange="previewImage(event)" hidden />
                         <label for="id_image">
-                            <img class="rounded-circle account-img profile-image" style="cursor: pointer"
+                            <img id="preview" class="rounded-circle account-img profile-image" style="cursor: pointer"
                                 src="{{ form.instance.profile_pic.url }}" title="Upload new image">
                         </label>
                     </div>
@@ -228,5 +234,16 @@
             });
         });
     });
+</script>
+
+<script>
+function previewImage(event) {
+    var reader = new FileReader();
+    reader.onload = function() {
+        var output = document.getElementById('preview');
+        output.src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
 </script>
 {% endblock content %}

@@ -52,9 +52,9 @@
             {% csrf_token %}
             <div class="container form-group">
                 <div class="imgcontainer">
-                    <input id="id_image" type="file" name="profile_pic" hidden />
+                    <input id="id_image" type="file" name="profile_pic" accept="image/*" onchange="previewImage(event)" hidden />
                     <label for="id_image">
-                        <img class="rounded-circle account-img profile-image" style="cursor: pointer"
+                        <img id="preview" class="rounded-circle account-img profile-image" style="cursor: pointer"
                             src="{{ form2.instance.profile_pic.url }}" title="Upload new image">
                     </label>
                 </div>
@@ -128,5 +128,16 @@
 </div>
 
 <script type="text/javascript" src="{% static 'js/accordion.js' %}"></script>
+
+<script>
+function previewImage(event) {
+    var reader = new FileReader();
+    reader.onload = function() {
+        var output = document.getElementById('preview');
+        output.src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
+</script>
 
 {% endblock content %}

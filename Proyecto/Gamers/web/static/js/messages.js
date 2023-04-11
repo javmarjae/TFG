@@ -98,6 +98,17 @@ function newMessage(message, sent_by_id, thread_id) {
 	input_message.val(null);
 }
 
+$('.contact-li').on('click', function (){
+    $('.contacts .actiive').removeClass('active')
+    $(this).addClass('active')
+
+    // message wrappers
+    let chat_id = $(this).attr('chat-id')
+    $('.messages-wrapper.is_active').removeClass('is_active')
+    $('.messages-wrapper[chat-id="' + chat_id +'"]').addClass('is_active')
+
+})
+
 function get_active_other_user_id(){
     let other_user_id = $('.messages-wrapper.is_active').attr('other-user-id')
     other_user_id = $.trim(other_user_id)

@@ -10,7 +10,7 @@
 {% if user.is_authenticated %}
   <input type="hidden" id="logged-in-user" value="{{ user.id }}">
 {% endif %}
-<div class="container-fluid" style="height: 750px;">
+<div class="container-fluid" style="height: 750px; margin-bottom: 50px;">
   <div class="row justify-content-center h-100 ">
     <div class="col-md-4 col-xl-3 chat h-100 mt-4">
       <div class="chat_card mb-sm-3 mb-md-0 contacts_card">
@@ -129,5 +129,7 @@
     </div>
   </div>
 </div>
+
 <script src="{% static 'js/messages.js' %}"></script>
+
 {% endblock content %}

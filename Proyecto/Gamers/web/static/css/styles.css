@@ -6,7 +6,7 @@
   --brightText:#ffffff;
 }
 
-/* Navigation Bar */
+/* Navigation Bar and Footer */
 #navbar {
   position: fixed;
   top: 0px;
@@ -15,8 +15,25 @@
   z-index: 100;
 }
 
+#footer {
+  position: relative;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+}
+
+.footer-color {
+  background-color: var(--footercolor);
+}
+
 .navbar-color {
   background-color: var(--navbarcolor);
+}
+
+.site-footer .footer-nav .footer-link {
+  color: var(--brightText);
 }
 
 .site-header .navbar-nav .nav-link {
@@ -70,6 +87,7 @@
   width: 125px;
   height: 125px;
   padding: 5px;
+  object-fit: cover;
 }
 
 hr {
@@ -487,6 +505,7 @@ span.psw {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
+  justify-content: space-between;
 }
 
 a.hover {
@@ -503,6 +522,7 @@ a.hover {
   border-radius: 15px;
   background-color: rgba(0, 0, 0, 0.2);
   text-align: center;
+  grid-template-columns: repeat(7,1fr);
 }
 
 .user_card_item {
@@ -600,6 +620,7 @@ a.hover {
   height: 70px;
   width: 70px;
   border: 1.5px solid #f5f6fa;
+  object-fit: cover;
 }
 .user_img_msg {
   height: 40px;

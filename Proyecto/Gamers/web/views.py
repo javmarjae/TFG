@@ -17,7 +17,7 @@ def index(request):
     Función vista para la página de inicio del sitio.
     """
     user = request.user
-    users = User.objects.all()[:10]
+    users = User.objects.all().exclude(id=user.id)[:10]
     clans = Clan.objects.all()[:10]
 
     return render(
