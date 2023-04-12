@@ -1,9 +1,9 @@
 :root {
-  --footercolor:#333;
-  --navbarcolor:#333;
-  --btncolor:#333;
-  --socialcolor:#333;
-  --brightText:#fff;
+  --footercolor: #333;
+  --navbarcolor: #333;
+  --btncolor: #333;
+  --socialcolor: #333;
+  --brightText: #fff;
 }
 
 /* Navigation Bar and Footer */
@@ -39,7 +39,7 @@
 .site-header .navbar-nav .nav-link {
   color: var(--brightText);
 }
-  
+
 .site-header .navbar-nav .nav-link:hover {
   color: black;
   background-color: #ddd;
@@ -51,7 +51,7 @@
 }
 
 #navbar a.active {
-  background-color: #5865F2;
+  background-color: #5865f2;
   border-radius: 10%;
 }
 
@@ -94,7 +94,7 @@ hr {
 }
 
 * {
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 .container {
@@ -154,7 +154,7 @@ hr {
 .bottom-container {
   text-align: center;
   background-color: #666;
-  border-radius: 0px 0px 4px 4px;
+  border-radius: 0 0 4px 4px;
 }
 
 /* Botón de registro */
@@ -176,7 +176,14 @@ hr {
 
 /* Campos de entrada de formularios */
 
-input[type=text], input[type=file], input[type=password], input[type=date], input[type=number], textarea, select, form{
+input[type=text], 
+input[type=file], 
+input[type=password], 
+input[type=date], 
+input[type=number], 
+textarea, 
+select, 
+form {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
@@ -186,7 +193,14 @@ input[type=text], input[type=file], input[type=password], input[type=date], inpu
   border-radius: 15px;
 }
 
-input[type=text], input[type=file], input[type=password], input[type=date], input[type=number], textarea, select, form:focus {
+input[type=text], 
+input[type=file], 
+input[type=password], 
+input[type=date], 
+input[type=number], 
+textarea, 
+select, 
+form:focus {
   background-color: #ddd;
   outline: none;
 }
@@ -243,7 +257,8 @@ a {
   transition: 0.4s;
 }
 
-.active, .accordion:hover {
+.active, 
+.accordion:hover {
   background-color: #ccc;
 }
 
@@ -269,7 +284,7 @@ a {
 
 /* Efecto parpadeo status */
 
-.parpadea {  
+.parpadea { 
   animation-name: parpadeo;
   animation-duration: 2.5s;
   animation-timing-function: linear;
@@ -353,7 +368,7 @@ span.psw {
 .updatebtn {
   width: auto;
   border: none;
-  background-color: #04AA6D;
+  background-color: #04aa6d;
   color: white;
   padding: 12px;
   border-radius: 4px;
@@ -520,7 +535,7 @@ a.hover {
   border-radius: 15px;
   background-color: rgba(0, 0, 0, 0.2);
   text-align: center;
-  grid-template-columns: repeat(7,1fr);
+  grid-template-columns: repeat(7, 1fr);
 }
 
 .user_card_item {
@@ -536,12 +551,12 @@ a.hover {
 
 .chat_card {
   height: 100%;
-  border-radius: 15px !important;
-  background-color: rgba(0, 0, 0, 0.4) !important;
+  border-radius: 15px;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .contacts_body {
-  padding: 0.75rem 0 !important;
+  padding: 0.75rem 0;
   overflow-y: auto;
   white-space: nowrap;
 }
@@ -550,16 +565,18 @@ a.hover {
   overflow-y: auto;
   max-height: 65%;
   padding-bottom: 20px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .card-header {
-  border-radius: 15px 15px 0 0 !important;
-  border-bottom: 0 !important;
+  border-radius: 15px 15px 0 0;
+  border-bottom: 0;
 }
 
 .card-footer {
-  border-radius: 0 0 15px 15px !important;
-  border-top: 0 !important;
+  border-radius: 0 0 15px 15px;
+  border-top: 0;
   bottom: 0;
   position: absolute;
   width: 100%;
@@ -567,51 +584,51 @@ a.hover {
 }
 
 .search {
-  border-radius: 15px 0 0 15px !important;
-  background-color: rgba(0, 0, 0, 0.3) !important;
-  border: 0 !important;
-  color: white !important;
+  border-radius: 15px 0 0 15px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 0;
+  color: white;
 }
 
 .search:focus {
-  box-shadow: none !important;
-  outline: 0 !important;
+  box-shadow: none;
+  outline: 0;
 }
 
 .type_msg {
-  background-color: rgba(0, 0, 0, 0.3) !important;
-  border: 0 !important;
-  color: white !important;
-  height: 60px !important;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 0;
+  color: white;
+  height: 60px;
   overflow-y: auto;
 }
 
 .type_msg:focus {
-  box-shadow: none !important;
-  outline: 0px !important;
+  box-shadow: none;
+  outline: 0;
 }
 
 .attach_btn {
-  border-radius: 15px 0 0 15px !important;
-  background-color: rgba(0, 0, 0, 0.3) !important;
-  border: 0 !important;
-  color: white !important;
+  border-radius: 15px 0 0 15px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 0;
+  color: white;
   cursor: pointer;
 }
 
 .send_btn {
-  border-radius: 0 15px 15px 0 !important;
-  background-color: rgba(0, 0, 0, 0.3) !important;
-  border: 0 !important;
-  color: white !important;
+  border-radius: 0 15px 15px 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 0;
+  color: white;
   cursor: pointer;
 }
 
 .search_btn {
-  border-radius: 0 15px 15px 0 !important;
-  background-color: rgba(0, 0, 0, 0.3) !important;
-  border: 0 !important;
-  color: white !important;
+  border-radius: 0 15px 15px 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 0;
+  color: white;
   cursor: pointer;
 }
 
@@ -621,9 +638,9 @@ a.hover {
 }
 
 .contacts li {
-  width: 100% !important;
+  width: 100%;
   padding: 5px 10px;
-  margin-bottom: 15px !important;
+  margin-bottom: 15px;
 }
 
 .active {
@@ -716,7 +733,7 @@ a.hover {
 
 @media (max-width: 576px) {
   .contacts_card {
-    margin-bottom: 15px !important;
+    margin-bottom: 15px;
   }
 }
 
@@ -729,7 +746,7 @@ a.hover {
 }
 
 .is_active {
-  display: block !important;
+  display: block;
 }
 
 .hide {
@@ -738,11 +755,6 @@ a.hover {
 
 .msg_card_body::-webkit-scrollbar {
   display: none;
-}
-
-.msg_card_body {
-  -ms-overflow-style: none; 
-  scrollbar-width: none;
 }
 
 .messages-wrapper {
@@ -754,7 +766,7 @@ a.hover {
   color: black;
   padding: 8px 16px;
   text-decoration: none;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
 }
 
 .pagination a.activepage {

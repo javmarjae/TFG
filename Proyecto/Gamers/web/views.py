@@ -115,16 +115,16 @@ def profile(request, username):
             gamer.save()
             user.save()
         except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
-            messages.error('You can not do this.')
+            messages.error(request,'You can not do this.')
         return redirect('profile', username)
-    
+
     if request.method == 'POST' and 'verifyuser' in request.POST and request.user.is_staff:
         user = User.objects.filter(username=username).first()
         user.verified = not user.verified
         try:
             user.save()
         except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
-            messages.error('You can not do this.')
+            messages.error(request,'You can not do this.')
         return redirect('profile', username)
 
     if request.method == "POST" and 'btnform1' in request.POST:
@@ -421,8 +421,6 @@ def friends(request):
 
 @login_required(login_url='login')
 def create_report(request):
-    user = request.user
-
     if request.POST:
         form = ReportCreateForm(request.POST, request.FILES)
         if form.is_valid():
@@ -530,7 +528,7 @@ def report_details(request, report_id):
             try:
                 clan.delete()
             except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
-                messages.error('This clan does not exist.')
+                messages.error(request,'This clan does not exist.')
                 return redirect('reportdetails',report.id)
             
         if verify_user:
@@ -539,7 +537,7 @@ def report_details(request, report_id):
             try:
                 user.save()
             except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
-                messages.error('This user does not exist.')
+                messages.error(request,'This user does not exist.')
                 return redirect('reportdetails',report.id)
 
         if ban_user:
