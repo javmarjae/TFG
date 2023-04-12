@@ -155,6 +155,39 @@ class Gameship(models.Model):
     class Meta:
         unique_together = ('game','gamer')
 
+class Report(models.Model):
+    """
+    Modelo que representa los reportes de los usuarios.
+    """
+
+    def image_upload_to(self, instance=None):
+        if instance:
+            return os.path.join("Reports", self.user.username, instance)
+        return None
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    REPORT_TYPES = {
+        ('us','User'),
+        ('cl','Clan'),
+        ('he','Help'),
+        ('ac','Account'),
+        ('bu','Bugs and errors'),
+        ('ve','Verification')
+    }
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, help_text="UserReport")
+    title = models.CharField(max_length=100, blank=False, null=False, help_text="TitleReport")
+    desc = models.TextField(max_length=500, blank=False, null=False, help_text="DescReport")
+    type = models.CharField(max_length=2, choices=REPORT_TYPES, default='he', help_text="TypeReport")
+    img = models.ImageField(upload_to=image_upload_to, null=True, blank=True, help_text="ImgReport")
+    checked = models.BooleanField(default=False)
+    date = models.DateTimeField(default=datetime.now, blank=False, null=False)
+
+    def __str__(self) -> str:
+        return '%s-%s' % (self.user,self.type)
+
+
 class UserMatrix(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     birth_year = models.IntegerField()

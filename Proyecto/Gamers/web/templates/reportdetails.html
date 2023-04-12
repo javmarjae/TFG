@@ -1,0 +1,94 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+
+{% if user.is_staff %}
+<div class="content-section col-md-12">
+    <h2 style="display: inline-block; text-align: center;">Review report</h2>
+    <button style="display: inline-block;" class="editprofilebtn" type="button" onclick="document.getElementById('id01').style.display='block'"><i
+        class="fa fa-cog fa-spin rueda"></i></button>
+    <hr>
+</div>
+{% else %}
+<div class="content-section col-md-12">
+    <h2 style="display: inline-block; text-align: center;">Review report</h2>
+</div>
+{% endif %}
+
+<div class="backgroundweb col-md-12" style="border-radius: 10px;">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="user"><h4>User</h4></label>
+                <p name="user"><a style="text-decoration: none; color: black;" href="{% url 'profile' report.user.username %}">{{report.user.username}}</a></p>
+            </div>
+            <div class="form-group">
+                <label for="type"><h4>Type</h4></label>
+                <p name="type">{{report.get_type_display}}</p>
+            </div>
+            <div class="form-group">
+                <label for="type"><h4>Date</h4></label>
+                <p name="type">{{report.date}}</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="title"><h4>Title</h4></label>
+                <p name="title" id="title">{{report.title}}</p>
+            </div>
+            <div class="form-group">
+                <label for="desc"><h4>Description</h4></label>
+                <p name="desc" id="desc">{{report.desc}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% if report.img %}
+            <div class="col-md-12 text-center">
+                <label for="image"><h4>Image</h4></label>
+                <img src="{{report.img.url}}" alt="" class="img-fluid mx-auto d-block" name="image">
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div id="id01" class="modal">
+    <form method="POST" enctype="multipart/form-data" class="modal-content animate">
+        {% csrf_token %}
+        <div class="container form-group">
+            <button type="button" class="accordion">Report Settings</button>
+            <div class="panel">
+                <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                        <label for="deleteclan"><b>Delete Clan</b></label>
+                        <input type="text" placeholder="Enter clan name..." name="deleteclan" id="deleteclan">
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                        <label for="banuser"><b>Ban User</b></label>
+                        <input type="text" placeholder="Enter username..." name="banuser" id="banuser">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                        <label for="verified"><b>Verify User</b></label>
+                        <input type="checkbox" placeholder="Enter username..." name="verified" id="verified">
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                        <label for="checked"><b>Mark as solved</b></label>
+                        <input type="checkbox" placeholder="" name="checked" id="checked" value="yes">
+                    </div>
+                </div>
+            </div>
+            <div class="container" style="background-color: #f1f1f1;">
+                <button class="updatebtn" name="btnform1" type="submit">Update</button>
+                <button type="button" onclick="document.getElementById('id01').style.display='none'"
+                    class="cancelbtn">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="{% static 'js/accordion.js' %}"></script>
+
+{% endblock content %}

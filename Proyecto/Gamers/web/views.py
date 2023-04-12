@@ -7,9 +7,9 @@ from django.db.models import Q, Count
 from django.db.models.functions import Lower
 from django.core.paginator import Paginator
 from unidecode import unidecode
-
-from .forms import ClanUpdateForm, GamerClanUpdateForm, GameshipUpdateForm, UserUpdateForm, GamerUpdateForm
-from .models import Game, Gamer, Gameship, User, Friendship, Clan
+from django.core.exceptions import ObjectDoesNotExist
+from .forms import ClanUpdateForm, GamerClanUpdateForm, GameshipUpdateForm, UserUpdateForm, GamerUpdateForm, ReportCreateForm
+from .models import Game, Gamer, Gameship, User, Friendship, Clan, Report
 from chat.models import Thread
 
 def index(request):
@@ -387,3 +387,138 @@ def friends(request):
     amigos = Friendship.objects.filter(receiver=Gamer.objects.filter(user=request.user).first(), status='ac') or Friendship.objects.filter(sender=Gamer.objects.filter(user=request.user).first(), status='ac')
     
     return render(request,'friends.html',context={'solicitudes':solicitudes,'amigos':amigos})
+
+@login_required(login_url='login')
+def create_report(request):
+    user = request.user
+
+    if request.POST:
+        form = ReportCreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Your report has been sent.')
+            return redirect('index')
+        
+        for error in list(form.errors.values()):
+            messages.error(request, error)
+            return redirect("report")
+
+    report_types = Report.REPORT_TYPES
+
+    form = ReportCreateForm()
+    return render(
+            request,
+            'createreport.html',
+            context={
+                'form':form,
+                'report_types':report_types
+            }
+            )
+
+@login_required(login_url='login')
+def reports(request):
+    user = request.user
+
+    buscar_titulo = request.GET.get('titulo')
+    buscar_tipo = request.GET.get('tipo')
+    buscar_usuario = request.GET.get('usuario')
+    buscar_solved = request.GET.get('solved')
+    order_date = request.GET.get('dateorder')
+
+    if 'restart' in request.GET:
+        buscar_tipo = ''
+        buscar_titulo = ''
+        buscar_usuario = ''
+        buscar_solved = ''
+        order_date = ''
+    
+    report_types = Report.REPORT_TYPES
+
+    if user.is_staff:
+        reports = Report.objects.order_by('-date')
+    else:
+        reports = Report.objects.filter(user=user).order_by('-date')
+
+    if buscar_titulo:
+        reports = reports.annotate(title_m=Lower('title')).filter(title_m__icontains=unidecode(buscar_titulo.lower()))
+        print(reports)
+
+    if buscar_usuario:
+        reports = reports.annotate(user_m=Lower('user__username')).filter(user_m__icontains=unidecode(buscar_usuario.lower()))
+        print(reports)
+
+    if buscar_tipo and buscar_tipo != 'ning':
+        reports = reports.filter(type=buscar_tipo)
+        print(reports)
+
+    if buscar_solved:
+        if buscar_solved == 'yes':
+            reports = reports.filter(checked=True)
+        if buscar_solved == 'no':
+            reports = reports.filter(checked=False)
+
+    if order_date == 'asc':
+        reports = reports.order_by('date', *reports.query.order_by)
+    elif order_date == 'desc':
+        reports = reports.order_by('-date', *reports.query.order_by)
+    else:
+        order_date = ''
+
+    paginator = Paginator(reports,10)
+    page_number = request.GET.get('page')
+    page_object = paginator.get_page(page_number)
+    reports = page_object.object_list
+
+    return render(
+            request,
+            'listreports.html',
+            context={
+                'reports':reports,
+                'page':page_object,
+                'report_types':report_types,
+                'buscar_titulo':buscar_titulo,
+                'buscar_tipo':buscar_tipo,
+                'buscar_usuario':buscar_usuario,
+                'order_date':order_date,
+                'solved':buscar_solved
+            }
+            )
+
+@login_required(login_url='login')
+def report_details(request, report_id):
+        report = Report.objects.filter(id=report_id).first()
+
+        delete_clan = request.POST.get('deleteclan')
+        ban_user = request.POST.get('banuser')
+        verify_user = request.POST.get('verified')
+        reviewed = request.POST.get('checked')
+
+        if delete_clan:
+            clan = Clan.objects.filter(name=delete_clan).first()
+            try:
+                clan.delete()
+            except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
+                messages.error('This clan does not exist.')
+                return redirect('reportdetails',report.id)
+
+        if ban_user:
+            user = User.objects.filter(username=ban_user).first()
+            user.is_active = False
+            try:
+                user.save()
+            except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
+                messages.error('This user does not exist.')
+                return redirect('reportdetails',report.id)
+
+        if reviewed:
+            if reviewed=='yes':
+                report.checked = True
+                report.save()
+        
+        return render(
+            request,
+            'reportdetails.html',
+            context={
+                'report':report,
+            }
+            )

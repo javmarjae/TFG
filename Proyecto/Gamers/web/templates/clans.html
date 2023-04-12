@@ -25,7 +25,8 @@
             </select>
         </div>
         <div class="col">
-            <input type="text" style="border-radius: 10px; margin-top: 8%;" placeholder="Buscar clan..." id="busqueda" name="busqueda" {% if busqueda %} value="{{busqueda}}" {% endif %}>
+            <label for="busqueda"><h3>Clan</h3></label>
+            <input type="text" style="border-radius: 10px;" placeholder="Buscar clan..." id="busqueda" name="busqueda" {% if busqueda %} value="{{busqueda}}" {% endif %}>
             <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">Search</button>
             <button class="btn btn-danger mb-3" type="submit" style="border-radius: 12px;" name="restart">Reset filters</button>
             {% if gamer.clan != null %}

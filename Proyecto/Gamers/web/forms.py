@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordResetForm
 from django.contrib.auth import get_user_model
 
-from web.models import Gamer, Gameship, Clan
+from web.models import Gamer, Gameship, Clan, Report
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(help_text='A valid email address, please.', required=True)
@@ -63,6 +63,11 @@ class ClanCreateForm(forms.ModelForm):
     class Meta:
         model = Clan
         fields = ['name','description','leader','profile_pic','join_date']
+
+class ReportCreateForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['user','title','desc','type','img']
 
 class ClanUpdateForm(forms.ModelForm):
     class Meta:

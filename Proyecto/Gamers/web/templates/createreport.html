@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<div class="form-group" style="display: inline;">
+    <h2 style="display: block; text-align: center;">Create report</h2>
+    <form method="POST" id="mi-formulario" class="row" style="border-radius: 10px; margin-left: 1px;" action="{% url 'report' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="user" id="user" value="{{request.user.id}}" hidden>
+        <label for="title"><h4>Title</h4></label>
+        <input type="text" name="title" id="title" placeholder="Enter a title for your report..." required>
+        <label for="desc"><h4>Description</h4></label>
+        <textarea name="desc" id="desc" cols="30" rows="5" placeholder="Enter a description for your report..." required></textarea>
+        <label for="type"><h4>Type</h4></label>
+        <select name="type" id="type" required>
+            {% for val,name in report_types %}
+                <option value="{{val}}">{{name}}</option>
+            {% endfor %}
+        </select>
+        <label for="img"><h4>Image</h4><p class="text-secondary">(Optional)</p></label>
+        <input id="img" type="file" name="img" accept="image/*" onchange="previewImage(event)"/>
+        <button type="submit" class="btn btn-success mb-3" style="float: right; border-radius: 12px;">Send</button>
+    </form>
+</div>
+
+{% endblock content %}

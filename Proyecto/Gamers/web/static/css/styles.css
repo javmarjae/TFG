@@ -176,18 +176,26 @@ hr {
 
 /* Campos de entrada de formularios */
 
-input[type=text], input[type=file], input[type=password], input[type=date], input[type=number], select, form{
+input[type=text], input[type=file], input[type=password], input[type=date], input[type=number], textarea, select, form{
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
   display: inline-block;
   border: none;
   background: #f1f1f1;
+  border-radius: 15px;
 }
 
-input[type=text], input[type=file], input[type=password], input[type=date], input[type=number], select, form:focus {
+input[type=text], input[type=file], input[type=password], input[type=date], input[type=number], textarea, select, form:focus {
   background-color: #ddd;
   outline: none;
+}
+
+input[type=checkbox] {
+  background-color: #eee;
+  border-radius: 10px;
+  width: 20px;
+  height: 20px;
 }
 
 /* Links azules */
