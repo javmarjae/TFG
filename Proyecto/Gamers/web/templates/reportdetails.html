@@ -72,7 +72,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-6 mb-0">
                         <label for="verified"><b>Verify User</b></label>
-                        <input type="checkbox" placeholder="Enter username..." name="verified" id="verified">
+                        <input type="checkbox" placeholder="Enter username..." value="{{report.user.username}}" name="verified" id="verified" {% if report.user.verified %} checked {% endif %}>
                     </div>
                     <div class="form-group col-md-6 mb-0">
                         <label for="checked"><b>Mark as solved</b></label>

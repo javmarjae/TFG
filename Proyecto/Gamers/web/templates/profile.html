@@ -9,7 +9,19 @@
         <button class="editprofilebtn" type="button" onclick="document.getElementById('id01').style.display='block'"><i
                 class="fa fa-cog fa-spin rueda"></i></button>
         {% else %}
-        <button class="addgamebtn" type="submit" form="friendrequest" name="btnfriendrequest"><i class="fa fa-user-plus"></i></button>
+            {% if user.is_staff %}
+                {% if userprofile.verified %}
+                    <button class="addgamebtn" style="background-color: #4d5a63;" type="submit" form="adminsettings" name="verifyuser"><i class="fa fa-check-circle"></i> Unverify user</button>    
+                {% else %}
+                    <button class="addgamebtn" style="background-color: #1d9bf0;" type="submit" form="adminsettings" name="verifyuser"><i class="fa fa-check-circle"></i> Verify user</button>
+                {% endif %}
+                {% if userprofile.is_active %}
+                    <button class="addgamebtn" style="background-color: rgb(252, 68, 68); margin-right: 1%;" type="submit" form="adminsettings" name="banuser"><i class="fa fa-user-xmark"></i> Ban user</button>
+                {% else %}
+                    <button class="addgamebtn" style="background-color: #4d5a63; margin-right: 1%;" type="submit" form="adminsettings" name="banuser"><i class="fa fa-user-xmark"></i> Unban user</button>
+                {% endif %}
+            {% endif %}
+            <button class="addgamebtn" type="submit" form="friendrequest" name="btnfriendrequest"><i class="fa fa-user-plus"></i></button>
         {% endif %}
     </div>
     <hr>
@@ -22,11 +34,23 @@
                 src="{{ form.instance.profile_pic.url }}">
             {% endif %}
             <div class="media-body" style="margin-left: 2%;">
+                {% if userprofile.is_staff %}
+                <i class="fas fa-user-shield" style="color: rgb(252, 68, 68);"></i>
+                {% elif userprofile.verified %}
+                <i class="fas fa-check-circle" style="color: #1d9bf0;"></i>
+                {% endif %}
+                {% if userprofile.is_active == False %}
+                <i class="fas fa-user-xmark" style="color: #000000;"></i>
+                {% endif %}
                 <h2 class="account-heading" style="display: inline-block;">{{ form.instance.username }}
-                    {% if form.instance.is_online %}
-                    <small class="text-success parpadea">(Online)</small>
+                    {% if userprofile.is_active == False %}
+                        <small class="text-danger parpadea">(Banned)</small>
                     {% else %}
-                    <small class="text-danger parpadea">(Offline)</small>
+                        {% if form.instance.is_online %}
+                        <small class="text-success parpadea">(Online)</small>
+                        {% else %}
+                        <small class="text-danger parpadea">(Offline)</small>
+                        {% endif %}
                     {% endif %}
                 </h2>
                 <p class="text-secondary">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
@@ -196,6 +220,10 @@
 </div>
 
 <form method="POST" id="friendrequest" style="display: none;">
+    {% csrf_token %}
+</form>
+
+<form method="POST" id="adminsettings" style="display: none;">
     {% csrf_token %}
 </form>
 

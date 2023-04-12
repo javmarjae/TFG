@@ -127,7 +127,12 @@
                         </div>
                         <div class="col">
                             <div class="row">
-                              <h2><a href="{% url 'profile' member.user.username %}" style="color: black; text-decoration: none;">{{ member.user.username }}</a></h2> 
+                                <h2 class="d-line"><a href="{% url 'profile' member.user.username %}" style="color: black; text-decoration: none;">
+                                    {% if member.user.verified %}
+                                      <i class="fas fa-check-circle d-line" style="color: #1d9bf0; width: 20%;"></i>
+                                    {% endif %}
+                                    {{ member.user.username }}</a>
+                                  </h2> 
                             </div>
                             <div class="row">
                               <div class="col">

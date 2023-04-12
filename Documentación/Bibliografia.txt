@@ -22,16 +22,16 @@ Objetivos funcionales
 PRIORIDAD ALTA
 -Sistema de recomendación
 -Chat en tiempo real /HECHO/
--Sistema de clanes /HECHO/ *Ampliable*
+-Sistema de clanes /HECHO/
 -Sistema de amigos /HECHO/
 
 PRIORIDAD MEDIA
 -Amigos en común /Se puede hacer/
--Verificación /Se puede hacer fácil/
+-Verificación /HECHO/
 -Rating de usuarios /Difícil/
 
 PRIORIDAD BAJA
--Reporte de usuarios /Se puede hacer fácil/
+-Herramienta de Soporte y Reportes /HECHO/
 -Vinculación de APIS:
     Para la API de Steam tengo q registrar la web en un dominio
     API Discord (se ve chungo): https://discord.com/developers/docs/topics/oauth2

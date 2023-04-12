@@ -39,6 +39,8 @@ def users(request):
     selected_languages = request.GET.getlist('languages')
     games = Game.GAMES
     selected_games = request.GET.getlist('games')
+    verified = request.GET.get('verified')
+
     ranks =[
         ('CS:GO', ['Silver I', 'Silver II', 'Silver III', 'Silver IV', 'Silver Elite', 'Silver Elite Master', 'Gold Nova I', 'Gold Nova II','Gold Nova III',
             'Gold Nova Master', 'Master Guardian I', 'Master Guardian II', 'Master Guardian Elite', 'Distinguished Master Guardian', 'Legendary Eagle',
@@ -69,6 +71,9 @@ def users(request):
     if campo_texto:
         users = users.annotate(username_m=Lower('username')).filter(username_m__icontains=unidecode(campo_texto.lower()))
 
+    if verified == 'yes':
+        users = users.filter(verified=True)
+
     paginator = Paginator(users,20)
     page_number = request.GET.get('page')
     page_object = paginator.get_page(page_number)
@@ -79,6 +84,8 @@ def users(request):
         selected_languages = []
         selected_games = []
         selected_ranks = []
+        verified = ''
+        return redirect('users')
 
     return render(
         request,
@@ -92,12 +99,34 @@ def users(request):
             'games':games,
             'selected_games':selected_games,
             'ranks':ranks,
-            'selected_ranks':selected_ranks
+            'selected_ranks':selected_ranks,
+            'verified':verified,
         },
     )
 
 @login_required(login_url='login')
 def profile(request, username):
+    if request.method == 'POST' and 'banuser' in request.POST and request.user.is_staff:
+        user = User.objects.filter(username=username).first()
+        gamer = Gamer.objects.filter(user=user).first()
+        gamer.clan = None
+        user.is_active = not user.is_active
+        try:
+            gamer.save()
+            user.save()
+        except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
+            messages.error('You can not do this.')
+        return redirect('profile', username)
+    
+    if request.method == 'POST' and 'verifyuser' in request.POST and request.user.is_staff:
+        user = User.objects.filter(username=username).first()
+        user.verified = not user.verified
+        try:
+            user.save()
+        except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
+            messages.error('You can not do this.')
+        return redirect('profile', username)
+
     if request.method == "POST" and 'btnform1' in request.POST:
         user = request.user
         gamer = Gamer.objects.filter(user=user).first()
@@ -182,6 +211,7 @@ def profile(request, username):
             request,
             template_name='profile.html',
             context={
+                'userprofile':user,
                 'form': form,
                 'form2': form2,
                 'form3': form3,
@@ -256,6 +286,7 @@ def clans(request):
         orden_fecha = ''
         orden_miembros = ''
         clans = clans.order_by('id')
+        return redirect('clans')
 
     paginator = Paginator(clans,20)
     page_number = request.GET.get('page')
@@ -431,6 +462,7 @@ def reports(request):
         buscar_usuario = ''
         buscar_solved = ''
         order_date = ''
+        return redirect('reports')
     
     report_types = Report.REPORT_TYPES
 
@@ -500,14 +532,26 @@ def report_details(request, report_id):
             except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
                 messages.error('This clan does not exist.')
                 return redirect('reportdetails',report.id)
-
-        if ban_user:
-            user = User.objects.filter(username=ban_user).first()
-            user.is_active = False
+            
+        if verify_user:
+            user = User.objects.filter(username=verify_user).first()
+            user.verified = True
             try:
                 user.save()
             except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
                 messages.error('This user does not exist.')
+                return redirect('reportdetails',report.id)
+
+        if ban_user:
+            user = User.objects.filter(username=ban_user).first()
+            user.is_active = False
+            gamer = Gamer.objects.filter(user=user).first()
+            gamer.clan = None
+            try:
+                gamer.save()
+                user.save()
+            except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
+                messages.error('You can not do this.')
                 return redirect('reportdetails',report.id)
 
         if reviewed:

@@ -17,7 +17,8 @@ class UserAdmin(admin.ModelAdmin):
         'language',
         'profile_pic',
         'last_online',
-        'is_online'
+        'is_online',
+        'verified'
     ]
 
 admin.site.register(User, UserAdmin)

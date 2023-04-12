@@ -29,6 +29,7 @@ class User(AbstractUser):
     birth_date = models.DateField(null=True, blank=True, help_text="Birth date")
     last_online = models.DateTimeField(blank=True, null=True)
     is_online = models.BooleanField(default=False)
+    verified = models.BooleanField(default=False)
 
 
 class Clan(models.Model):
