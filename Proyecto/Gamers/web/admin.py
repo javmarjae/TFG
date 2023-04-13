@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Game, Gamer, Gameship, Friendship, Clan, User, UserMatrix, Report
+from .models import Game, Gamer, Gameship, Friendship, Clan, User, Report
 from django.contrib.auth.admin import UserAdmin
 
 class UserAdmin(admin.ModelAdmin):
@@ -22,7 +22,6 @@ class UserAdmin(admin.ModelAdmin):
     ]
 
 admin.site.register(User, UserAdmin)
-admin.site.register(UserMatrix)
 admin.site.register(Game)
 admin.site.register(Gamer)
 admin.site.register(Gameship)

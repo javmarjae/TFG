@@ -534,32 +534,47 @@ def report_details(request, report_id):
 
         if delete_clan:
             clan = Clan.objects.filter(name=delete_clan).first()
-            try:
-                clan.delete()
-            except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
-                messages.error(request,'This clan does not exist.')
-                return redirect('reportdetails',report.id)
+            if clan:
+                try:
+                    clan.delete()
+                    return redirect('reportdetails',report_id)
+                except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
+                    messages.error(request,'There was an error deleting the clan.')
+                    return redirect('reportdetails',report.id)
+            else:
+                messages.error(request, 'This clan does not exist.')
+                return redirect('reportdetails',report_id)
             
         if verify_user:
             user = User.objects.filter(username=verify_user).first()
-            user.verified = True
-            try:
-                user.save()
-            except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
-                messages.error(request,'This user does not exist.')
-                return redirect('reportdetails',report.id)
+            if user:
+                user.verified = True
+                try:
+                    user.save()
+                    return redirect('reportdetails',report_id)
+                except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
+                    messages.error(request,'There was an error verifying the user.')
+                    return redirect('reportdetails',report.id)
+            else:
+                messages.error(request, 'This user does not exist.')
+                return redirect('reportdetails',report_id)
 
         if ban_user:
             user = User.objects.filter(username=ban_user).first()
-            user.is_active = False
-            gamer = Gamer.objects.filter(user=user).first()
-            gamer.clan = None
-            try:
-                gamer.save()
-                user.save()
-            except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
-                messages.error('You can not do this.')
-                return redirect('reportdetails',report.id)
+            if user:
+                user.is_active = False
+                gamer = Gamer.objects.filter(user=user).first()
+                gamer.clan = None
+                try:
+                    gamer.save()
+                    user.save()
+                    return redirect('reportdetails',report_id)
+                except(TypeError,ValueError,OverflowError,ObjectDoesNotExist):
+                    messages.error('There was an error verifying the user.')
+                    return redirect('reportdetails',report.id)
+            else:
+                messages.error(request, 'This user does not exist.')
+                return redirect('reportdetails',report_id)
 
         if reviewed:
             if reviewed=='yes':

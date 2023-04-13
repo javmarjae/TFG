@@ -13,7 +13,7 @@ if(loc.protocol === 'https') {
 }
 let endpoint = wsStart + loc.host + loc.pathname
 
-let socket = new WebSocket(endpoint)
+var socket = new WebSocket(endpoint)
 
 socket.onopen = async function(e){
     console.log('open', e)

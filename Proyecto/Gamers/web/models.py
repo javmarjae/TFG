@@ -1,9 +1,10 @@
-from datetime import datetime
 import uuid, os
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from model_utils import Choices
+from django.utils import timezone
+from datetime import datetime
 
 
 class User(AbstractUser):
@@ -46,7 +47,7 @@ class Clan(models.Model):
     description = models.TextField(max_length=300, help_text="Clan description")
     leader = models.CharField(max_length=20, help_text="Clan leader", null=True, blank=True)
     profile_pic = models.ImageField(upload_to=image_upload_to, default = 'profile/default.png', null=True, blank=True, help_text="Clan pic")
-    join_date = models.DateField(default=datetime.now, blank=False, null=False)
+    join_date = models.DateField(default=timezone.now, blank=False, null=False)
 
     def __str__(self) -> str:
         return '%s' % self.name
@@ -183,22 +184,7 @@ class Report(models.Model):
     type = models.CharField(max_length=2, choices=REPORT_TYPES, default='he', help_text="TypeReport")
     img = models.ImageField(upload_to=image_upload_to, null=True, blank=True, help_text="ImgReport")
     checked = models.BooleanField(default=False)
-    date = models.DateTimeField(default=datetime.now, blank=False, null=False)
+    date = models.DateTimeField(default=timezone.now, blank=False, null=False)
 
     def __str__(self) -> str:
         return '%s-%s' % (self.user,self.type)
-
-
-class UserMatrix(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    birth_year = models.IntegerField()
-    language = models.CharField(max_length=2)
-    games_and_ranks_count = models.IntegerField()
-    num_friends = models.IntegerField()
-    similarity_vector = models.TextField()
-
-    def __str__(self):
-        """
-        String para representar el objeto del modelo
-        """
-        return '%s' % self.user
