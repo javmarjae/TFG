@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from django.db.models import Q, Count
 from django.db.models.functions import Lower
 from django.core.paginator import Paginator
@@ -30,6 +31,7 @@ def index(request):
         },
     )
 
+@require_http_methods(["GET", "POST"])
 @login_required
 def users(request):
     user = request.user
@@ -113,6 +115,7 @@ def users(request):
         },
     )
 
+@require_http_methods(["GET", "POST"])
 @login_required(login_url='login')
 def profile(request, username):
     if request.method == 'POST' and 'banuser' in request.POST and request.user.is_staff:
@@ -233,6 +236,7 @@ def profile(request, username):
 
     return redirect("index")
 
+@require_http_methods(["GET", "POST"])
 @login_required(login_url='login')
 def clans(request):
     gamer = Gamer.objects.filter(user=request.user).first()
@@ -321,6 +325,7 @@ def clans(request):
         }
     )
 
+@require_http_methods(["GET", "POST"])
 @login_required(login_url='login')
 def clanprofile(request, name):
     gamer = Gamer.objects.filter(user=request.user).first()
@@ -403,6 +408,7 @@ def clanprofile(request, name):
 
     return redirect("index")
 
+@require_http_methods(["GET", "POST"])
 @login_required(login_url='login')
 def friends(request):
     if request.method == 'POST' and 'accept' in request.POST:

@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.views.decorators.http import require_http_methods
 from chat.models import Thread
 
-
+@require_http_methods(["GET", "POST"])
 @login_required(login_url='login')
 def messages_page(request):
 

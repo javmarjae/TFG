@@ -10,12 +10,13 @@ from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.http import require_http_methods
 import web.forms as forms
 import web.models as models
 from .decorators import user_not_authenticated
 from .tokens import account_activation_token
 
-
+@require_http_methods(["GET", "POST"])
 def activate(request, uidb64, token):
     user = get_user_model()
     try:
@@ -50,6 +51,7 @@ def activate_email(request, user, to_email):
     else:
         messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly.')
 
+@require_http_methods(["GET", "POST"])
 @user_not_authenticated
 def register(request):
     if request.method == 'POST':
@@ -73,6 +75,7 @@ def register(request):
         context={"form":form}
         )
 
+@require_http_methods(["GET", "POST"])
 @login_required
 def custom_logout(request):
     useri = request.user
@@ -84,6 +87,7 @@ def custom_logout(request):
     messages.info(request, "Logged out successfully!")
     return redirect("index")
 
+@require_http_methods(["GET", "POST"])
 @user_not_authenticated
 def custom_login(request):
     if request.method == "POST":
@@ -117,6 +121,7 @@ def custom_login(request):
         context={"form": form}
         )
 
+@require_http_methods(["GET", "POST"])
 @login_required
 def password_change(request):
     user = request.user
@@ -133,6 +138,7 @@ def password_change(request):
     form = forms.SetPasswordForm(user)
     return render(request, 'password_reset_confirm.html', {'form': form})
 
+@require_http_methods(["GET", "POST"])
 @user_not_authenticated
 def password_reset_request(request):
     if request.method == 'POST':
@@ -173,6 +179,7 @@ def password_reset_request(request):
         context={"form": form}
         )
 
+@require_http_methods(["GET", "POST"])
 def password_reset_confirm(request, uidb64, token):
     user = get_user_model()
     try:
