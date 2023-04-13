@@ -43,13 +43,18 @@ def jaccard_similarity(user):
 
         u_games = u_gameships.values_list('game__game_name', flat=True).distinct()
 
-        game_similarity = len(user_games.intersection(u_games)) / len(user_games.union(u_games))
-
+        if not user_games or not u_games:
+            game_similarity = 1
+        else:
+            game_similarity = len(user_games.intersection(u_games)) / len(user_games.union(u_games))
+            
         u_rank = {game: rank for game, rank in u_gameships.values_list('game', 'rank')}
 
-        rank_diffs = [Levenshtein.distance(user_rank.get(game, ''), u_rank.get(game, '')) for game in user_games.union(u_games)]
-
-        rank_similarity = 1 - sum(rank_diffs) / (len(user_games.union(u_games)) * 4)
+        if not user_rank or not u_rank:
+            rank_similarity = 1
+        else:
+            rank_diffs = [Levenshtein.distance(user_rank.get(game, ''), u_rank.get(game, '')) for game in user_games.union(u_games)]
+            rank_similarity = 1 - sum(rank_diffs) / (len(user_games.union(u_games)) * 4)
 
         if user.birth_date and other_user.birth_date:
             age_diff = abs((user.birth_date - other_user.birth_date).days) / 365
