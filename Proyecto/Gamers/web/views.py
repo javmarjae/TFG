@@ -11,14 +11,15 @@ from django.core.exceptions import ObjectDoesNotExist
 from .forms import ClanUpdateForm, GamerClanUpdateForm, GameshipUpdateForm, UserUpdateForm, GamerUpdateForm, ReportCreateForm
 from .models import Game, Gamer, Gameship, User, Friendship, Clan, Report
 from chat.models import Thread
+from .recommendation import jaccard_similarity
 
 def index(request):
     """
     Función vista para la página de inicio del sitio.
     """
     user = request.user
-    users = User.objects.all().exclude(id=user.id)[:10]
-    clans = Clan.objects.all()[:10]
+    users = User.objects.all().exclude(id=user.id).order_by('?')[:10]
+    clans = Clan.objects.all().order_by('?')[:10]
 
     return render(
         request,
@@ -32,7 +33,7 @@ def index(request):
 @login_required
 def users(request):
     user = request.user
-    users = User.objects.all().exclude(id=user.id)
+    users = User.objects.all().exclude(id=user.id).order_by('?')
 
     campo_texto = request.GET.get('busqueda')
     languages = User.LANGUAGES
@@ -40,6 +41,7 @@ def users(request):
     games = Game.GAMES
     selected_games = request.GET.getlist('games')
     verified = request.GET.get('verified')
+    recommended = request.GET.get('recommended')
 
     ranks =[
         ('CS:GO', ['Silver I', 'Silver II', 'Silver III', 'Silver IV', 'Silver Elite', 'Silver Elite Master', 'Gold Nova I', 'Gold Nova II','Gold Nova III',
@@ -74,6 +76,10 @@ def users(request):
     if verified == 'yes':
         users = users.filter(verified=True)
 
+    if recommended == 'yes':
+        users_recommended = jaccard_similarity(request.user)
+        users = [user for user, similarity in users_recommended if user in users]
+
     paginator = Paginator(users,20)
     page_number = request.GET.get('page')
     page_object = paginator.get_page(page_number)
@@ -85,6 +91,8 @@ def users(request):
         selected_games = []
         selected_ranks = []
         verified = ''
+        recommended = ''
+        users = User.objects.all().exclude(id=user.id).order_by('?')
         return redirect('users')
 
     return render(
@@ -101,6 +109,7 @@ def users(request):
             'ranks':ranks,
             'selected_ranks':selected_ranks,
             'verified':verified,
+            'recommended':recommended
         },
     )
 
@@ -227,7 +236,7 @@ def profile(request, username):
 @login_required(login_url='login')
 def clans(request):
     gamer = Gamer.objects.filter(user=request.user).first()
-    clans = Clan.objects.all()
+    clans = Clan.objects.all().order_by('?')
 
     campo_texto = request.GET.get('busqueda')
     min_miembros = request.GET.get('minimo')

@@ -1,35 +1,66 @@
 from django.db.models import Q
-from .models import User, Gameship, Friendship, Gamer, UserMatrix
+from django.contrib.auth import get_user_model
+from .models import User, Friendship, Gameship, Gamer, Game
+import Levenshtein
 
-def create_user_matrix():
-    language_index = {'EN': 0, 'SP': 1, 'FR': 2, 'GE': 3, 'CH': 4}
+User = get_user_model()
 
-    for user in User.objects.all():
-        # Obtener los juegos, rangos y amigos del usuario
-        gamer = Gamer.objects.filter(user=user).first()
-        games = set(Gameship.objects.filter(gamer=gamer).values_list('game', flat=True))
-        ranks = set(Gameship.objects.filter(gamer=gamer, game__in=games).values_list('rank', flat=True))
-        friends = Friendship.objects.filter(Q(sender=gamer, status='ac') | Q(receiver=gamer, status='ac')).values_list('sender', 'receiver')
-        num_friends = len(set([f for f in friends]))
+def jaccard_similarity(user):
 
-        # Crear los datos de la matriz
-        birth_year = user.birth_date.year
-        language = language_index[user.language]
-        games_and_ranks_count = len(games) + len(ranks)
+    user_gamer = Gamer.objects.filter(user=user).first()
 
-        # Crear la instancia de UserMatrix y guardarla en la base de datos
-        matrix_data = {
-            'birth_year': birth_year,
-            'language': language,
-            'games_and_ranks_count': games_and_ranks_count,
-            'num_friends': num_friends
-        }
-        user_matrix = UserMatrix(user=user, birth_year=matrix_data['birth_year'], language=matrix_data['language'], games_and_ranks_count=matrix_data['games_and_ranks_count'], num_friends=matrix_data['num_friends'], similarity_vector='')
-        user_matrix.save()
+    similarity_dict = {}
 
-def recommended_users(user):
-    top_users = []
-    gamer = Gamer.objects.filter(user=user).first()
-    users = UserMatrix.objects.exclude(user=user)
-    friends = Friendship.objects.filter(Q(sender=gamer, status='ac') | Q(receiver=gamer, status='ac')).values_list('sender__user_id', 'receiver__user_id')
-    users = [idx for idx in users if users[idx].user.id not in [user_id for user_id in friends]]
+    friends = set([friendship.receiver.user if friendship.sender == user_gamer else friendship.sender.user for friendship 
+                   in Friendship.objects.filter(Q(sender=user_gamer)|Q(receiver=user_gamer),status='ac')])
+
+    all_users = User.objects.exclude(Q(id=user.id) | Q(is_active=False)).exclude(id__in = [friend.id for friend in friends])
+
+    user_gameships = Gameship.objects.filter(gamer=user_gamer)
+
+    user_games = set(user_gameships.values_list('game__game_name', flat=True))
+
+    user_rank = {game: rank for game, rank in user_gameships.values_list('game', 'rank')}
+
+    for other_user in all_users:
+        u_gamer = Gamer.objects.filter(user=other_user).first()
+        u_friends = set([friendship.receiver.user if friendship.sender == u_gamer else friendship.sender.user for friendship 
+                   in Friendship.objects.filter(Q(sender=u_gamer)|Q(receiver=u_gamer),status='ac')])
+        
+        if user.language == other_user.language:
+            lang_similarity = 1
+        else:
+            lang_similarity = 0
+        
+        common_friends = friends.intersection(u_friends)
+
+        if not friends or not u_friends:
+            friend_similarity = 1
+        else:
+            friend_similarity = len(common_friends) / (len(friends) + len(u_friends) - len(common_friends))
+
+        u_gameships = Gameship.objects.filter(gamer=u_gamer)
+
+        u_games = u_gameships.values_list('game__game_name', flat=True).distinct()
+
+        game_similarity = len(user_games.intersection(u_games)) / len(user_games.union(u_games))
+
+        u_rank = {game: rank for game, rank in u_gameships.values_list('game', 'rank')}
+
+        rank_diffs = [Levenshtein.distance(user_rank.get(game, ''), u_rank.get(game, '')) for game in user_games.union(u_games)]
+
+        rank_similarity = 1 - sum(rank_diffs) / (len(user_games.union(u_games)) * 4)
+
+        if user.birth_date and other_user.birth_date:
+            age_diff = abs((user.birth_date - other_user.birth_date).days) / 365
+            age_similarity = 1 - min(age_diff / 10, 1)
+        else:
+            age_similarity = 1
+
+        similarity = (lang_similarity + friend_similarity + game_similarity + rank_similarity + age_similarity) / 5
+
+        similarity_dict[other_user] = similarity
+
+    sorted_users = sorted(similarity_dict.items(), key=lambda x: x[1], reverse=True)
+
+    return sorted_users   

@@ -176,13 +176,13 @@ hr {
 
 /* Campos de entrada de formularios */
 
-input[type=text], 
-input[type=file], 
-input[type=password], 
-input[type=date], 
-input[type=number], 
-textarea, 
-select, 
+input[type=text],
+input[type=file],
+input[type=password],
+input[type=date],
+input[type=number],
+textarea,
+select,
 form {
   width: 100%;
   padding: 15px;
@@ -193,13 +193,13 @@ form {
   border-radius: 15px;
 }
 
-input[type=text], 
-input[type=file], 
-input[type=password], 
-input[type=date], 
-input[type=number], 
-textarea, 
-select, 
+input[type=text],
+input[type=file],
+input[type=password],
+input[type=date],
+input[type=number],
+textarea,
+select,
 form:focus {
   background-color: #ddd;
   outline: none;
@@ -257,7 +257,7 @@ a {
   transition: 0.4s;
 }
 
-.active, 
+.active,
 .accordion:hover {
   background-color: #ccc;
 }

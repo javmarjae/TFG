@@ -9,11 +9,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      {% if user.is_authenticated %}
-      <h4><a href="{% url 'users' %}" style="color: black; text-decoration: none;">Recommended users</a></h4>
-      {% else %}
       <h4><a href="{% url 'users' %}" style="color: black; text-decoration: none;">Users</a></h4>
-      {% endif %}
       <hr>
       <div class="grid-wrapper">
         {% for useri, gamer, numjuegos in users %}
