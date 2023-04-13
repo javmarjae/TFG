@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.contrib.auth import get_user_model
-from .models import User, Friendship, Gameship, Gamer, Game
+from .models import User, Friendship, Gameship, Gamer, Clan
 import Levenshtein
 
 User = get_user_model()
@@ -21,6 +21,8 @@ def jaccard_similarity(user):
     user_games = set(user_gameships.values_list('game__game_name', flat=True))
 
     user_rank = {game: rank for game, rank in user_gameships.values_list('game', 'rank')}
+
+    user_clan = user_gamer.clan
 
     for other_user in all_users:
         u_gamer = Gamer.objects.filter(user=other_user).first()
@@ -62,7 +64,18 @@ def jaccard_similarity(user):
         else:
             age_similarity = 1
 
-        similarity = (lang_similarity + friend_similarity + game_similarity + rank_similarity + age_similarity) / 5
+        u_clan = u_gamer.clan
+
+        if not user_clan or not u_clan:
+            clan_similarity = 0
+        else:
+            if user_clan == u_clan:
+                clan_similarity = 1
+            else:
+                clan_diff = Levenshtein.distance(user_clan.name, u_clan.name)
+                clan_similarity = 1 - clan_diff
+
+        similarity = (lang_similarity * 5 + friend_similarity * 1 + game_similarity * 2.5 + rank_similarity * 4 + age_similarity * 3 + clan_similarity * 0.5) / 6
 
         similarity_dict[other_user] = similarity
 
