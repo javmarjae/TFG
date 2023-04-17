@@ -21,7 +21,7 @@ https://www.statology.org/jaccard-similarity-python/
 
 Objetivos funcionales
 PRIORIDAD ALTA
--Sistema de recomendación /HECHO!!/
+-Sistema de recomendación /HECHO/
 -Chat en tiempo real /HECHO/
 -Sistema de clanes /HECHO/
 -Sistema de amigos /HECHO/

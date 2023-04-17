@@ -45,6 +45,23 @@ def users(request):
     verified = request.GET.get('verified')
     recommended = request.GET.get('recommended')
 
+    if 'restart' in request.GET:
+        campo_texto = ''
+        selected_languages = []
+        selected_games = []
+        selected_ranks = []
+        verified = ''
+        recommended = 'no'
+        users = User.objects.all().exclude(id=user.id).order_by('?')
+        return redirect('users')
+
+    if 'search' in request.GET:
+        users = User.objects.all().exclude(id=user.id)
+    else:
+        users_recommended = jaccard_similarity(request.user)
+        users = [user for user, similarity in users_recommended if user in users]
+        recommended = 'yes'
+
     ranks =[
         ('CS:GO', ['Silver I', 'Silver II', 'Silver III', 'Silver IV', 'Silver Elite', 'Silver Elite Master', 'Gold Nova I', 'Gold Nova II','Gold Nova III',
             'Gold Nova Master', 'Master Guardian I', 'Master Guardian II', 'Master Guardian Elite', 'Distinguished Master Guardian', 'Legendary Eagle',
@@ -78,24 +95,10 @@ def users(request):
     if verified == 'yes':
         users = users.filter(verified=True)
 
-    if recommended == 'yes':
-        users_recommended = jaccard_similarity(request.user)
-        users = [user for user, similarity in users_recommended if user in users]
-
     paginator = Paginator(users,20)
     page_number = request.GET.get('page')
     page_object = paginator.get_page(page_number)
     users = page_object.object_list
-
-    if 'restart' in request.GET:
-        campo_texto = ''
-        selected_languages = []
-        selected_games = []
-        selected_ranks = []
-        verified = ''
-        recommended = ''
-        users = User.objects.all().exclude(id=user.id).order_by('?')
-        return redirect('users')
 
     return render(
         request,
@@ -248,6 +251,15 @@ def clans(request):
     orden_fecha = request.GET.get('ordenfecha')
     orden_miembros = request.GET.get('ordenmiembros')
 
+    if 'restart' in request.GET:
+        campo_texto = ''
+        min_miembros = ''
+        max_miembros = ''
+        orden_fecha = ''
+        orden_miembros = ''
+        clans = clans.order_by('id')
+        return redirect('clans')
+
     if request.method == 'POST' and 'btnform2' in request.POST:
         form1 = ClanUpdateForm(request.POST, request.FILES)
         if form1.is_valid():
@@ -290,16 +302,7 @@ def clans(request):
 
 
     if campo_texto:
-        clans = clans.annotate(name_m=Lower('name')).filter(name_m__icontains=unidecode(request.POST.get('busqueda').lower()))
-
-    if 'restart' in request.GET:
-        campo_texto = ''
-        min_miembros = ''
-        max_miembros = ''
-        orden_fecha = ''
-        orden_miembros = ''
-        clans = clans.order_by('id')
-        return redirect('clans')
+        clans = clans.annotate(name_m=Lower('name')).filter(name_m__icontains=unidecode(request.GET.get('busqueda').lower()))
 
     paginator = Paginator(clans,20)
     page_number = request.GET.get('page')
@@ -583,9 +586,8 @@ def report_details(request, report_id):
                 return redirect('reportdetails',report_id)
 
         if reviewed:
-            if reviewed=='yes':
-                report.checked = True
-                report.save()
+            report.checked = not report.checked
+            report.save()
         
         return render(
             request,

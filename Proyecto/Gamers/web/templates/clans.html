@@ -2,39 +2,45 @@
 {% load crispy_forms_tags %}
 {% block content %}
 {% load static %}
-<div class="form-group" style="display: inline;">
-    <h2 style="display: block; text-align: center;">Filter</h2>
-    <form method="GET" id="mi-formulario" class="row" style="border-radius: 10px; margin-left: 1px;" action="{% url 'clans' %}">
-        {% csrf_token %}
-        <div class="col">
-            <h3>Número de miembros:</h3>
-            <input type="number" style="border-radius: 10px;" {% if min_miembros %}value="{{min_miembros}}"{% endif %} name="minimo" id="minimo" min="0" max="{{menosmiembros}}" placeholder="Mínimo...">
-            <input type="number" style="border-radius: 10px;" {% if max_miembros %}value="{{max_miembros}}"{% endif %} name="maximo" id="maximo" min="{{menosmiembros}}"max="{{masmiembros}}" placeholder="Máximo ({{masmiembros}})...">
-        </div>
-        <div class="col">
-            <h3>Ordenar por:</h3>
-            <select name="ordenfecha" id="ordenfecha" style="border-radius: 10px; margin: 5px 0 28px 0;">
-                <option value="ning">Fecha...</option>
-                <option {% if "fecharec" in orden_fecha %}selected{% endif %} value="fecharec">Nuevos</option>
-                <option {% if "fechaant" in orden_fecha %}selected{% endif %} value="fechaant">Antiguos</option>
-            </select>
-            <select name="ordenmiembros" id="ordenmiembros" style="border-radius: 10px;"">
-                <option value="ning">Miembros...</option>
-                <option {% if "maymiem" in orden_miembros %}selected{% endif %} value="maymiem">Más miembros</option>
-                <option {% if "menmiem" in orden_miembros %}selected{% endif %} value="menmiem">Menos miembros</option>
-            </select>
-        </div>
-        <div class="col">
-            <label for="busqueda"><h3>Clan</h3></label>
-            <input type="text" style="border-radius: 10px;" placeholder="Buscar clan..." id="busqueda" name="busqueda" {% if busqueda %} value="{{busqueda}}" {% endif %}>
-            <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">Search</button>
-            <button class="btn btn-danger mb-3" type="submit" style="border-radius: 12px;" name="restart">Reset filters</button>
-            {% if gamer.clan != null %}
-                <a href="{% url 'clan' gamer.clan.name %}" class="button btn btn-success mb-3" style="border-radius: 12px;">My clan</a>
-            {% endif %}
-        </div>
-    </form>
-</div>
+<div class="content-section col-md-12" style="text-align: center;">
+    <h2 style="display: inline-block; text-align: center;">Filter</h2>
+    {% if gamer.clan != null %}
+        <a href="{% url 'clan' gamer.clan.name %}" class="button btn btn-success mb-3" style="border-radius: 12px; float: right;">My clan</a>
+    {% endif %}
+    <button style="display: inline-block;" class="editprofilebtn" type="button" onclick="document.getElementById('id01').style.display='block'"><i
+      class="fa fa-cog fa-spin rueda"></i></button>
+    <div id="id01" class="modal form-group">
+        <form method="GET" id="mi-formulario" class="row" style="border-radius: 10px; margin-left: 1px;" action="{% url 'clans' %}">
+            {% csrf_token %}
+            <div class="col">
+                <h3>Número de miembros:</h3>
+                <input type="number" style="border-radius: 10px;" {% if min_miembros %}value="{{min_miembros}}"{% endif %} name="minimo" id="minimo" min="0" max="{{menosmiembros}}" placeholder="Mínimo...">
+                <input type="number" style="border-radius: 10px;" {% if max_miembros %}value="{{max_miembros}}"{% endif %} name="maximo" id="maximo" min="{{menosmiembros}}"max="{{masmiembros}}" placeholder="Máximo ({{masmiembros}})...">
+            </div>
+            <div class="col">
+                <h3>Ordenar por:</h3>
+                <select name="ordenfecha" id="ordenfecha" style="border-radius: 10px; margin: 5px 0 28px 0;">
+                    <option value="ning">Fecha...</option>
+                    <option {% if "fecharec" in orden_fecha %}selected{% endif %} value="fecharec">Nuevos</option>
+                    <option {% if "fechaant" in orden_fecha %}selected{% endif %} value="fechaant">Antiguos</option>
+                </select>
+                <select name="ordenmiembros" id="ordenmiembros" style="border-radius: 10px;"">
+                    <option value="ning">Miembros...</option>
+                    <option {% if "maymiem" in orden_miembros %}selected{% endif %} value="maymiem">Más miembros</option>
+                    <option {% if "menmiem" in orden_miembros %}selected{% endif %} value="menmiem">Menos miembros</option>
+                </select>
+            </div>
+            <div class="col">
+                <label for="busqueda"><h3>Clan</h3></label>
+                <input type="text" style="border-radius: 10px;" placeholder="Buscar clan..." id="busqueda" name="busqueda" {% if busqueda %} value="{{busqueda}}" {% endif %}>
+                <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;" name="search">Search</button>
+                <button class="btn btn-warning mb-3" type="submit" style="border-radius: 12px;" name="restart">Reset filters</button>
+                <button type="button" onclick="document.getElementById('id01').style.display='none'" style="border-radius: 12px; margin-left: 2px;" 
+                    class="btn btn-danger mb-3">Cancel</button>
+            </div>
+        </form>
+    </div>
+  </div>
 <hr>
 {% if gamer.clan == null %}
     <button style="float: right; margin-right: 8%; display: block;" class="updatebtn" type="button" onclick="document.getElementById('id01').style.display='block'">Create clan</button>
