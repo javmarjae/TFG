@@ -148,7 +148,7 @@ def password_reset_request(request):
             associated_user = get_user_model().objects.filter(Q(email=user_email)).first()
             if associated_user:
                 subject = "Password Reset request"
-                message = render_to_string("template_reset_password.html", {
+                message = render_to_string("template_password_reset.html", {
                     'user': associated_user,
                     'domain': get_current_site(request).domain,
                     'uid': urlsafe_base64_encode(force_bytes(associated_user.pk)),
