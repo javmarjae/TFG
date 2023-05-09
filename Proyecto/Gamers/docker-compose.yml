@@ -1,0 +1,32 @@
+version: '3'
+services:
+  db:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=gamers
+      - MYSQL_USER=usuariotfg
+      - MYSQL_PASSWORD=tfg2023javmarjae
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./mysql-init-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db:/var/lib/mysql
+    networks:
+      - gamers-network
+  web:
+    build: .
+    volumes:
+      - .:/app/Gamers
+    depends_on:
+      - db
+    command: sh -c "./wait-for-it.sh -t 0 db:3306 -- python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    networks:
+      - gamers-network
+networks:
+  gamers-network:
+    driver: bridge
+    ipam:
+     driver: default

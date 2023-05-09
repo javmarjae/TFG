@@ -11,6 +11,13 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+
+-- Volcando estructura de base de datos para gamers
+CREATE USER IF NOT EXISTS 'usuariotfg'@'%'  IDENTIFIED BY 'tfg2023javmarjae';
+CREATE DATABASE IF NOT EXISTS `gamers` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+GRANT ALL PRIVILEGES ON gamers.* TO 'usuariotfg'@'%';
+USE `gamers`;
+
 -- Volcando estructura para tabla gamers.auth_group
 CREATE TABLE IF NOT EXISTS `auth_group` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -52,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `auth_permission` (
   CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla gamers.auth_permission: ~64 rows (aproximadamente)
+-- Volcando datos para la tabla gamers.auth_permission: ~60 rows (aproximadamente)
 DELETE FROM `auth_permission`;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
 INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES
@@ -134,9 +141,9 @@ CREATE TABLE IF NOT EXISTS `chat_chatmessage` (
   KEY `chat_chatmessage_user_id_fa615e65_fk_web_user_id` (`user_id`),
   CONSTRAINT `chat_chatmessage_thread_id_0986d8f2_fk_chat_thread_id` FOREIGN KEY (`thread_id`) REFERENCES `chat_thread` (`id`),
   CONSTRAINT `chat_chatmessage_user_id_fa615e65_fk_web_user_id` FOREIGN KEY (`user_id`) REFERENCES `web_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla gamers.chat_chatmessage: ~4 rows (aproximadamente)
+-- Volcando datos para la tabla gamers.chat_chatmessage: ~22 rows (aproximadamente)
 DELETE FROM `chat_chatmessage`;
 /*!40000 ALTER TABLE `chat_chatmessage` DISABLE KEYS */;
 INSERT INTO `chat_chatmessage` (`id`, `message`, `timestamp`, `thread_id`, `user_id`) VALUES
@@ -144,7 +151,27 @@ INSERT INTO `chat_chatmessage` (`id`, `message`, `timestamp`, `thread_id`, `user
 	(2, 'joya', '2023-04-11 08:15:46.486820', 1, 1),
 	(3, 'q pasa', '2023-04-11 08:15:53.023314', 1, 1),
 	(4, 'todo bien', '2023-04-11 08:27:11.215152', 2, 521),
-	(5, 'ahora', '2023-04-11 08:27:14.662244', 2, 1);
+	(5, 'ahora', '2023-04-11 08:27:14.662244', 2, 1),
+	(6, 'Hola', '2023-04-13 14:21:37.924500', 1, 1),
+	(7, 'q pasa', '2023-04-13 14:21:47.840479', 1, 1),
+	(8, 'prueba', '2023-04-13 14:21:52.203524', 1, 1),
+	(9, 'todo bien', '2023-04-13 14:23:47.374302', 1, 1),
+	(10, 'q pasa', '2023-04-13 14:24:05.300583', 1, 1),
+	(11, 'ahora', '2023-04-13 14:27:47.765082', 2, 1),
+	(12, 'todo bien', '2023-04-13 14:30:04.109170', 1, 1),
+	(13, 'Hola', '2023-04-13 15:12:56.783166', 1, 1),
+	(14, 'q pasa', '2023-04-13 15:22:47.693161', 1, 1),
+	(15, 'prueba', '2023-04-13 15:25:04.591803', 2, 1),
+	(16, 'ahora', '2023-04-13 15:25:34.204673', 2, 1),
+	(17, 'ahora', '2023-04-13 15:56:13.090499', 2, 1),
+	(18, 'hola', '2023-04-14 11:23:17.776553', 2, 521),
+	(19, 'Esto funciona', '2023-04-14 11:23:26.677202', 2, 521),
+	(20, 'bien', '2023-04-14 11:23:58.744116', 1, 520),
+	(21, 'prueba', '2023-04-14 11:24:03.700137', 1, 1),
+	(22, 'hola', '2023-04-14 11:24:20.007623', 2, 1),
+	(23, 'hola', '2023-04-14 11:54:40.186457', 2, 521),
+	(24, 'todo bien', '2023-04-14 11:54:45.072391', 2, 1),
+	(25, 'joya', '2023-05-07 20:31:02.068541', 1, 1);
 /*!40000 ALTER TABLE `chat_chatmessage` ENABLE KEYS */;
 
 -- Volcando estructura para tabla gamers.chat_thread
@@ -214,7 +241,7 @@ CREATE TABLE IF NOT EXISTS `django_content_type` (
   UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla gamers.django_content_type: ~14 rows (aproximadamente)
+-- Volcando datos para la tabla gamers.django_content_type: ~13 rows (aproximadamente)
 DELETE FROM `django_content_type`;
 /*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
 INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
@@ -243,9 +270,9 @@ CREATE TABLE IF NOT EXISTS `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla gamers.django_migrations: ~46 rows (aproximadamente)
+-- Volcando datos para la tabla gamers.django_migrations: ~44 rows (aproximadamente)
 DELETE FROM `django_migrations`;
 /*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
 INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
@@ -295,7 +322,10 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 	(44, 'web', '0025_alter_report_date_alter_report_type', '2023-04-12 08:22:00.748487'),
 	(45, 'web', '0026_user_verified_alter_report_type', '2023-04-12 12:56:19.137848'),
 	(46, 'web', '0027_alter_report_type', '2023-04-12 13:03:32.640819'),
-	(47, 'web', '0028_alter_report_type_delete_usermatrix', '2023-04-13 12:04:59.756876');
+	(47, 'web', '0028_alter_report_type_delete_usermatrix', '2023-04-13 12:04:59.756876'),
+	(48, 'web', '0029_alter_report_date_alter_report_type', '2023-04-13 12:58:26.730410'),
+	(49, 'web', '0030_alter_clan_join_date_alter_report_type', '2023-04-13 13:41:07.734054'),
+	(50, 'web', '0031_alter_report_type', '2023-04-13 13:47:23.314225');
 /*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
 
 -- Volcando estructura para tabla gamers.django_session
@@ -307,13 +337,16 @@ CREATE TABLE IF NOT EXISTS `django_session` (
   KEY `django_session_expire_date_a5c62663` (`expire_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla gamers.django_session: ~7 rows (aproximadamente)
+-- Volcando datos para la tabla gamers.django_session: ~9 rows (aproximadamente)
 DELETE FROM `django_session`;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
 	('3wra9eg95gkuddl2g9uk036045eddgnm', '.eJxVjEEOwiAQRe_C2jTA2AIuXXsHMsyAEBOaCF0Z796SdKHb997_H-Fx69lvLb59YXETSlx-WUB6xTrEYLH2QtjLWqdTtOmxPku9n9nfNmPL41ECLYEZE5AGYg6aZ4U2MkhwaMlpA5Zms2jjiNEGFY4uSWBnEl7FdwfwODb7:1plnn2:vJxBxe01cRqbmGP_3bKaPMa6mZ4TP24x5npIyMQQssY', '2023-04-24 09:26:20.094242'),
+	('gd8vnewzsd7pbdzbkmjbylavd5spdcgz', '.eJxVi70OwiAQgN-F2TRHOUtxdPYdyN1xCDGhiaWT8d21SQddv5-XibT1ErdVn7EmczHnEczplzLJQ9uudqatV6FelzYcYh1uy72265H9vYXW8h0TBKtqJTMkxgSqwSXHxMEhT6A-z-gROSfwVqZsLWCW0UuerQ_E5v0BRHE3kg:1pnHW6:uaCPkxaPf4C9wIZAICXsEAneSnz2k3QL0QhhV2PinrM', '2023-04-28 11:22:58.890538'),
 	('hmok97jyt5ujja5ow3y3inz62gompbwo', '.eJxVjEEOwiAQRe_C2jTA2AIuXXsHMsyAEBOaCF0Z796SdKHb997_H-Fx69lvLb59YXETSlx-WUB6xTrEYLH2QtjLWqdTtOmxPku9n9nfNmPL41ECLYEZE5AGYg6aZ4U2MkhwaMlpA5Zms2jjiNEGFY4uSWBnEl7FdwfwODb7:1pejra:Np3W2GjRG6CwsduwjY-3Nv7u9lL9UnOCFwilGm4QAOo', '2023-04-04 21:49:50.210401'),
+	('jc3v285py7ase6ggamc2k4satkvrhumd', '.eJxVi8sKwyAQRf_FdQk-R-2y6_6DjKNUKRioZlX67zWQRbI7nHPvlwXcRglbz59QE7szIwW7nW1Eeue2p93lNirhqGtbjtCX5_qq7XHMLt-Cvcwj-JTRqUhATrk4Eaw2ZDkZqcCg0FokLr2K3lJS2iFKyIZDIjlZs98fDTo2Sw:1pnHWJ:iIQe0tcYXgPFm_D5TzHDbjMOTvELOxv_Zml23UkVryo', '2023-04-28 11:23:11.737277'),
 	('jvfwcb07f77swo5rkioc8eo3gkxxfk11', '.eJxVjEEOwiAQRe_C2jTA2AIuXXsHMsyAEBOaCF0Z796SdKHb997_H-Fx69lvLb59YXETSlx-WUB6xTrEYLH2QtjLWqdTtOmxPku9n9nfNmPL41ECLYEZE5AGYg6aZ4U2MkhwaMlpA5Zms2jjiNEGFY4uSWBnEl7FdwfwODb7:1pmv2m:jJEncJE7aLoguo8kvdipuIGEQ0UhQAnbj3MJwpS4du4', '2023-04-27 11:23:12.855231'),
+	('k1nz91wf7gyjcfmlqahk1dt0fys6osl5', '.eJxVi70OwiAQgN-F2TRwHAUcnfsO5AqHEBOaCJ2M765NOuj6_bxEoH2UsHd-hprEVRiQ4vJLV4oPboc6GLdRI426tekUfVq2e223M_t7C_XyHZW3iueZMpGCFWPCHFmSzug0YwbwyUhwNhqJLlt2zkcPWSuJFtBY8f4AILM2Kg:1pwI6E:8_E2Pewc4sN7HJC73NMRquS-qeOQl2KX8Izu-6x9uto', '2023-05-23 07:49:30.439283'),
 	('khizjsfn3fgr6vw2urcpgdo9n7daeaxq', '.eJxVi8sKwyAQRf_FdQk-R-2y6_6DjKNUKRioZlX67zWQRbI7nHPvlwXcRglbz59QE7szIwW7nW1Eeue2p93lNirhqGtbjtCX5_qq7XHMLt-Cvcwj-JTRqUhATrk4Eaw2ZDkZqcCg0FokLr2K3lJS2iFKyIZDIjlZs98fDTo2Sw:1pm9Bg:Z7JrGLbPA10coqu151VKSvZ7Z4hxWlNknrDPt0S6koY', '2023-04-25 08:17:12.035820'),
 	('muqwuzn7mz1omgipj7jja1xfo8efke7f', '.eJxVi8sKwyAQRf_FdQk-R-2y6_6DjKNUKRioZlX67zWQRbI7nHPvlwXcRglbz59QE7szIwW7nW1Eeue2p93lNirhqGtbjtCX5_qq7XHMLt-Cvcwj-JTRqUhATrk4Eaw2ZDkZqcCg0FokLr2K3lJS2iFKyIZDIjlZs98fDTo2Sw:1pmYKi:sQK9GMSi8IXEdT0NlmH1i3kWADvVG6G3J3EqUmbCqMA', '2023-04-26 11:08:12.843901'),
 	('qnw9umlxjqgozd30vxp1c02lrs3l7sp6', '.eJxVjEEOwiAQRe_C2jTA2AIuXXsHMsyAEBOaCF0Z796SdKHb997_H-Fx69lvLb59YXETSlx-WUB6xTrEYLH2QtjLWqdTtOmxPku9n9nfNmPL41ECLYEZE5AGYg6aZ4U2MkhwaMlpA5Zms2jjiNEGFY4uSWBnEl7FdwfwODb7:1ph99N:l1HZFUBPXgIUpj620eiYnsG1F0DHmPIoeI4ZENKfrR4', '2023-04-11 13:14:09.948232'),
@@ -360,7 +393,7 @@ CREATE TABLE IF NOT EXISTS `web_friendship` (
   CONSTRAINT `web_friendship_sender_id_f3ea16f2_fk_web_gamer_user_id` FOREIGN KEY (`sender_id`) REFERENCES `web_gamer` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla gamers.web_friendship: ~1.805 rows (aproximadamente)
+-- Volcando datos para la tabla gamers.web_friendship: ~1.807 rows (aproximadamente)
 DELETE FROM `web_friendship`;
 /*!40000 ALTER TABLE `web_friendship` DISABLE KEYS */;
 INSERT INTO `web_friendship` (`id`, `status`, `receiver_id`, `sender_id`) VALUES
@@ -2228,7 +2261,7 @@ INSERT INTO `web_gamer` (`user_id`, `discord`, `steam`, `epic_games`, `riot_game
 	(11, 'powelljane', NULL, NULL, NULL, 'ec3fdbc174404c34b86fe68cc8327cca'),
 	(12, 'jaimeedwards', NULL, NULL, 'debra31', NULL),
 	(13, 'hsimmons', NULL, NULL, NULL, '187caa0d24e744fcb1bac6a3917710a4'),
-	(14, 'watkinsandrew', 'stephen61', 'fisherfred', 'ronald54', 'c38b86e0f0b5481ba85ecc80cf022ce0'),
+	(14, 'watkinsandrew', 'stephen61', 'fisherfred', 'ronald54', NULL),
 	(15, 'christophercook', 'michellefreeman', 'elizabeth82', NULL, '153d50ac01584bc3ad6306bd7b34d83a'),
 	(16, 'brandon63', 'brooksdustin', 'robert63', 'joneskelly', '187caa0d24e744fcb1bac6a3917710a4'),
 	(17, 'kingpeter', NULL, 'caleb24', NULL, '54906cbac25a4a4fb970fbf4dfbc4ad5'),
@@ -2451,7 +2484,7 @@ INSERT INTO `web_gamer` (`user_id`, `discord`, `steam`, `epic_games`, `riot_game
 	(234, 'ccarlson', 'keydaniel', NULL, 'seth96', '187caa0d24e744fcb1bac6a3917710a4'),
 	(235, 'andrewjohnson', 'renee91', NULL, 'samanthasimon', '54906cbac25a4a4fb970fbf4dfbc4ad5'),
 	(236, 'dalexander', NULL, NULL, 'victor34', '54906cbac25a4a4fb970fbf4dfbc4ad5'),
-	(237, 'vjones', NULL, NULL, 'jessicawatkins', '06ff59e0ed09419dbd4276b4cccddb95'),
+	(237, 'vjones', NULL, NULL, 'jessicawatkins', NULL),
 	(238, 'spencer64', NULL, 'tgonzalez', 'kfigueroa', '06ff59e0ed09419dbd4276b4cccddb95'),
 	(239, 'moniquefoley', NULL, NULL, NULL, '187caa0d24e744fcb1bac6a3917710a4'),
 	(240, 'flawson', NULL, 'danielturner', 'qmendoza', '54906cbac25a4a4fb970fbf4dfbc4ad5'),
@@ -2750,7 +2783,7 @@ CREATE TABLE IF NOT EXISTS `web_gameship` (
   CONSTRAINT `web_gameship_gamer_id_33e259ba_fk_web_gamer_user_id` FOREIGN KEY (`gamer_id`) REFERENCES `web_gamer` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla gamers.web_gameship: ~1.301 rows (aproximadamente)
+-- Volcando datos para la tabla gamers.web_gameship: ~1.303 rows (aproximadamente)
 DELETE FROM `web_gameship`;
 /*!40000 ALTER TABLE `web_gameship` DISABLE KEYS */;
 INSERT INTO `web_gameship` (`id`, `rank`, `game_id`, `gamer_id`) VALUES
@@ -3042,6 +3075,7 @@ INSERT INTO `web_gameship` (`id`, `rank`, `game_id`, `gamer_id`) VALUES
 	('39b5a1e8621d408da0a7e1db02385e0d', NULL, '130e7b97ef774f2e8bcead05111b22b8', 356),
 	('39f9070b97d0449a921a62e932a66ba4', 'Master Guardian Elite', '76be62989290436086ee4fd0d95eceef', 314),
 	('3a2620c017644ac9bff68c135b59415b', 'Distinguished Master Guardian', '76be62989290436086ee4fd0d95eceef', 384),
+	('3a67dc2069c84bcba37d1868588b1659', 'Gold IV', 'f4c47e11fe934078b9759ced5fe63fd5', 1),
 	('3aa5b838633146dcab307587d6b1e44d', 'Silver III', '0769c7fce824469f87bd67f72ba6d908', 63),
 	('3aaf6e259eb440778ce4fe37df83a907', NULL, '130e7b97ef774f2e8bcead05111b22b8', 462),
 	('3ae0b589e10743b6b4c4479d4d3579d6', 'Iron II', 'f4c47e11fe934078b9759ced5fe63fd5', 453),
@@ -3873,6 +3907,7 @@ INSERT INTO `web_gameship` (`id`, `rank`, `game_id`, `gamer_id`) VALUES
 	('debddebece7a4ab58f7f9eb6d6124990', NULL, 'd673395bc4ec4ab4b8aed5524e55797d', 111),
 	('debee66097c54194914b58361241d443', NULL, '130e7b97ef774f2e8bcead05111b22b8', 362),
 	('def87d3129904a24955f68df8d673178', 'Grand Champion I', '0769c7fce824469f87bd67f72ba6d908', 143),
+	('df25f362b1914761ad3bc78d0dbc6d60', NULL, 'd673395bc4ec4ab4b8aed5524e55797d', 1),
 	('df909239e6e34c0392ff1bbd8b1c27bf', NULL, 'd673395bc4ec4ab4b8aed5524e55797d', 51),
 	('dfa01811cd4d4419a6589cc9e71278d1', 'Silver III', '0769c7fce824469f87bd67f72ba6d908', 456),
 	('dfb16d801da34bc4bf305c62d4c1447e', 'Platinum III', '0769c7fce824469f87bd67f72ba6d908', 294),
@@ -4080,6 +4115,7 @@ CREATE TABLE IF NOT EXISTS `web_report` (
 DELETE FROM `web_report`;
 /*!40000 ALTER TABLE `web_report` DISABLE KEYS */;
 INSERT INTO `web_report` (`id`, `title`, `desc`, `type`, `img`, `user_id`, `checked`, `date`) VALUES
+	('02c8b82c963c481a8e288d044ec0ba20', 'Nuevo reporte', 'Este usuario me ha difamado', 'us', 'Reports/mariape/betiscampeon.jpg', 521, 0, '2023-04-14 11:57:19.632677'),
 	('42b92f69a7e54f4b898d973c6af2bbd6', 'Prueba', 'ReportPrueba', 'bu', '', 1, 0, '2023-04-12 00:00:00.000000'),
 	('7c74f7b358bc460187d8ec7ec361cc91', 'Quiero verificar mi cuenta', 'Soy esta persona', 've', 'Reports/mariape/ÑENGOFLOW.png', 521, 0, '2023-04-12 11:10:28.078997'),
 	('8a88a83c99004ccf9e93903f55e86277', 'Mala conducta', 'El usuario @javmarjae ha cometido una infracción en el chat.', 'us', '', 1, 1, '2023-04-12 00:00:00.000000'),
@@ -4113,7 +4149,7 @@ CREATE TABLE IF NOT EXISTS `web_user` (
 DELETE FROM `web_user`;
 /*!40000 ALTER TABLE `web_user` DISABLE KEYS */;
 INSERT INTO `web_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`, `language`, `profile_pic`, `birth_date`, `last_online`, `is_online`, `verified`) VALUES
-	(1, 'pbkdf2_sha256$320000$DZTVljGp67Y6dl9ekzKMTa$KVv/vT5ngKqein0C1K28tvBJXhtGt7q2TZAwLyyCbDU=', '2023-04-13 11:23:12.853327', 1, 'admin', 'Javier', 'Martínez Jaen', 'admin@example.com', 1, 1, '2023-03-21 17:34:08.224359', 'SP', 'Users/admin/Real_Betis.png', '2001-01-31', '2023-04-13 11:23:12.765265', 1, 0),
+	(1, 'pbkdf2_sha256$320000$DZTVljGp67Y6dl9ekzKMTa$KVv/vT5ngKqein0C1K28tvBJXhtGt7q2TZAwLyyCbDU=', '2023-05-09 07:48:29.888935', 1, 'admin', 'Javier', 'Martínez Jaen', 'admin@example.com', 1, 1, '2023-03-21 17:34:08.224359', 'SP', 'Users/admin/Real_Betis.png', '2001-01-31', '2023-05-09 07:49:21.063425', 0, 0),
 	(2, 'password', NULL, 0, 'aevans', 'Melissa', 'Brown', 'roberthill@example.com', 0, 1, '2023-03-21 17:34:08.466940', 'GE', 'Users/aevans/602223.jpg', '1981-04-11', '2023-04-11 08:16:07.973869', 1, 1),
 	(3, 'password', NULL, 0, 'stacey34', 'Kenneth', 'Soto', 'clarkbrittany@example.net', 0, 1, '2023-03-21 17:34:08.476426', 'GE', 'Users/stacey34/936378.jpg', '2004-05-10', NULL, 0, 0),
 	(4, 'password', NULL, 0, 'rsantos', 'Jeffery', 'Martin', 'caseyrodriguez@example.net', 0, 1, '2023-03-21 17:34:08.482931', 'CH', 'Users/rsantos/714040.jpg', '2001-09-09', NULL, 0, 0),
@@ -4157,7 +4193,7 @@ INSERT INTO `web_user` (`id`, `password`, `last_login`, `is_superuser`, `usernam
 	(42, 'password', NULL, 0, 'jeffrey84', 'Paul', 'Mckinney', 'nlarson@example.org', 0, 1, '2023-03-21 17:34:08.835502', 'EN', 'Users/jeffrey84/601846.jpg', '1991-12-23', NULL, 1, 0),
 	(43, 'password', NULL, 0, 'rachelblake', 'Michael', 'Brown', 'ymontes@example.com', 0, 1, '2023-03-21 17:34:08.842504', 'CH', 'Users/rachelblake/617613.jpg', '1994-11-08', NULL, 0, 0),
 	(44, 'password', NULL, 0, 'nclayton', 'Daniel', 'Hernandez', 'william83@example.com', 0, 1, '2023-03-21 17:34:08.848724', 'SP', 'Users/nclayton/719625.png', '1994-06-09', NULL, 0, 0),
-	(45, 'password', NULL, 0, 'elijah59', 'Stephen', 'Thompson', 'gabriel62@example.org', 0, 1, '2023-03-21 17:34:08.861307', 'SP', 'Users/elijah59/886533.jpg', '1987-10-13', NULL, 0, 0),
+	(45, 'password', NULL, 0, 'elijah59', 'Stephen', 'Thompson', 'gabriel62@example.org', 0, 1, '2023-03-21 17:34:08.861307', 'SP', 'Users/elijah59/886533.jpg', '1987-10-13', NULL, 0, 1),
 	(46, 'password', NULL, 0, 'felicia20', 'Robyn', 'Wright', 'robertsullivan@example.net', 0, 1, '2023-03-21 17:34:08.870767', 'EN', 'Users/felicia20/601846.jpg', '1990-03-10', NULL, 1, 0),
 	(47, 'password', NULL, 0, 'jaredthompson', 'Catherine', 'Kelley', 'tyler57@example.com', 0, 1, '2023-03-21 17:34:08.878286', 'CH', 'Users/jaredthompson/157333.jpg', '1986-01-23', NULL, 0, 0),
 	(48, 'password', NULL, 0, 'marciafuller', 'Patricia', 'Evans', 'cbates@example.net', 0, 1, '2023-03-21 17:34:08.889331', 'GE', 'Users/marciafuller/555837.jpg', '1984-07-18', NULL, 0, 0),
@@ -4631,8 +4667,8 @@ INSERT INTO `web_user` (`id`, `password`, `last_login`, `is_superuser`, `usernam
 	(516, 'password', NULL, 0, 'kkim', 'Tara', 'Jackson', 'ycrosby@example.org', 0, 1, '2023-03-21 17:34:12.903333', 'GE', 'Users/kkim/564933.jpg', '1997-04-01', NULL, 0, 0),
 	(517, 'password', NULL, 0, 'shane55', 'Leslie', 'Ramirez', 'obriennatalie@example.net', 0, 1, '2023-03-21 17:34:12.911276', 'CH', 'Users/shane55/654239.jpg', '1985-03-14', NULL, 1, 0),
 	(518, 'password', NULL, 0, 'katherine42', 'Nicolas', 'Page', 'dana56@example.org', 0, 1, '2023-03-21 17:34:12.916794', 'SP', 'Users/katherine42/871169.png', '1980-09-02', NULL, 1, 0),
-	(520, 'pbkdf2_sha256$320000$NXvd8iYZFBv9yT0SW3501f$qqJSxru47Ls6FAkqFH0ycTLP119DrGhBIFYLppLxhQQ=', '2023-04-13 11:22:56.898426', 0, 'javmarjae', 'Javier', 'Martínez Jaén', 'javmarjae@gmail.com', 0, 1, '2023-04-11 08:14:29.000000', 'SP', 'profile/default.png', '2001-01-31', '2023-04-13 11:23:10.382238', 0, 1),
-	(521, 'pbkdf2_sha256$320000$zAgjzyzB6PYTSBN7kpVhE3$9qA0aMcEocfJ9HhINlokd//fqUTcRkElF14jtZYJBhM=', '2023-04-13 11:23:14.389725', 0, 'mariape', 'Maria', 'Perez', 'javiermartinezjaen@gmail.com', 0, 1, '2023-04-11 08:16:50.000000', 'SP', 'Users/mariape/Trees-22.jpg', '2003-11-25', '2023-04-13 11:23:14.299782', 1, 1);
+	(520, 'pbkdf2_sha256$320000$V9KC5wLWfqJNA3MECZ2DyP$7q/Jv31hZKCj2taSwj4O7GN44n8DPXUh/vyUugc7N4c=', '2023-05-09 07:49:30.437001', 0, 'javmarjae', 'Javier', 'Martínez Jaén', 'javmarjae@gmail.com', 0, 1, '2023-04-11 08:14:29.000000', 'SP', 'profile/default.png', '2001-01-31', '2023-05-09 07:49:30.348759', 1, 1),
+	(521, 'pbkdf2_sha256$320000$zAgjzyzB6PYTSBN7kpVhE3$9qA0aMcEocfJ9HhINlokd//fqUTcRkElF14jtZYJBhM=', '2023-04-14 11:23:11.734776', 0, 'mariape', 'Maria', 'Perez', 'javiermartinezjaen@gmail.com', 0, 1, '2023-04-11 08:16:50.000000', 'SP', 'Users/mariape/Trees-22.jpg', '2003-11-25', '2023-04-14 11:23:11.645760', 1, 1);
 /*!40000 ALTER TABLE `web_user` ENABLE KEYS */;
 
 -- Volcando estructura para tabla gamers.web_user_groups

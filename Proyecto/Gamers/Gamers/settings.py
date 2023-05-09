@@ -100,9 +100,9 @@ DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'gamers',
-            'USER': 'root',
-            'PASSWORD': 'root',
-            'HOST': 'localhost',
+            'USER': 'usuariotfg',
+            'PASSWORD': 'tfg2023javmarjae',
+            'HOST': 'db',
             'PORT': '3306',
         }
     }

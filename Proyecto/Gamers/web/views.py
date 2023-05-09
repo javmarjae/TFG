@@ -32,7 +32,7 @@ def index(request):
     )
 
 @require_http_methods(["GET", "POST"])
-@login_required
+@login_required(login_url='login')
 def users(request):
     user = request.user
     users = User.objects.all().exclude(id=user.id).order_by('?')
