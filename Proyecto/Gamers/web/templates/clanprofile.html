@@ -13,7 +13,7 @@
 <hr>
 <div class="backgroundweb">
     <div class="media">
-        <img class="rounded-circle account-img profile-image" src="{{ clan.profile_pic.url }}" alt="">
+        <img class="rounded-circle account-img profile-image" src="{{ clan.profile_pic.url }}" alt="Perfil">
         <div class="media-body">
             <h2>{{ clan.name }}</h2>
             <p class="text-secondary">{{ clan.description }}</p>
@@ -57,7 +57,7 @@
                     <input id="id_image" type="file" name="profile_pic" accept="image/*" onchange="previewImage(event)" hidden />
                     <label for="id_image">
                         <img id="preview" accept="image/*" class="rounded-circle account-img profile-image" style="cursor: pointer"
-                            src="{{ form2.instance.profile_pic.url }}" title="Upload new image" alt="">
+                            src="{{ form2.instance.profile_pic.url }}" title="Upload new image" alt="Perfil">
                     </label>
                 </div>
                 <button type="button" class="accordion">Edit Clan Information</button>
@@ -123,7 +123,7 @@
                 <div class="user_card" style="margin-bottom: 8px; width: 100%;">
                     <div class="row" style="padding: 10px;">
                         <div class="col">
-                            <img class="rounded-circle user_img" src="{{ member.user.profile_pic.url }}" alt="">
+                            <img class="rounded-circle user_img" src="{{ member.user.profile_pic.url }}" alt="Perfil">
                         </div>
                         <div class="col">
                             <div class="row">
@@ -137,22 +137,22 @@
                             <div class="row">
                               <div class="col">
                                 {% if member.discord != '' %}
-                                  <img src="{% static 'img/discord.png' %}" style="width: 100%;" alt="">
+                                  <img src="{% static 'img/discord.png' %}" style="width: 100%;" alt="Discord">
                                 {% endif %}
                               </div>
                               <div class="col">
                                 {% if member.steam != '' %}
-                                  <img src="{% static 'img/steam.png' %}" style="width: 100%;" alt="">
+                                  <img src="{% static 'img/steam.png' %}" style="width: 100%;" alt="Steam">
                                 {% endif %}
                               </div>
                               <div class="col">
                                 {% if member.epic_games != '' %}
-                                  <img src="{% static 'img/epicgames.png' %}" style="width: 100%;" alt="">
+                                  <img src="{% static 'img/epicgames.png' %}" style="width: 100%;" alt="Epic">
                                 {% endif %}
                               </div>
                               <div class="col">
                                 {% if member.riot_games != '' %}
-                                  <img src="{% static 'img/riotgames.png' %}" style="width: 100%;" alt="">
+                                  <img src="{% static 'img/riotgames.png' %}" style="width: 100%;" alt="Riot">
                                 {% endif %}
                               </div>
                             </div>

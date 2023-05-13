@@ -31,9 +31,9 @@
                 <div class="d-flex bd-highlight">
                   <div class="img_cont">
                     {% if thread.first_person == user %}
-                      <img src="{{ thread.second_person.profile_pic.url }}" class="rounded-circle user_img" alt="">
+                      <img src="{{ thread.second_person.profile_pic.url }}" class="rounded-circle user_img" alt="Perfil">
                     {% else %}
-                      <img src="{{ thread.first_person.profile_pic.url }}" class="rounded-circle user_img" alt="">
+                      <img src="{{ thread.first_person.profile_pic.url }}" class="rounded-circle user_img" alt="Perfil">
                     {% endif %}
                   </div>
                   <div class="user_info">
@@ -64,9 +64,9 @@
                 <div class="d-flex bd-highlight">
                   <div class="img_cont">
                     {% if thread.first_person == user %}
-                      <img src="{{ thread.second_person.profile_pic.url }}" class="rounded-circle user_img" alt="">
+                      <img src="{{ thread.second_person.profile_pic.url }}" class="rounded-circle user_img" alt="Perfil">
                     {% else %}
-                      <img src="{{ thread.first_person.profile_pic.url }}" class="rounded-circle user_img" alt="">
+                      <img src="{{ thread.first_person.profile_pic.url }}" class="rounded-circle user_img" alt="Perfil">
                     {% endif %}
                   </div>
                   <div class="user_info">
@@ -89,14 +89,14 @@
                         <span class="msg_time_send">{{ chat.timestamp|date:"d D" }}, {{ chat.timestamp|time:"H:i" }}</span>
                       </div>
                       <div class="img_cont_msg">
-                        <img src="{{ user.profile_pic.url }}" class="rounded-circle user_img_msg" alt="">
+                        <img src="{{ user.profile_pic.url }}" class="rounded-circle user_img_msg" alt="Perfil">
                         <input type="hidden" id="logged-in-user-pic" value="{{ user.profile_pic.url }}">
                       </div>
                     </div>
                   {% else %}
                     <div class="d-flex mb-4 received">
                       <div class="img_cont_msg">
-                        <img src="{{ chat.user.profile_pic.url }}" class="rounded-circle user_img_msg" alt="">
+                        <img src="{{ chat.user.profile_pic.url }}" class="rounded-circle user_img_msg" alt="Perfil">
                         <input type="hidden" id="other-user-pic" value="{{ chat.user.profile_pic.url }}">
                       </div>
                       <div class="msg_cotainer">

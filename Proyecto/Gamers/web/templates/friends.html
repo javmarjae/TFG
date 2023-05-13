@@ -17,7 +17,7 @@
                             <div class="user_card" style="margin-bottom: 8px; width: 100%;">
                                 <div class="row" style="padding: 10px;">
                                     <div class="col">
-                                        <img class="rounded-circle user_img" src="{{ solicitud.sender.user.profile_pic.url }}" alt="">
+                                        <img class="rounded-circle user_img" src="{{ solicitud.sender.user.profile_pic.url }}" alt="Perfil">
                                     </div>
                                     <div class="col" style="margin-top: 2%;">
                                         <h2><a href="{% url 'profile' solicitud.sender.user %}" style="color: black; text-decoration: none;">{{ solicitud.sender.user.username }}</a></h2>                
@@ -53,7 +53,7 @@
                 <div class="user_card" style="margin-bottom: 8px; width: 100%;">
                     <div class="row" style="padding: 10px;">
                         <div class="col-md-3">
-                            <img class="rounded-circle user_img" src="{{ amigo.receiver.user.profile_pic.url }}" alt="">
+                            <img class="rounded-circle user_img" src="{{ amigo.receiver.user.profile_pic.url }}" alt="Perfil">
                         </div>
                         <div class="col-md-3" style="margin-top: 2%;">
                             <h2><a href="{% url 'profile' amigo.receiver.user %}" style="color: black; text-decoration: none;">{{ amigo.receiver.user.username }}</a></h2>                
@@ -69,7 +69,7 @@
                 <div class="user_card" style="margin-bottom: 8px; width: 100%;">
                     <div class="row" style="padding: 10px;">
                         <div class="col-md-3">
-                            <img class="rounded-circle user_img" src="{{ amigo.sender.user.profile_pic.url }}" alt="">
+                            <img class="rounded-circle user_img" src="{{ amigo.sender.user.profile_pic.url }}" alt="Perfil">
                         </div>
                         <div class="col-md-3" style="margin-top: 2%;">
                             <h2><a href="{% url 'profile' amigo.sender.user %}" style="color: black; text-decoration: none;">{{ amigo.sender.user.username }}</a></h2>                
