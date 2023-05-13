@@ -43,9 +43,9 @@
   </div>
 <hr>
 {% if gamer.clan == null %}
-    <button style="float: right; margin-right: 8%; display: block;" class="updatebtn" type="button" onclick="document.getElementById('id01').style.display='block'">Create clan</button>
+    <button style="float: right; margin-right: 8%; display: block;" class="updatebtn" type="button" onclick="document.getElementById('id02').style.display='block'">Create clan</button>
     {% endif %}
-<div id="id01" class="modal">
+<div id="id02" class="modal">
     <form method="POST" enctype="multipart/form-data" class="modal-content animate">
         {% csrf_token %}
         <div class="container form-group">
@@ -65,7 +65,7 @@
             <input type="hidden" id="leader" name="leader" value=" {{ gamer.user.username }} ">
             <div class="container" style="background-color: #f1f1f1;">
                 <button class="updatebtn" name="btnform2" type="submit">Create</button>
-                <button type="button" onclick="document.getElementById('id01').style.display='none'"
+                <button type="button" onclick="document.getElementById('id02').style.display='none'"
                     class="cancelbtn">Cancel</button>
             </div>
         </div>

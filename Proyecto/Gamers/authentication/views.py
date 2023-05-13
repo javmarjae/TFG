@@ -60,6 +60,7 @@ def register(request):
             user = form.save(commit=False)
             user.is_active=False
             user.save()
+            models.Gamer.objects.create(user=user)
             activate_email(request, user, form.cleaned_data.get('email'))
             return redirect('index')
         else:

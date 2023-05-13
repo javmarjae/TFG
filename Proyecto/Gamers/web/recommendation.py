@@ -22,7 +22,7 @@ def jaccard_similarity(user):
 
     user_rank = {game: rank for game, rank in user_gameships.values_list('game', 'rank')}
 
-    user_clan = user_gamer.clan
+    user_clan = user_gamer.clan or None
 
     for other_user in all_users:
         u_gamer = Gamer.objects.filter(user=other_user).first()
@@ -64,7 +64,7 @@ def jaccard_similarity(user):
         else:
             age_similarity = 1
 
-        u_clan = u_gamer.clan
+        u_clan = u_gamer.clan or None
 
         if not user_clan or not u_clan:
             clan_similarity = 0
